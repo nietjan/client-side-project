@@ -1,0 +1,16 @@
+<div *ngFor="let user of users">
+  <h2>{{ user.name }}</h2>
+  <p>dateOfBirith {{ user.dateOfBirith }}</p>
+  <p>sex: {{ user.sex }}</p>
+  <p>phoneNumber: {{ user.phoneNumber }}</p>
+  <p>eMail: {{ user.eMail }}</p>
+  <p>password: {{ user.password }}</p>
+  <p>iban: {{ user.iban }}</p>
+  <p>address: {{ user.address }}</p>
+  <br />
+  <p>street: {{ user.address.street }}</p>
+  <p>homeNumber: {{ user.address.homeNumber }}</p>
+  <p>postalCode: {{ user.address.postalCode }}</p>
+  <p>city: {{ user.address.city }}</p>
+  <p>country: {{ user.address.country }}</p>
+</div>

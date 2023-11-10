@@ -20,7 +20,6 @@
       "@client-side/frontend/common": ["libs/frontend/common/src/index.ts"],
       "@client-side/frontend/features": ["libs/frontend/features/src/index.ts"],
       "@client-side/shared/api": ["libs/shared/api/src/index.ts"],
-      "@client-side/shared/assets": ["libs/shared/assets"],
       "@client-side/ui": ["libs/frontend/ui/src/index.ts"]
     }
   },

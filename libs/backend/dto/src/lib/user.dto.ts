@@ -94,8 +94,10 @@ export class UpsertUserDto implements IUpsertUser {
   iban!: string;
 
   @IsObject()
-  @IsNotEmpty()
-  address!: IAddress;
+  @IsNotEmptyObject()
+  @ValidateNested()
+  @Type(() => CreateAddressDto)
+  address!: CreateAddressDto;
 }
 
 export class UpdateUserDto implements IUpdateUser, IUpdateAddress {

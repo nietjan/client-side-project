@@ -7,6 +7,8 @@ import {
   IsObject,
   IsEmail,
   IsDateString,
+  IsNotEmptyObject,
+  ValidateNested,
 } from 'class-validator';
 import {
   IAddress,
@@ -14,6 +16,8 @@ import {
   IUpdateLocation,
   IUpsertLocation,
 } from '@client-side/shared/api';
+import { Type } from 'class-transformer';
+import { CreateAddressDto } from './address.dto';
 
 /**
  * Use the `Pick` utility type to extract only the properties we want for
@@ -41,8 +45,10 @@ export class CreateLocationDto implements ICreateLocation {
   hasTrainers!: boolean;
 
   @IsObject()
-  @IsNotEmpty()
-  address!: IAddress;
+  @IsNotEmptyObject()
+  @ValidateNested()
+  @Type(() => CreateAddressDto)
+  address!: CreateAddressDto;
 }
 
 export class UpsertLocationDto implements IUpsertLocation {
@@ -71,8 +77,10 @@ export class UpsertLocationDto implements IUpsertLocation {
   hasTrainers!: boolean;
 
   @IsObject()
-  @IsNotEmpty()
-  address!: IAddress;
+  @IsNotEmptyObject()
+  @ValidateNested()
+  @Type(() => CreateAddressDto)
+  address!: CreateAddressDto;
 }
 
 export class UpdateMealDto implements IUpdateLocation {
@@ -99,8 +107,4 @@ export class UpdateMealDto implements IUpdateLocation {
   @IsBoolean()
   @IsOptional()
   hasTrainers!: boolean;
-
-  @IsObject()
-  @IsOptional()
-  address!: IAddress;
 }
