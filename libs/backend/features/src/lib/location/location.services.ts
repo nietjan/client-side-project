@@ -5,8 +5,8 @@ import { Logger } from '@nestjs/common';
 import { CreateLocationDto } from '@client-side/backend/dto';
 
 @Injectable()
-export class MealService {
-  TAG = 'MealService';
+export class LocationService {
+  TAG = 'LocationService';
 
   private locations$ = new BehaviorSubject<ILocation[]>([
     // {
