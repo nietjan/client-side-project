@@ -1,25 +1,25 @@
 import { Controller } from '@nestjs/common';
 import { Get, Param, Post, Body } from '@nestjs/common';
 import { UserService } from './user.services';
-import { ILocation } from '@client-side/shared/api';
-import { CreateLocationDto } from '@client-side/backend/dto';
+import { IUser } from '@client-side/shared/api';
+import { CreateUserDto } from '@client-side/backend/dto';
 
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
   @Get('')
-  getAll(): ILocation[] {
+  getAll(): IUser[] {
     return this.userService.getAll();
   }
 
   @Get(':id')
-  getOne(@Param('id') id: string): ILocation {
+  getOne(@Param('id') id: string): IUser {
     return this.userService.getOne(id);
   }
 
   @Post('')
-  create(@Body() data: CreateLocationDto): ILocation {
+  create(@Body() data: CreateUserDto): IUser {
     console.log(data);
     return this.userService.create(data);
   }

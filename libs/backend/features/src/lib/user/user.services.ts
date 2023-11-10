@@ -1,21 +1,21 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ILocation } from '@client-side/shared/api';
+import { IUser } from '@client-side/shared/api';
 import { BehaviorSubject } from 'rxjs';
 import { Logger } from '@nestjs/common';
-import { CreateLocationDto } from '@client-side/backend/dto';
+import { CreateUserDto } from '@client-side/backend/dto';
 
 @Injectable()
 export class UserService {
-  TAG = 'LocationService';
+  TAG = 'UserService';
 
-  private users$ = new BehaviorSubject<ILocation[]>([]);
+  private users$ = new BehaviorSubject<IUser[]>([]);
 
-  getAll(): ILocation[] {
+  getAll(): IUser[] {
     Logger.log('getAll', this.TAG);
     return this.users$.value;
   }
 
-  getOne(id: string): ILocation {
+  getOne(id: string): IUser {
     Logger.log(`getOne(${id})`, this.TAG);
     const user = this.users$.value.find((td) => td.id === id);
     if (!user) {
@@ -29,11 +29,11 @@ export class UserService {
    * return signature - we still want to respond with the complete
    * object
    */
-  create(user: CreateLocationDto) {
+  create(user: CreateUserDto) {
     Logger.log('create', this.TAG);
     const current = this.users$.value;
     // Use the incoming data, a randomized ID, and a default value of `false` to create the new to-do
-    const newUser: ILocation = {
+    const newUser: IUser = {
       ...user,
       id: '',
     };

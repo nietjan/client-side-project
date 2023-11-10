@@ -7,4 +7,4 @@ import { UserService } from './user.services';
   providers: [UserService],
   exports: [UserService],
 })
-export class LocationModule {}
+export class UserModule {}

@@ -1,5 +1,6 @@
 import { Id } from './id.type';
 import { IAddress } from './address.interface';
+import { ICreateLocation } from './location.interface';
 
 export interface IUser {
   id: Id;
