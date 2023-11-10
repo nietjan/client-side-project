@@ -5,8 +5,8 @@ import {
   IsOptional,
   IsDate,
   IsObject,
-  isNotEmpty,
-  IsNumber,
+  IsEmail,
+  IsDateString,
 } from 'class-validator';
 import {
   IAddress,
@@ -24,15 +24,15 @@ export class CreateLocationDto implements ICreateLocation {
   @IsNotEmpty()
   phoneNumber!: string;
 
-  @IsString()
+  @IsEmail()
   @IsNotEmpty()
   eMail!: string;
 
-  @IsDate()
+  @IsDateString()
   @IsNotEmpty()
   openingsTime!: Date;
 
-  @IsDate()
+  @IsDateString()
   @IsNotEmpty()
   closingTime!: Date;
 

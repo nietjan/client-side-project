@@ -39,13 +39,13 @@ export class LocationService {
    * return signature - we still want to respond with the complete
    * object
    */
-  create(meal: CreateLocationDto) {
+  create(location: CreateLocationDto) {
     Logger.log('create', this.TAG);
     const current = this.locations$.value;
     // Use the incoming data, a randomized ID, and a default value of `false` to create the new to-do
     const newLocation: ILocation = {
+      ...location,
       id: '',
-      ...meal,
     };
     this.locations$.next([...current, newLocation]);
     return newLocation;

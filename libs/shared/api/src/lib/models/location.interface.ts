@@ -23,5 +23,6 @@ export type ICreateLocation = Pick<
   | 'openingsTime'
   | 'closingTime'
 >;
+
 export type IUpdateLocation = Partial<Omit<ILocation, 'id'>>;
 export type IUpsertLocation = ILocation;

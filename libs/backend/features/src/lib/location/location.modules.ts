@@ -7,4 +7,4 @@ import { LocationService } from './location.services';
   providers: [LocationService],
   exports: [LocationService],
 })
-export class BackendFeaturesMealModule {}
+export class LocationModule {}

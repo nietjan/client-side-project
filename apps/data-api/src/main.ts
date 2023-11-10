@@ -3,7 +3,7 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { ApiResponseInterceptor } from '@client-side/backend/dto';
@@ -18,6 +18,7 @@ async function bootstrap() {
   app.enableCors(corsOptions);
 
   app.useGlobalInterceptors(new ApiResponseInterceptor());
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   const port = process.env.PORT || 3000;
   await app.listen(port);
