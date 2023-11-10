@@ -2,22 +2,31 @@
   <div class="row">
     <h1 class="col-12">Sportschool Projectcasus</h1>
     <p class="col-12">
-      Deze webapplicatie is gemaakt in het kader vvan het vak Client-side web
+      Deze webapplicatie is gemaakt in het kader van het vak Client-side web
       developtment, individueel project.
     </p>
-    <p class="col-12">Beschrijving:</p>
+    <h5 class="col-12">Beschrijving:</h5>
+    <p>
+      Er is een sportschool met meerdere locaties. Elke locatie is anders en
+      heeft daarbij eigen abbonnomenten. Een locatie kan slecht 1 abbonoment
+      hebben of meerdere. Een gebruiker kan hierbij zich aansluiten bij een
+      locatie. Hierbij moet de gebruiker een abbonnoment kiezen. Een gebruiker
+      kan bij meerdere locaties zijn ingeschrijven. Een gebruiker kan dus
+      meerdere inschrijvingen hebben, waarbij elke inschrijving een bijbehorende
+      locatie en abbonnoment heeft.
+    </p>
   </div>
 
   <div class="row">
     <h2 class="col-12">Functional requirements</h2>
     <p class="col-12">
       De Applicatie biedt een aantal functionaliteiten. Deze zijn in de
-      onderstaande tabel weergeven:
+      onderstaande tabel weergeven.
     </p>
     <table class="col-12 table">
       <thead>
         <tr>
-          <td scope="col">Nr.</td>
+          <td scope="col">#</td>
           <td scope="col">Requirement</td>
           <td scope="col">Toelichting</td>
           <td scope="col">Moscow prio</td>
@@ -26,24 +35,104 @@
       <tbody>
         <tr>
           <td scope="row">1</td>
-          <td>DE gebruiker kan een lijst van maaltijden inzien</td>
-          <td>
-            De lijst is een tabel. door te klikken op een maaltijkd navigeer je
-            naar de detials.
-          </td>
-          <td>Must ...</td>
+          <td>Inloggen</td>
+          <td>Een gebruiker moet zich kunnen inloggen</td>
+          <td>M</td>
         </tr>
         <tr>
           <td scope="row">2</td>
-          <td>De gebruiker kan alle details van een maaltijd inzien</td>
-          <td>Bschrijving.</td>
-          <td>Moscow prio2</td>
+          <td>Registreren</td>
+          <td>De gebruiker moet een account kunnen aanmaken</td>
+          <td>M</td>
         </tr>
         <tr>
           <td scope="row">3</td>
-          <td>Requirement3</td>
-          <td>Toelichting3</td>
-          <td>Moscow prio3</td>
+          <td>Bekijken locaties</td>
+          <td>
+            Een gebruiker moet een overzicht kunnen bekijken van alle
+            beschikbare locaties
+          </td>
+          <td>M</td>
+        </tr>
+        <tr>
+          <td scope="row">4</td>
+          <td>Bekijken specifieke locaties</td>
+          <td>
+            Een gebruiker moet van een specifieke locatie belangrijke gegevens
+            kunnen zien
+          </td>
+          <td>M</td>
+        </tr>
+        <tr>
+          <td scope="row">5</td>
+          <td>Bekijken abbonnomenten</td>
+          <td>
+            Een gebruiker moet een overzicht kunnen bekijken van alle
+            beschikbare abbonnomenten van een specifieke locatie
+          </td>
+          <td>M</td>
+        </tr>
+        <tr>
+          <td scope="row">6</td>
+          <td>Inschrijven</td>
+          <td>
+            Een gebruiker moet zich voor een abbonnoment bij een locatie kunnen
+            inschrijven
+          </td>
+          <td>M</td>
+        </tr>
+        <tr>
+          <td scope="row">7</td>
+          <td>Bekijken inschrijvingen</td>
+          <td>
+            Een gebruiker moet locaties kunnen bekijken bij wie deze is
+            ingeschreven met de bijbehorende abbonnoment
+          </td>
+          <td>S</td>
+        </tr>
+        <tr>
+          <td scope="row">8</td>
+          <td>Uitschrijven</td>
+          <td>Een gebruiker moet zich voor een locatie kunnen uitschrijven</td>
+          <td>S</td>
+        </tr>
+        <tr>
+          <td scope="row">9</td>
+          <td>Toevoegen Locatie</td>
+          <td>Een werknemer moet een locatie kunnen toevoegen</td>
+          <td>S</td>
+        </tr>
+        <tr>
+          <td scope="row">10</td>
+          <td>Toevoegen abbonnomenten</td>
+          <td>
+            Een werknemer moet bij het aanmaken van een locatie abbonnomenten
+            kunnen toevoegen
+          </td>
+          <td>S</td>
+        </tr>
+        <tr>
+          <td scope="row">11</td>
+          <td>Update Locatie</td>
+          <td>
+            Een werknemer moet de informatie van een locatie kunnen aanpassen
+          </td>
+          <td>S</td>
+        </tr>
+        <tr>
+          <td scope="row">12</td>
+          <td>Toevoegen abbonnomenten</td>
+          <td>
+            Een werknemer moet bij het updaten van een locatie de informatie van
+            de abbonnomenten kunnen weizigen
+          </td>
+          <td>S</td>
+        </tr>
+        <tr>
+          <td scope="row">13</td>
+          <td>Update gebruiker</td>
+          <td>Een gebruiker moet zijn gegevens kunnen aanpassen</td>
+          <td>C</td>
         </tr>
       </tbody>
     </table>
@@ -51,15 +140,69 @@
 
   <div class="row">
     <h2>Non-functional requirements</h2>
-    <p>Korte toelichting</p>
-    <table>
-      <p>enz.</p>
+    <p>
+      Naast de functionele requirements zijn er ook een aantal niet functionele
+      requirements of Non-functional requirements. Deze zijn in de onderstaande
+      tabel weergeven.
+    </p>
+    <table class="col-12 table">
+      <thead>
+        <tr>
+          <td scope="col">#</td>
+          <td scope="col">Requirement</td>
+          <td scope="col">Toelichting</td>
+          <td scope="col">Moscow prio</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td scope="row">1</td>
+          <td>Performance</td>
+          <td>
+            Een pagina mag niet te lang duren, om te laden. Lang duren kan op
+            verschillenden getallen zijn bij verschillende omstandigheden. Bij
+            het laden van een pagina is ongevaar na 5 seconde. Een pagina mag
+            dus niet langer dan 5 seconde duren om te laden
+          </td>
+          <td>M</td>
+        </tr>
+        <tr>
+          <td scope="row">2</td>
+          <td>Beschikbaarheid</td>
+          <td>
+            De website moet voor iedereen beschikbaar zijn, iedereen moet dus de
+            mogelijkheid hebben om de website te bekijken. Dit kan bereikt
+            worden door de website op een server te zetten. Hierdoor is het voor
+            iedereen beschikbaar
+          </td>
+          <td>M</td>
+        </tr>
+        <tr>
+          <td scope="row">3</td>
+          <td>Beveiliging</td>
+          <td>
+            De gegevens van een gebruiker moet goed beveiligd zijn. Niet
+            iedereen mag zomaar toegang hebben tot iedereens gegevens. Verder
+            moet een wachtwoord gehashed worden in de database.
+          </td>
+          <td>M</td>
+        </tr>
+      </tbody>
     </table>
   </div>
 
   <div class="row">
     <h2>Datamodel / ERD</h2>
-    <p>Toelichting</p>
-    <!-- <img src="" alt=""> -->
+    <p>
+      Er zijn een aantal models. Met als eerste de User. User heeft altijd een
+      adres. Dit geld ook voor Locatie, ook deze heeft altijd een adres. Een
+      loctatie heeft ook 1 of meerdere abbonnomenten, waarbij een abbonnoment
+      altijd tot 1 locatie behoord. Een user kan zich bij 0 of meerdere locaties
+      inschrijven. Hierbij is ook een abonnoment aan gekoppeld. Verder word
+      daarbij de datum ook opgeslagen
+    </p>
+    <div class="text-center mb-5">
+      <img src="./assets/img/erd.png" class="img-fluid" alt="ERD" />
+    </div>
   </div>
 </div>
