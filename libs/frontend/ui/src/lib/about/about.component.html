@@ -8,12 +8,12 @@
     <h5 class="col-12">Beschrijving:</h5>
     <p>
       Er is een sportschool met meerdere locaties. Elke locatie is anders en
-      heeft daarbij eigen abbonnomenten. Een locatie kan slecht 1 abbonoment
+      heeft daarbij eigen abonnomenten. Een locatie kan slecht 1 abbonoment
       hebben of meerdere. Een gebruiker kan hierbij zich aansluiten bij een
-      locatie. Hierbij moet de gebruiker een abbonnoment kiezen. Een gebruiker
+      locatie. Hierbij moet de gebruiker een abonnoment kiezen. Een gebruiker
       kan bij meerdere locaties zijn ingeschrijven. Een gebruiker kan dus
       meerdere inschrijvingen hebben, waarbij elke inschrijving een bijbehorende
-      locatie en abbonnoment heeft.
+      locatie en abonnoment heeft.
     </p>
   </div>
 
@@ -65,10 +65,10 @@
         </tr>
         <tr>
           <td scope="row">5</td>
-          <td>Bekijken abbonnomenten</td>
+          <td>Bekijken abonnomenten</td>
           <td>
             Een gebruiker moet een overzicht kunnen bekijken van alle
-            beschikbare abbonnomenten van een specifieke locatie
+            beschikbare abonnomenten van een specifieke locatie
           </td>
           <td>M</td>
         </tr>
@@ -76,7 +76,7 @@
           <td scope="row">6</td>
           <td>Inschrijven</td>
           <td>
-            Een gebruiker moet zich voor een abbonnoment bij een locatie kunnen
+            Een gebruiker moet zich voor een abonnoment bij een locatie kunnen
             inschrijven
           </td>
           <td>M</td>
@@ -86,7 +86,7 @@
           <td>Bekijken inschrijvingen</td>
           <td>
             Een gebruiker moet locaties kunnen bekijken bij wie deze is
-            ingeschreven met de bijbehorende abbonnoment
+            ingeschreven met de bijbehorende abonnoment
           </td>
           <td>S</td>
         </tr>
@@ -99,14 +99,14 @@
         <tr>
           <td scope="row">9</td>
           <td>Toevoegen Locatie</td>
-          <td>Een werknemer moet een locatie kunnen toevoegen</td>
+          <td>Een medewerker moet een locatie kunnen toevoegen</td>
           <td>S</td>
         </tr>
         <tr>
           <td scope="row">10</td>
-          <td>Toevoegen abbonnomenten</td>
+          <td>Toevoegen abonnomenten</td>
           <td>
-            Een werknemer moet bij het aanmaken van een locatie abbonnomenten
+            Een medewerker moet bij het aanmaken van een locatie abonnomenten
             kunnen toevoegen
           </td>
           <td>S</td>
@@ -115,16 +115,16 @@
           <td scope="row">11</td>
           <td>Update Locatie</td>
           <td>
-            Een werknemer moet de informatie van een locatie kunnen aanpassen
+            Een medewerker moet de informatie van een locatie kunnen aanpassen
           </td>
           <td>S</td>
         </tr>
         <tr>
           <td scope="row">12</td>
-          <td>Toevoegen abbonnomenten</td>
+          <td>Toevoegen abonnomenten</td>
           <td>
-            Een werknemer moet bij het updaten van een locatie de informatie van
-            de abbonnomenten kunnen weizigen
+            Een medewerker moet bij het updaten van een locatie de informatie
+            van de abonnomenten kunnen weizigen
           </td>
           <td>S</td>
         </tr>
@@ -132,6 +132,24 @@
           <td scope="row">13</td>
           <td>Update gebruiker</td>
           <td>Een gebruiker moet zijn gegevens kunnen aanpassen</td>
+          <td>C</td>
+        </tr>
+        <tr>
+          <td scope="row">14</td>
+          <td>Bekijken gebruiker</td>
+          <td>
+            Een medewerker moet een lijst met de ingeschreven users kunnen
+            bekijken
+          </td>
+          <td>C</td>
+        </tr>
+        <tr>
+          <td scope="row">15</td>
+          <td>Bekijken gebruiker</td>
+          <td>
+            Een medewerker moet een 1 specifieke user kunnen bekijken die staat
+            ingeschreven bij een bepaalde locatie
+          </td>
           <td>C</td>
         </tr>
       </tbody>
@@ -196,7 +214,7 @@
     <p>
       Er zijn een aantal models. Met als eerste de User. User heeft altijd een
       adres. Dit geld ook voor Locatie, ook deze heeft altijd een adres. Een
-      loctatie heeft ook 1 of meerdere abbonnomenten, waarbij een abbonnoment
+      loctatie heeft ook 1 of meerdere abonnomenten, waarbij een abonnoment
       altijd tot 1 locatie behoord. Een user kan zich bij 0 of meerdere locaties
       inschrijven. Hierbij is ook een abonnoment aan gekoppeld. Verder word
       daarbij de datum ook opgeslagen
