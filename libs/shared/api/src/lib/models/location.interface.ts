@@ -1,8 +1,6 @@
 import { Id } from './id.type';
 import { IAddress } from './address.interface';
 
-type User = string;
-
 export interface ILocation {
   id: Id;
   phoneNumber: string;

@@ -27,11 +27,11 @@ export class LocationService {
 
   getOne(id: string): ILocation {
     Logger.log(`getOne(${id})`, this.TAG);
-    const meal = this.locations$.value.find((td) => td.id === id);
-    if (!meal) {
-      throw new NotFoundException(`Meal could not be found!`);
+    const location = this.locations$.value.find((td) => td.id === id);
+    if (!location) {
+      throw new NotFoundException(`Location could not be found!`);
     }
-    return meal;
+    return location;
   }
 
   /**
