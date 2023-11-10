@@ -1,21 +1,24 @@
 import {
   IsNotEmpty,
   IsString,
-  IsBoolean,
   IsOptional,
-  IsDate,
   IsObject,
   IsEmail,
   IsDateString,
+  ValidateNested,
   IsStrongPassword,
   IsPhoneNumber,
+  IsNotEmptyObject,
 } from 'class-validator';
+import { Type } from 'class-transformer';
 import {
   IAddress,
   ICreateUser,
   IUpdateUser,
   IUpsertUser,
+  IUpdateAddress,
 } from '@client-side/shared/api';
+import { CreateAddressDto } from './address.dto';
 
 /**
  * Use the `Pick` utility type to extract only the properties we want for
@@ -34,7 +37,7 @@ export class CreateUserDto implements ICreateUser {
   @IsNotEmpty()
   sex!: string;
 
-  @IsPhoneNumber()
+  @IsPhoneNumber('NL')
   @IsNotEmpty()
   phoneNumber!: string;
 
@@ -51,8 +54,10 @@ export class CreateUserDto implements ICreateUser {
   iban!: string;
 
   @IsObject()
-  @IsNotEmpty()
-  address!: IAddress;
+  @IsNotEmptyObject()
+  @ValidateNested()
+  @Type(() => CreateAddressDto)
+  address!: CreateAddressDto;
 }
 
 export class UpsertUserDto implements IUpsertUser {
@@ -93,7 +98,7 @@ export class UpsertUserDto implements IUpsertUser {
   address!: IAddress;
 }
 
-export class UpdateUserDto implements IUpdateUser {
+export class UpdateUserDto implements IUpdateUser, IUpdateAddress {
   @IsString()
   @IsNotEmpty()
   id!: string;
@@ -129,4 +134,24 @@ export class UpdateUserDto implements IUpdateUser {
   @IsObject()
   @IsOptional()
   address!: IAddress;
+
+  @IsString()
+  @IsOptional()
+  street!: string;
+
+  @IsString()
+  @IsOptional()
+  homeNumber!: string;
+
+  @IsString()
+  @IsOptional()
+  city!: string;
+
+  @IsString()
+  @IsOptional()
+  country!: string;
+
+  @IsString()
+  @IsOptional()
+  postalCode!: string;
 }

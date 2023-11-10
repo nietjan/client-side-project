@@ -8,6 +8,7 @@ import { NestFactory } from '@nestjs/core';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { ApiResponseInterceptor } from '@client-side/backend/dto';
 import { AppModule } from './app/app.module';
+import { useContainer } from 'class-validator';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,7 +19,8 @@ async function bootstrap() {
   app.enableCors(corsOptions);
 
   app.useGlobalInterceptors(new ApiResponseInterceptor());
-  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   const port = process.env.PORT || 3000;
   await app.listen(port);
