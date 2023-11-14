@@ -5,5 +5,8 @@
   <p>{{ location?.eMail }}</p>
   <p>{{ location?.hasTrainers }}</p>
   <p>{{ location?.phoneNumber }}</p>
-  <a routerLink="{{ location.id }}">{{ location.id }}</a>
+  <p>
+    <a routerLink="{{ location.id }}">{{ location.id }}</a>
+  </p>
+  <button (click)="removeLocation(location.id)">Remove</button>
 </div>

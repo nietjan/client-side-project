@@ -96,4 +96,18 @@ export class LocationService {
       map((locationList) => locationList.find((location) => location.id == id))
     ) as Observable<ILocation>;
   }
+
+  public removeLocation(id: string | null) {
+    if (id == null) return;
+
+    const arr: any[] = this.locations$.getValue();
+
+    arr.forEach((item, index) => {
+      if (item.id == id) {
+        arr.splice(index, 1);
+      }
+    });
+
+    this.locations$.next(arr);
+  }
 }

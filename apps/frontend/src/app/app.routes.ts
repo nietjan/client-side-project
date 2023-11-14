@@ -9,13 +9,22 @@ export const appRoutes: Route[] = [
   {
     path: '',
     pathMatch: 'full',
-    component: LocationListComponent,
+    redirectTo: 'location',
   },
-  { path: ':id', pathMatch: 'full', component: LocationDetailComponent },
   {
     path: 'about',
     pathMatch: 'full',
     component: AboutComponent,
+  },
+  {
+    path: 'location',
+    pathMatch: 'full',
+    component: LocationListComponent,
+  },
+  {
+    path: 'location/:id',
+    pathMatch: 'full',
+    component: LocationDetailComponent,
   },
   //   {
   //     path: '',
