@@ -1,12 +1,12 @@
 import { Route } from '@angular/router';
 import { AboutComponent } from '@client-side/ui';
-import { UserListComponent } from '@client-side/frontend/features';
+import { LocationListComponent } from '@client-side/frontend/features';
 
 export const appRoutes: Route[] = [
   {
     path: '',
     pathMatch: 'full',
-    component: UserListComponent,
+    component: LocationListComponent,
   },
   {
     path: 'about',
