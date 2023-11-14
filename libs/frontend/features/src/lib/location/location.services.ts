@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ILocation } from '@client-side/shared/api';
 import { BehaviorSubject, Observable, map } from 'rxjs';
-import { IAddress } from '@client-side/shared/api';
+import { IAddress, ILocation, ICreateLocation } from '@client-side/shared/api';
 
 class DummyAddresObject implements IAddress {
   street: string;
@@ -97,8 +96,8 @@ export class LocationService {
     ) as Observable<ILocation>;
   }
 
-  public removeLocation(id: string | null) {
-    if (id == null) return;
+  public removeLocation(id: string | null): boolean {
+    if (id == null) return false;
 
     const arr: any[] = this.locations$.getValue();
 
@@ -109,5 +108,17 @@ export class LocationService {
     });
 
     this.locations$.next(arr);
+    return true;
+  }
+
+  public createLocation(location: ILocation | null): boolean {
+    if (location == null) return false;
+
+    location.id = (
+      parseInt(this.locations$.value[this.locations$.value.length - 1].id) + 1
+    ).toString();
+
+    this.locations$.next([...this.locations$.value, location]);
+    return true;
   }
 }

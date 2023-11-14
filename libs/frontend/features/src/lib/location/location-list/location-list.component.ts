@@ -27,7 +27,7 @@ export class LocationListComponent implements OnInit, OnDestroy {
     if (this.subscription) this.subscription.unsubscribe();
   }
 
-  public removeLocation(id: string) {
+  public removeLocation(id: string): void {
     this.locationService.removeLocation(id);
   }
 }

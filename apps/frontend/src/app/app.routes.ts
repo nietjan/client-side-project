@@ -3,6 +3,7 @@ import { AboutComponent } from '@client-side/ui';
 import {
   LocationListComponent,
   LocationDetailComponent,
+  LocationCreateComponent,
 } from '@client-side/frontend/features';
 
 export const appRoutes: Route[] = [
@@ -20,6 +21,11 @@ export const appRoutes: Route[] = [
     path: 'location',
     pathMatch: 'full',
     component: LocationListComponent,
+  },
+  {
+    path: 'location/create',
+    pathMatch: 'full',
+    component: LocationCreateComponent,
   },
   {
     path: 'location/:id',
