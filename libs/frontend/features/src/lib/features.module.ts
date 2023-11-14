@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { UserListComponent } from './user/user-list/user-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { UserService } from './user/user.services';
+import { LocationListComponent } from './location/location-list/location-list.component';
 
 @NgModule({
   imports: [CommonModule, HttpClientModule],
-  declarations: [UserListComponent],
+  declarations: [UserListComponent, LocationListComponent],
   providers: [UserService],
   exports: [UserListComponent],
 })
