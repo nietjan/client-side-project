@@ -1,6 +1,9 @@
 import { Route } from '@angular/router';
 import { AboutComponent } from '@client-side/ui';
-import { LocationListComponent } from '@client-side/frontend/features';
+import {
+  LocationListComponent,
+  LocationDetailComponent,
+} from '@client-side/frontend/features';
 
 export const appRoutes: Route[] = [
   {
@@ -8,6 +11,7 @@ export const appRoutes: Route[] = [
     pathMatch: 'full',
     component: LocationListComponent,
   },
+  { path: ':id', pathMatch: 'full', component: LocationDetailComponent },
   {
     path: 'about',
     pathMatch: 'full',

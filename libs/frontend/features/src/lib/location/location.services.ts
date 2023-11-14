@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ILocation } from '@client-side/shared/api';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { IAddress } from '@client-side/shared/api';
 
 class DummyAddresObject implements IAddress {
@@ -75,5 +75,25 @@ export class LocationService {
     //     catchError(this.handleError)
     //   );
     return this.locations$;
+  }
+
+  public singleLocation(
+    id: string | null,
+    options?: any
+  ): Observable<ILocation> {
+    // console.log(`read ${this.endpoint}`);
+    // return this.http
+    //   .get<ApiResponse<ILocation>>(this.endpoint, {
+    //     ...options,
+    //     ...httpOptions,
+    //   })
+    //   .pipe(
+    //     tap(console.log),
+    //     map((response: any) => response.results as ILocation),
+    //     catchError(this.handleError)
+    //   );
+    return this.locations$.pipe(
+      map((locationList) => locationList.find((location) => location.id == id))
+    ) as Observable<ILocation>;
   }
 }
