@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ILocation } from '@client-side/shared/api';
 import { Observable, Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LocationService } from '../location.services';
 
 @Component({
@@ -16,7 +16,8 @@ export class LocationDetailComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private locationService: LocationService
+    private locationService: LocationService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -27,6 +28,7 @@ export class LocationDetailComponent implements OnInit, OnDestroy {
       .singleLocation(this.locationId)
       .subscribe((results) => {
         console.log(`results: ${results}`);
+        if (results == null) this.router.navigateByUrl('/location');
         this.location = results;
       });
   }

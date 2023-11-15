@@ -35,10 +35,16 @@ export class LocationCreateComponent {
     private locationService: LocationService,
     private router: Router
   ) {}
+
   public create(): void {
-    this.locationService.createLocation(this.locationToAdd as ILocation);
+    var locationId = this.locationService.createLocation(
+      this.locationToAdd as ILocation
+    );
 
     //redirect back to list
-    this.router.navigateByUrl('/location');
+    if (locationId != null)
+      this.router.navigateByUrl(`/location/${locationId}`);
+
+    //TODO: Add functie for id id is not null - when form is not correct
   }
 }

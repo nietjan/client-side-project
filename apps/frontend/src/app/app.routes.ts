@@ -4,6 +4,7 @@ import {
   LocationListComponent,
   LocationDetailComponent,
   LocationCreateComponent,
+  LocationUpdateComponent,
 } from '@client-side/frontend/features';
 
 export const appRoutes: Route[] = [
@@ -26,6 +27,11 @@ export const appRoutes: Route[] = [
     path: 'location/create',
     pathMatch: 'full',
     component: LocationCreateComponent,
+  },
+  {
+    path: 'location/:id/update',
+    pathMatch: 'full',
+    component: LocationUpdateComponent,
   },
   {
     path: 'location/:id',
