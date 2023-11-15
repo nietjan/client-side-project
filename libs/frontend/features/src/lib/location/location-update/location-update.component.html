@@ -1,2 +1,5 @@
-<button (click)="update()">Update</button>
-<button><a routerLink="/location">back</a></button>
+<button class="btn btn-primary" (click)="update()">Update</button>
+
+<a routerLink="/location/{{ locationId }}"
+  ><button class="btn btn-primary">back</button></a
+>

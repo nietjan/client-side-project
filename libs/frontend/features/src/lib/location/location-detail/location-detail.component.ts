@@ -18,12 +18,13 @@ export class LocationDetailComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private locationService: LocationService,
     private router: Router
-  ) {}
-
-  ngOnInit(): void {
+  ) {
     this.route.paramMap.subscribe((params) => {
       this.locationId = params.get('id');
     });
+  }
+
+  ngOnInit(): void {
     this.subscription = this.locationService
       .singleLocation(this.locationId)
       .subscribe((results) => {
@@ -35,5 +36,10 @@ export class LocationDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.subscription) this.subscription.unsubscribe();
+  }
+
+  public removeLocation(id: string | null | undefined): void {
+    if (id == null || id == undefined) return;
+    this.locationService.removeLocation(id);
   }
 }

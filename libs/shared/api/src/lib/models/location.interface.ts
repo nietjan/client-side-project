@@ -1,5 +1,6 @@
 import { Id } from './id.type';
 import { IAddress } from './address.interface';
+import { DatePipe } from '@angular/common';
 
 export interface ILocation {
   id: Id;

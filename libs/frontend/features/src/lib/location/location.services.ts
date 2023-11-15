@@ -24,7 +24,6 @@ class DummyAddresObject implements IAddress {
     this.city = city;
   }
 }
-
 @Injectable()
 export class LocationService {
   endpoint = 'http://localhost:3000/api/location';
@@ -34,21 +33,33 @@ export class LocationService {
     const newLocations: ILocation[] = [
       {
         id: '1',
-        phoneNumber: '0000000000',
+        phoneNumber: '06 12345678',
         closingTime: new Date(),
         openingsTime: new Date(),
-        eMail: 'email@email.com',
+        eMail: 'email@1.com',
         hasTrainers: true,
-        address: new DummyAddresObject('sss', '1D', 'Postal', 'city', 'NL'),
+        address: new DummyAddresObject(
+          'Heuvelring',
+          '153',
+          '5038 CJ',
+          'Tilburg',
+          'Netherlands'
+        ),
       },
       {
         id: '2',
-        phoneNumber: 'sdfdfdsdf',
+        phoneNumber: '06 12345678',
         closingTime: new Date(),
         openingsTime: new Date(),
-        eMail: 'email@email2.com',
+        eMail: 'email@2.com',
         hasTrainers: true,
-        address: new DummyAddresObject('aaaa', '2D', 'Postal', 'city', 'NL'),
+        address: new DummyAddresObject(
+          'Chasséveld',
+          '15',
+          '4811 DH',
+          'Breda',
+          'Netherlands'
+        ),
       },
     ];
 

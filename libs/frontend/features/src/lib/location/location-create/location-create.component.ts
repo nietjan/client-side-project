@@ -23,8 +23,8 @@ export class LocationCreateComponent {
   };
 
   locationToAdd: ICreateLocation = {
-    eMail: '',
-    phoneNumber: '',
+    eMail: 'create@create.com',
+    phoneNumber: '06 12345678',
     hasTrainers: true,
     openingsTime: new Date(),
     closingTime: new Date(),

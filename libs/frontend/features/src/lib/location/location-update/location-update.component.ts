@@ -12,17 +12,17 @@ export class LocationUpdateComponent {
   locationId: string | null = null;
 
   address: ICreateAddress = {
-    street: 'Updatestreet',
-    homeNumber: 'Update1',
-    city: 'Updatecity',
-    country: 'Updatecountry',
-    postalCode: 'UpdatepostalCode',
+    street: 'Street',
+    homeNumber: '1',
+    city: 'Updated city',
+    country: 'country',
+    postalCode: 'postalCode',
   };
 
   locationToAdd: ILocation = {
     id: '',
-    eMail: 'UpdateEmail',
-    phoneNumber: 'UpdatePhone',
+    eMail: 'Updated - Email@update.com',
+    phoneNumber: '03 12345678',
     hasTrainers: true,
     openingsTime: new Date(),
     closingTime: new Date(),
@@ -33,13 +33,13 @@ export class LocationUpdateComponent {
     private locationService: LocationService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
-
-  public update(): void {
+  ) {
     this.route.paramMap.subscribe((params) => {
       this.locationId = params.get('id');
     });
+  }
 
+  public update(): void {
     //redirect back to list if id is null
     if (this.locationId != null) this.router.navigateByUrl('/location');
 
