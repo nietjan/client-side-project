@@ -1,6 +1,8 @@
-<a routerLink="create">
-  <button class="btn btn-primary">Create</button>
-</a>
+<div class="mb-2">
+  <a routerLink="create">
+    <button class="btn btn-primary">New location</button>
+  </a>
+</div>
 
 <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 g-4">
   <div class="col" *ngFor="let location of locations">
@@ -14,16 +16,13 @@
         <h5 class="card-title">{{ location?.address?.city }}</h5>
         <p class="card-text">
           {{ location?.address?.street }} {{ location?.address?.homeNumber }},
-          {{ location?.address?.postalCode }} {{ location?.address?.city }},
-          {{ location?.address?.country }}
+          {{ location?.address?.postalCode }}
         </p>
         <p *ngIf="location?.hasTrainers == true">Trainers available</p>
         <p>
           Open from {{ location?.openingsTime?.toLocaleTimeString() }} till
           {{ location?.closingTime?.toLocaleTimeString() }}
         </p>
-        <p>{{ location?.eMail }}</p>
-        <p>{{ location?.phoneNumber }}</p>
         <a routerLink="{{ location.id }}">
           <button class="btn btn-primary">Check</button>
         </a>
