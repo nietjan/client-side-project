@@ -1,5 +1,8 @@
 name: deploy frontend and backend
 
+env:
+  AZURE_BACKEND_NAME: Client-side2-2Api # set this to the name of your Azure Web App
+
 on:
   push:
     branches:
@@ -88,7 +91,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'NxWorkshop'
+          app-name: ${{ env.AZURE_BACKEND_NAME }}
           slot-name: 'Production'
           publish-profile: ${{ secrets.NEXTJS_PUBLISHPROFILE }}
           package: .
