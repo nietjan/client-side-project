@@ -2,6 +2,7 @@
   "name": "features",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/frontend/features/src",
+  "assets": ["./assets"],
   "prefix": "client-side-project",
   "tags": [],
   "projectType": "library",

@@ -1,7 +1,6 @@
 import { Id } from './id.type';
 import { IAddress } from './address.interface';
-
-type User = string;
+import { DatePipe } from '@angular/common';
 
 export interface ILocation {
   id: Id;
@@ -23,5 +22,6 @@ export type ICreateLocation = Pick<
   | 'openingsTime'
   | 'closingTime'
 >;
+
 export type IUpdateLocation = Partial<Omit<ILocation, 'id'>>;
 export type IUpsertLocation = ILocation;

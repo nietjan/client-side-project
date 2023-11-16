@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import * as common from '@angular/common';
 
 @NgModule({
-  imports: [CommonModule],
+  imports: [common.CommonModule],
 })
 export class CommonModule {}

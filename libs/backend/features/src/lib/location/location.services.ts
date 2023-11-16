@@ -5,8 +5,8 @@ import { Logger } from '@nestjs/common';
 import { CreateLocationDto } from '@client-side/backend/dto';
 
 @Injectable()
-export class MealService {
-  TAG = 'MealService';
+export class LocationService {
+  TAG = 'LocationService';
 
   private locations$ = new BehaviorSubject<ILocation[]>([
     // {
@@ -27,11 +27,11 @@ export class MealService {
 
   getOne(id: string): ILocation {
     Logger.log(`getOne(${id})`, this.TAG);
-    const meal = this.locations$.value.find((td) => td.id === id);
-    if (!meal) {
-      throw new NotFoundException(`Meal could not be found!`);
+    const location = this.locations$.value.find((td) => td.id === id);
+    if (!location) {
+      throw new NotFoundException(`Location could not be found!`);
     }
-    return meal;
+    return location;
   }
 
   /**
@@ -39,13 +39,13 @@ export class MealService {
    * return signature - we still want to respond with the complete
    * object
    */
-  create(meal: CreateLocationDto) {
+  create(location: CreateLocationDto) {
     Logger.log('create', this.TAG);
     const current = this.locations$.value;
     // Use the incoming data, a randomized ID, and a default value of `false` to create the new to-do
     const newLocation: ILocation = {
+      ...location,
       id: '',
-      ...meal,
     };
     this.locations$.next([...current, newLocation]);
     return newLocation;
