@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "nx run-many --target=serve --all"
+    "dev": "nx run-many --target=serve --all",
+    "build": "nx b data-api && nx b frontend && echo 'Build!'",
+    "build2": "nx b data-api && npm install --only=prod --prefix ./dist/apps/data-api && nx b frontend && echo 'Build!'"
   },
   "private": true,
   "dependencies": {
