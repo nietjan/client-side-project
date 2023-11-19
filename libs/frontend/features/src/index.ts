@@ -1,6 +1,7 @@
 //modules
 export * from './lib/user/user.module';
 export * from './lib/location/location.module';
+export * from './lib/abonnement/abonnement.module';
 
 //components
 export * from './lib/location/location-list/location-list.component';
