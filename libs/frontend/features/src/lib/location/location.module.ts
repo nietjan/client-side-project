@@ -7,9 +7,9 @@ import { LocationService } from './location.services';
 import { RouterModule } from '@angular/router';
 import { LocationCreateComponent } from './location-create/location-create.component';
 import { LocationUpdateComponent } from './location-update/location-update.component';
+import { UiModule } from '@client-side/ui';
 
 @NgModule({
-  imports: [CommonModule, HttpClientModule, RouterModule],
   declarations: [
     LocationListComponent,
     LocationDetailComponent,
@@ -18,5 +18,6 @@ import { LocationUpdateComponent } from './location-update/location-update.compo
   ],
   providers: [LocationService],
   exports: [LocationListComponent, LocationDetailComponent],
+  imports: [CommonModule, HttpClientModule, RouterModule, UiModule],
 })
 export class LocationModule {}
