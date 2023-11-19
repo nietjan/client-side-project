@@ -38,14 +38,4 @@ export const appRoutes: Route[] = [
     pathMatch: 'full',
     component: LocationDetailComponent,
   },
-  //   {
-  //     path: '',
-  //     pathMatch: 'full',
-  //     redirectTo: '/list',
-  //   },
-  //   {
-  //     path: 'list',
-  //     pathMatch: 'full',
-  //     component: MealListComponent,
-  //   },
 ];
