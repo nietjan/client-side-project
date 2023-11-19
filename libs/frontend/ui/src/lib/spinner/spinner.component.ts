@@ -7,7 +7,11 @@ import { Component } from '@angular/core';
   selector: 'app-spinner',
   template: `
     <div class="fullScreen">
-      <div class="lds-ellipsis">
+      <div class="lds-roller">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
         <div></div>
         <div></div>
         <div></div>
