@@ -24,8 +24,8 @@ export class LocationCreateComponent {
   };
 
   abonnoments: IAbonnement[] = [
-    { period: 12, price: 12.5 },
-    { period: 1, price: 19.99 },
+    { name: 'Yearly', period: 12, price: 12.5 },
+    { name: 'Monthly', period: 1, price: 19.99 },
   ];
 
   locationToAdd: ICreateLocation = {

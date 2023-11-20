@@ -21,6 +21,10 @@ import {
  * new to-do items
  */
 export class CreateAbonnementDto implements ICreateAbonnement {
+  @IsString()
+  @IsNotEmpty()
+  name!: string;
+
   @IsNotEmpty()
   locationId!: string;
 
@@ -34,6 +38,10 @@ export class CreateAbonnementDto implements ICreateAbonnement {
 }
 
 export class UpsertAbonnementDto implements IUpsertAbonnement {
+  @IsString()
+  @IsNotEmpty()
+  name!: string;
+
   @IsNotEmpty()
   locationId!: string;
 
@@ -50,8 +58,12 @@ export class UpdateAbonnementDto implements IUpdateAbonnement {
   @IsNotEmpty()
   locationId!: string;
 
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
+  name!: string;
+
+  @IsNumber()
+  @IsOptional()
   period!: number;
 
   @IsOptional()

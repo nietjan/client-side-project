@@ -47,10 +47,12 @@ export class LocationService {
         ),
         abonnoments: [
           {
+            name: 'Yearly',
             period: 12,
             price: 10.5,
           },
           {
+            name: 'Montly',
             period: 1,
             price: 20,
           },
@@ -72,10 +74,12 @@ export class LocationService {
         ),
         abonnoments: [
           {
+            name: 'Yearly',
             period: 12,
             price: 15,
           },
           {
+            name: 'Montly',
             period: 1,
             price: 22.5,
           },
