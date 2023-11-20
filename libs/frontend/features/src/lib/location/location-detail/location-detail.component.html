@@ -1,29 +1,37 @@
-<h2>{{ location?.address?.city }}</h2>
-<p>
-  {{ location?.address?.street }} {{ location?.address?.homeNumber }},
-  {{ location?.address?.postalCode }} {{ location?.address?.city }},
-  {{ location?.address?.country }}
-</p>
-<p>
-  Open from {{ location?.openingsTime?.toLocaleTimeString() }} till
-  {{ location?.closingTime?.toLocaleTimeString() }}
-</p>
-<p *ngIf="location?.hasTrainers == true">Trainers available</p>
-<p>{{ location?.eMail }}</p>
-<p>{{ location?.phoneNumber }}</p>
+<div *ngIf="location != null && location != undefined">
+  <h2>{{ location.address.city }}</h2>
+  <p>
+    {{ location.address.street }} {{ location.address.homeNumber }},
+    {{ location.address.postalCode }} {{ location.address.city }},
+    {{ location.address.country }}
+  </p>
+  <p>
+    Open from {{ location.openingsTime.toLocaleTimeString() }} till
+    {{ location.closingTime.toLocaleTimeString() }}
+  </p>
+  <p *ngIf="location.hasTrainers == true">Trainers available</p>
+  <p>{{ location.eMail }}</p>
+  <p>{{ location.phoneNumber }}</p>
 
-<a routerLink="/location">
-  <button class="btn btn-primary">back</button>
-</a>
+  <a routerLink="/location">
+    <button class="btn btn-primary">back</button>
+  </a>
 
-<a routerLink="/location/{{ locationId }}/update">
-  <button class="btn btn-primary">Update</button>
-</a>
+  <a routerLink="/location/{{ locationId }}/update">
+    <button class="btn btn-primary">Update</button>
+  </a>
 
-<button (click)="removeLocation(location?.id)" class="btn btn-primary">
-  delete
-</button>
+  <button (click)="removeLocation(location.id)" class="btn btn-primary">
+    delete
+  </button>
 
-<client-side-project-abonnement-list
-  [location]="location"
-></client-side-project-abonnement-list>
+  <div class="mt-3">
+    <client-side-project-abonnement-list
+      [location]="location"
+    ></client-side-project-abonnement-list>
+  </div>
+</div>
+
+<div *ngIf="location == null || location == undefined">
+  <app-spinner></app-spinner>
+</div>

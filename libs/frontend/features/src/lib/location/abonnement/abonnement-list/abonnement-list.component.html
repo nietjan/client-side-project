@@ -1,1 +1,17 @@
-<p>{{ location?.id }} - {{ locationId }}</p>
+<div *ngIf="abonnoments != null && abonnoments != undefined">
+  <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 g-4">
+    <div class="col" *ngFor="let abonnement of abonnoments">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ abonnement?.period }} Months</h5>
+          <p class="card-text">€ {{ abonnement?.price }}</p>
+          <a><button class="btn btn-primary">Select abonnoment</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="abonnoments == null || abonnoments == undefined">
+  <app-spinner></app-spinner>
+</div>

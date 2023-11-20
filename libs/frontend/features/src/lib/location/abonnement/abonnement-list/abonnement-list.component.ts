@@ -28,23 +28,21 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     //check were to get abonnoments from
     if (this.location != undefined && this.location != null)
-      this.subscription = of(this.location.abonnoments).subscribe();
+      this.subscription = of(this.location.abonnoments).subscribe((result) => {
+        this.abonnoments = this.location?.abonnoments as IAbonnement[];
+      });
     else if (this.locationId != undefined && this.locationId != null)
-      this.getAbbonomentFromInputId();
-    else this.getAbbonomentFromParamId();
+      this.getAbbonomentId(this.locationId);
+    else this.getAbbonomentId(this.paramLocationId);
   }
 
-  private getAbbonomentFromInputId(): void {
-    // this.subscription = this.locationService
-    //   .allAbonnements(this.locationId)
-    //   .subscribe((results) => {
-    //     console.log(`results: ${results}`);
-    //     if (results == null) this.router.navigateByUrl('/location');
-    //     this.location = results;
-    //   });
+  private getAbbonomentId(id: string | null): void {
+    this.subscription = this.locationService
+      .allAbonnements(id)
+      .subscribe((results) => {
+        this.abonnoments = results;
+      });
   }
-
-  private getAbbonomentFromParamId(): void {}
 
   ngOnDestroy(): void {
     if (this.subscription) this.subscription.unsubscribe();
