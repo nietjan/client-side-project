@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, filter, find, map, take } from 'rxjs';
-import { IAddress, ILocation, ICreateLocation } from '@client-side/shared/api';
+import { BehaviorSubject, Observable, map, of } from 'rxjs';
+import { IAbonnement, IAddress, ILocation } from '@client-side/shared/api';
 
 class DummyAddresObject implements IAddress {
   street: string;
@@ -45,6 +45,18 @@ export class LocationService {
           'Tilburg',
           'Netherlands'
         ),
+        abonnoments: [
+          {
+            name: 'Yearly',
+            period: 12,
+            price: 10.5,
+          },
+          {
+            name: 'Montly',
+            period: 1,
+            price: 20,
+          },
+        ],
       },
       {
         id: '2',
@@ -60,6 +72,18 @@ export class LocationService {
           'Breda',
           'Netherlands'
         ),
+        abonnoments: [
+          {
+            name: 'Yearly',
+            period: 12,
+            price: 15,
+          },
+          {
+            name: 'Montly',
+            period: 1,
+            price: 22.5,
+          },
+        ],
       },
     ];
 
@@ -85,6 +109,23 @@ export class LocationService {
     //     catchError(this.handleError)
     //   );
     return this.locations$;
+  }
+
+  public allAbonnements(
+    locationId: string | null,
+    options?: any
+  ): Observable<IAbonnement[] | null> {
+    if (locationId == null) {
+      locationId = '0';
+    }
+
+    return this.locations$.pipe(
+      map(
+        (locationList) =>
+          locationList.find((location) => location.id == locationId)
+            ?.abonnoments
+      )
+    ) as Observable<IAbonnement[]>;
   }
 
   public singleLocation(
@@ -130,6 +171,7 @@ export class LocationService {
     ).toString();
 
     this.locations$.next([...this.locations$.value, location]);
+
     return location.id;
   }
 

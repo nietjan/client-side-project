@@ -5,6 +5,7 @@ import {
   ICreateLocation,
   ICreateAddress,
   IAddress,
+  IAbonnement,
 } from '@client-side/shared/api';
 import { Router } from '@angular/router';
 
@@ -22,6 +23,11 @@ export class LocationCreateComponent {
     postalCode: 'postalCode',
   };
 
+  abonnoments: IAbonnement[] = [
+    { name: 'Yearly', period: 12, price: 12.5 },
+    { name: 'Monthly', period: 1, price: 19.99 },
+  ];
+
   locationToAdd: ICreateLocation = {
     eMail: 'create@create.com',
     phoneNumber: '06 12345678',
@@ -29,6 +35,7 @@ export class LocationCreateComponent {
     openingsTime: new Date(),
     closingTime: new Date(),
     address: this.address,
+    abonnoments: this.abonnoments,
   };
 
   constructor(
