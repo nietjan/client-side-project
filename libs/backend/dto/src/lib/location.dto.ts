@@ -11,13 +11,13 @@ import {
   ValidateNested,
 } from 'class-validator';
 import {
-  IAddress,
   ICreateLocation,
   IUpdateLocation,
   IUpsertLocation,
 } from '@client-side/shared/api';
 import { Type } from 'class-transformer';
 import { CreateAddressDto } from './address.dto';
+import { CreateAbonnementDto } from './abonnement.dto';
 
 /**
  * Use the `Pick` utility type to extract only the properties we want for
@@ -49,6 +49,12 @@ export class CreateLocationDto implements ICreateLocation {
   @ValidateNested()
   @Type(() => CreateAddressDto)
   address!: CreateAddressDto;
+
+  @IsObject()
+  @IsNotEmptyObject()
+  @ValidateNested({ each: true })
+  @Type(() => CreateAbonnementDto)
+  abonnoments!: CreateAbonnementDto[];
 }
 
 export class UpsertLocationDto implements IUpsertLocation {
@@ -81,6 +87,12 @@ export class UpsertLocationDto implements IUpsertLocation {
   @ValidateNested()
   @Type(() => CreateAddressDto)
   address!: CreateAddressDto;
+
+  @IsObject()
+  @IsNotEmptyObject()
+  @ValidateNested({ each: true })
+  @Type(() => CreateAbonnementDto)
+  abonnoments!: CreateAbonnementDto[];
 }
 
 export class UpdateLocationDto implements IUpdateLocation {
@@ -107,4 +119,16 @@ export class UpdateLocationDto implements IUpdateLocation {
   @IsBoolean()
   @IsOptional()
   hasTrainers!: boolean;
+
+  @IsObject()
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => CreateAddressDto)
+  address!: CreateAddressDto;
+
+  @IsObject()
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => CreateAbonnementDto)
+  abonnoments!: CreateAbonnementDto[];
 }

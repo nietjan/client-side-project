@@ -1,6 +1,6 @@
 import { Id } from './id.type';
 import { IAddress } from './address.interface';
-import { DatePipe } from '@angular/common';
+import { IAbonnement } from './abonnement.interface';
 
 export interface ILocation {
   id: Id;
@@ -10,6 +10,7 @@ export interface ILocation {
   closingTime: Date;
   hasTrainers: boolean;
   address: IAddress;
+  abonnoments: IAbonnement[];
 }
 
 //must have types
@@ -21,6 +22,7 @@ export type ICreateLocation = Pick<
   | 'address'
   | 'openingsTime'
   | 'closingTime'
+  | 'abonnoments'
 >;
 
 export type IUpdateLocation = Partial<Omit<ILocation, 'id'>>;
