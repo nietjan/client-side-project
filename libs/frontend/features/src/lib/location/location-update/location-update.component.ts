@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ICreateAddress, ILocation } from '@client-side/shared/api';
+import {
+  IAbonnement,
+  ICreateAddress,
+  ILocation,
+} from '@client-side/shared/api';
 import { LocationService } from '../location.services';
 
 @Component({
@@ -19,6 +23,11 @@ export class LocationUpdateComponent {
     postalCode: 'postalCode',
   };
 
+  abonnoments: IAbonnement[] = [
+    { period: 12, price: 102.5 },
+    { period: 1, price: 109.99 },
+  ];
+
   locationToAdd: ILocation = {
     id: '',
     eMail: 'Updated - Email@update.com',
@@ -27,6 +36,7 @@ export class LocationUpdateComponent {
     openingsTime: new Date(),
     closingTime: new Date(),
     address: this.address,
+    abonnoments: this.abonnoments,
   };
 
   constructor(

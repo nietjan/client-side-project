@@ -3,6 +3,7 @@ import { IAddress } from './address.interface';
 import { IAbonnement } from './abonnement.interface';
 
 export interface ILocation {
+  [x: string]: any;
   id: Id;
   phoneNumber: string;
   eMail: string;

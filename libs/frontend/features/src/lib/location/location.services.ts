@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, filter, find, map, take } from 'rxjs';
+import { BehaviorSubject, Observable, map, of } from 'rxjs';
 import { IAbonnement, IAddress, ILocation } from '@client-side/shared/api';
 
 class DummyAddresObject implements IAddress {
@@ -105,6 +105,23 @@ export class LocationService {
     //     catchError(this.handleError)
     //   );
     return this.locations$;
+  }
+
+  public allAbonnements(
+    locationId: string | null,
+    options?: any
+  ): Observable<IAbonnement[] | null> {
+    if (locationId == null) {
+      locationId = '0';
+    }
+
+    return this.locations$.pipe(
+      map(
+        (locationList) =>
+          locationList.find((location) => location.id == locationId)
+            ?.abonnoments
+      )
+    ) as Observable<IAbonnement[]>;
   }
 
   public singleLocation(

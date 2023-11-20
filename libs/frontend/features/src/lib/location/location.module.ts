@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { LocationService } from './location.services';
 import { RouterModule } from '@angular/router';
 import { LocationCreateComponent } from './location-create/location-create.component';
+import { AbonnementListComponent } from './abonnement/abonnement-list/abonnement-list.component';
 import { LocationUpdateComponent } from './location-update/location-update.component';
 import { UiModule } from '@client-side/ui';
 
@@ -15,9 +16,14 @@ import { UiModule } from '@client-side/ui';
     LocationDetailComponent,
     LocationCreateComponent,
     LocationUpdateComponent,
+    AbonnementListComponent,
   ],
   providers: [LocationService],
-  exports: [LocationListComponent, LocationDetailComponent],
+  exports: [
+    LocationListComponent,
+    LocationDetailComponent,
+    AbonnementListComponent,
+  ],
   imports: [CommonModule, HttpClientModule, RouterModule, UiModule],
 })
 export class LocationModule {}
