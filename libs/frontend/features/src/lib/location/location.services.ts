@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, filter, find, map, take } from 'rxjs';
-import { IAddress, ILocation, ICreateLocation } from '@client-side/shared/api';
+import { IAddress, ILocation } from '@client-side/shared/api';
+import { AbonnementService } from '../abonnement/abonnement.services';
 
 class DummyAddresObject implements IAddress {
   street: string;
@@ -29,7 +30,10 @@ export class LocationService {
   endpoint = 'http://localhost:3000/api/location';
   private locations$ = new BehaviorSubject<ILocation[]>([]);
 
-  constructor(private readonly http: HttpClient) {
+  constructor(
+    private readonly http: HttpClient,
+    private readonly abonnomentService: AbonnementService
+  ) {
     const newLocations: ILocation[] = [
       {
         id: '1',

@@ -83,7 +83,7 @@ export class UpsertLocationDto implements IUpsertLocation {
   address!: CreateAddressDto;
 }
 
-export class UpdateMealDto implements IUpdateLocation {
+export class UpdateLocationDto implements IUpdateLocation {
   @IsString()
   @IsNotEmpty()
   id!: string;
