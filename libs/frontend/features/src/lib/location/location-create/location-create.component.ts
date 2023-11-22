@@ -38,6 +38,22 @@ export class LocationCreateComponent {
     abonnoments: this.abonnoments,
   };
 
+  location: ICreateLocation = {
+    eMail: '',
+    phoneNumber: '',
+    hasTrainers: true,
+    openingsTime: new Date(''),
+    closingTime: new Date(''),
+    address: {
+      street: '',
+      homeNumber: '',
+      postalCode: '',
+      city: '',
+      country: '',
+    },
+    abonnoments: [],
+  };
+
   constructor(
     private locationService: LocationService,
     private router: Router
@@ -54,4 +70,6 @@ export class LocationCreateComponent {
 
     //TODO: Add functie for id id is not null - when form is not correct
   }
+
+  onSubmit(): void {}
 }

@@ -32,6 +32,7 @@ export class CreateLocationDto implements ICreateLocation {
   @IsNotEmpty()
   eMail!: string;
 
+  //TODO: change dateString to something that accepts only time
   @IsDateString()
   @IsNotEmpty()
   openingsTime!: Date;

@@ -9,7 +9,7 @@ import { LocationCreateComponent } from './location-create/location-create.compo
 import { AbonnementListComponent } from './abonnement/abonnement-list/abonnement-list.component';
 import { LocationUpdateComponent } from './location-update/location-update.component';
 import { UiModule } from '@client-side/ui';
-
+import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     LocationListComponent,
@@ -24,6 +24,12 @@ import { UiModule } from '@client-side/ui';
     LocationDetailComponent,
     AbonnementListComponent,
   ],
-  imports: [CommonModule, HttpClientModule, RouterModule, UiModule],
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    RouterModule,
+    UiModule,
+    FormsModule,
+  ],
 })
 export class LocationModule {}
