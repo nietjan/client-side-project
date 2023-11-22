@@ -11,7 +11,6 @@ import { Subscription, of } from 'rxjs';
 })
 export class AbonnementListComponent implements OnInit, OnDestroy {
   @Input() location: ILocation | undefined | null;
-  @Input() locationId: string | undefined | null;
   paramLocationId: string | null = null;
   abonnoments: IAbonnement[] | null = null;
   subscription: Subscription | undefined = undefined;
@@ -31,12 +30,10 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
       this.subscription = of(this.location.abonnoments).subscribe((result) => {
         this.abonnoments = this.location?.abonnoments as IAbonnement[];
       });
-    else if (this.locationId != undefined && this.locationId != null)
-      this.getAbbonomentId(this.locationId);
-    else this.getAbbonomentId(this.paramLocationId);
+    else this.getAbbonomentFromParamId(this.paramLocationId);
   }
 
-  private getAbbonomentId(id: string | null): void {
+  private getAbbonomentFromParamId(id: string | null): void {
     this.subscription = this.locationService
       .allAbonnements(id)
       .subscribe((results) => {
