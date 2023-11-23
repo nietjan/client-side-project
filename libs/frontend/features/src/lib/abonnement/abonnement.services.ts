@@ -113,16 +113,21 @@ export class AbonnementService {
     });
 
     this.abonnements$.next(arr);
+
     return true;
   }
 
   public createAbonnement(abonnement: IAbonnement | null): string | null {
     if (abonnement == null) return null;
 
-    abonnement.id = (
-      parseInt(this.abonnements$.value[this.abonnements$.value.length - 1].id) +
-      1
-    ).toString();
+    let id = 1;
+    this.abonnements$.subscribe((i) =>
+      i.forEach((value) => {
+        if (parseInt(value.id) > id) id = parseInt(value.id);
+      })
+    );
+
+    abonnement.id = (id + 1).toString();
 
     this.abonnements$.next([...this.abonnements$.value, abonnement]);
 

@@ -24,17 +24,21 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
       this.subscription = this.abonnementService
         .allAbonnementsFromLocation(this.locationId as string[])
         .subscribe((results) => {
-          console.log(`results: ${results}`);
           this.abonnoments = results;
         });
     } else {
       this.subscription = this.abonnementService
         .allAbonnements()
         .subscribe((results) => {
-          console.log(`results: ${results}`);
           this.abonnoments = results;
         });
     }
+
+    console.log(this.abonnoments);
+  }
+
+  delete(id: string): void {
+    this.abonnementService.removeAbonnement(id);
   }
 
   ngOnDestroy(): void {

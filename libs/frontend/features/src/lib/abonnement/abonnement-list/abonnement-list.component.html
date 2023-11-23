@@ -1,3 +1,5 @@
+<a routerLink="create"><button class="btn btn-primary">Create</button></a>
+
 <h5>Abonnements</h5>
 
 <div *ngIf="abonnoments != null && abonnoments != undefined">
@@ -13,6 +15,14 @@
               ><button class="btn btn-primary">Select abonnoment</button></a
             >
           </p>
+          <div *ngIf="locationId == null || locationId == undefined">
+            <a routerLink="{{ abonnement.id }}/update">
+              <button class="btn btn-primary">Update</button></a
+            >
+            <button class="btn btn-primary" (click)="delete(abonnement.id)">
+              Delete
+            </button>
+          </div>
         </div>
       </div>
     </div>

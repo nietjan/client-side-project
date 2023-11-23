@@ -50,4 +50,9 @@ export const appRoutes: Route[] = [
     pathMatch: 'full',
     component: AbonnementCreateComponent,
   },
+  {
+    path: 'abonnements/:id/update',
+    pathMatch: 'full',
+    component: AbonnementCreateComponent,
+  },
 ];

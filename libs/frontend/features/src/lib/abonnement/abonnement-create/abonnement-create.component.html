@@ -31,6 +31,7 @@
       <label for="abonnomentPrice">Price</label>
       <input
         type="number"
+        min="1"
         class="form-control"
         [(ngModel)]="abonnoment.price"
         name="abonnomentPrice"
@@ -44,6 +45,9 @@
       >
         <div *ngIf="abonnomentPrice.errors?.['required']">
           Price is required.
+        </div>
+        <div *ngIf="abonnomentPrice.errors?.['min']">
+          Price must be positive.
         </div>
       </div>
     </div>
@@ -83,7 +87,7 @@
       >
         supmit
       </button>
-      <button class="btn btn-primary" (click)="cancel()">return</button>
+      <button class="btn btn-primary" routerLink="/abonnements">return</button>
     </div>
   </form>
 </div>

@@ -127,9 +127,14 @@ export class LocationService {
   public createLocation(location: ILocation | null): string | null {
     if (location == null) return null;
 
-    location.id = (
-      parseInt(this.locations$.value[this.locations$.value.length - 1].id) + 1
-    ).toString();
+    let id = 1;
+    this.locations$.subscribe((i) =>
+      i.forEach((value) => {
+        if (parseInt(value.id) > id) id = parseInt(value.id);
+      })
+    );
+
+    location.id = (id + 1).toString();
 
     this.locations$.next([...this.locations$.value, location]);
 

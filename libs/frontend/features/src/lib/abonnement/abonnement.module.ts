@@ -6,10 +6,17 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { UiModule } from '@client-side/ui';
 import { AbonnementService } from './abonnement.services';
+import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [AbonnementCreateComponent, AbonnementListComponent],
   providers: [AbonnementService],
   exports: [AbonnementListComponent, AbonnementCreateComponent],
-  imports: [FormsModule, CommonModule, HttpClientModule, UiModule],
+  imports: [
+    FormsModule,
+    CommonModule,
+    HttpClientModule,
+    UiModule,
+    RouterModule,
+  ],
 })
 export class AbonnementModule {}
