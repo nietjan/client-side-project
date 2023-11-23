@@ -4,7 +4,6 @@ import {
   LocationListComponent,
   LocationDetailComponent,
   LocationCreateComponent,
-  LocationUpdateComponent,
   AbonnementListComponent,
   AbonnementCreateComponent,
 } from '@client-side/frontend/features';
@@ -33,7 +32,7 @@ export const appRoutes: Route[] = [
   {
     path: 'location/:id/update',
     pathMatch: 'full',
-    component: LocationUpdateComponent,
+    component: LocationCreateComponent,
   },
   {
     path: 'location/:id',
@@ -41,17 +40,17 @@ export const appRoutes: Route[] = [
     component: LocationDetailComponent,
   },
   {
-    path: 'abonnements',
+    path: 'abonnement',
     pathMatch: 'full',
     component: AbonnementListComponent,
   },
   {
-    path: 'abonnements/create',
+    path: 'abonnement/create',
     pathMatch: 'full',
     component: AbonnementCreateComponent,
   },
   {
-    path: 'abonnements/:id/update',
+    path: 'abonnement/:id/update',
     pathMatch: 'full',
     component: AbonnementCreateComponent,
   },

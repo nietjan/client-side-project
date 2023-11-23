@@ -6,7 +6,7 @@ import {
   ICreateLocation,
   IAbonnement,
 } from '@client-side/shared/api';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 @Component({
@@ -15,6 +15,8 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
   styleUrls: ['./location-create.component.css'],
 })
 export class LocationCreateComponent implements OnInit {
+  isUpdating: boolean = false;
+
   location: ICreateLocation = {
     eMail: '',
     phoneNumber: '',
@@ -40,11 +42,24 @@ export class LocationCreateComponent implements OnInit {
   constructor(
     private locationService: LocationService,
     private abonnementService: AbonnementService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
+    //if in param there is id, than it is a update
+    this.route.paramMap.subscribe((params) => {
+      let id = params.get('id');
+      if (id != null) {
+        this.isUpdating = true;
+        this.locationService
+          .singleLocation(id)
+          .subscribe((value) => (this.location = value));
+      }
+    });
+
     abonnementService.allAbonnements().subscribe((value) => {
       if (value != null) {
         this.allAbonnements = value;
+        console.log(value);
       }
     });
   }
@@ -53,8 +68,17 @@ export class LocationCreateComponent implements OnInit {
     this.allAbonnements.forEach((element) => {
       this.dropdownList.push({
         id: element.id,
-        text: `${element.name} - €${element.price} - ${element.period} months`,
+        text: this.formatAbonnementString(element),
       });
+    });
+
+    this.allAbonnements.forEach((element) => {
+      if (this.location.abonnements.find((id) => id === element.id)) {
+        this.dropDownValues.push({
+          id: element.id,
+          text: this.formatAbonnementString(element),
+        });
+      }
     });
 
     this.dropdownSettings = {
@@ -71,9 +95,15 @@ export class LocationCreateComponent implements OnInit {
   }
 
   public onSubmit(): void {
-    var locationId = this.locationService.createLocation(
-      this.location as ILocation
-    );
+    if (this.isUpdating) {
+      var locationId = this.locationService.updateLocation(
+        this.location as ILocation
+      );
+    } else {
+      var locationId = this.locationService.createLocation(
+        this.location as ILocation
+      );
+    }
 
     //redirect back to list
     if (locationId != null)
@@ -91,5 +121,9 @@ export class LocationCreateComponent implements OnInit {
     this.location.abonnements = this.location.abonnements.filter(
       (str) => str !== item.id
     );
+  }
+
+  formatAbonnementString(abonnement: IAbonnement): string {
+    return `${abonnement.name} - €${abonnement.price} - ${abonnement.period} months`;
   }
 }

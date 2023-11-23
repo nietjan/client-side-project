@@ -30,12 +30,21 @@ export class LocationService {
   private locations$ = new BehaviorSubject<ILocation[]>([]);
 
   constructor(private readonly http: HttpClient) {
+    const current = new Date();
     const newLocations: ILocation[] = [
       {
         id: '1',
-        phoneNumber: '06 12345678',
-        closingTime: new Date(),
-        openingsTime: new Date(),
+        phoneNumber: '0612345678',
+        closingTime: new Date(
+          `${current.getFullYear()}-${
+            current.getMonth() + 1
+          }-${current.getDate()} 19:41`
+        ),
+        openingsTime: new Date(
+          `${current.getFullYear()}-${
+            current.getMonth() + 1
+          }-${current.getDate()} 12:41`
+        ),
         eMail: 'email@1.com',
         hasTrainers: true,
         address: new DummyAddresObject(
@@ -49,7 +58,7 @@ export class LocationService {
       },
       {
         id: '2',
-        phoneNumber: '06 12345678',
+        phoneNumber: '0612345678',
         closingTime: new Date(),
         openingsTime: new Date(),
         eMail: 'email@2.com',
