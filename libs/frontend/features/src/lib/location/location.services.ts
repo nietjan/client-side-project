@@ -45,20 +45,7 @@ export class LocationService {
           'Tilburg',
           'Netherlands'
         ),
-        abonnoments: [
-          {
-            id: '',
-            name: 'Yearly',
-            period: 12,
-            price: 10.5,
-          },
-          {
-            id: '',
-            name: 'Montly',
-            period: 1,
-            price: 20,
-          },
-        ],
+        abonnements: ['1', '2'],
       },
       {
         id: '2',
@@ -74,20 +61,7 @@ export class LocationService {
           'Breda',
           'Netherlands'
         ),
-        abonnoments: [
-          {
-            id: '',
-            name: 'Yearly',
-            period: 12,
-            price: 15,
-          },
-          {
-            id: '',
-            name: 'Montly',
-            period: 1,
-            price: 22.5,
-          },
-        ],
+        abonnements: ['3', '4'],
       },
     ];
 

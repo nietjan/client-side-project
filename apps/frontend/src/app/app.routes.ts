@@ -5,9 +5,9 @@ import {
   LocationDetailComponent,
   LocationCreateComponent,
   LocationUpdateComponent,
+  AbonnementListComponent,
+  AbonnementCreateComponent,
 } from '@client-side/frontend/features';
-import { AbonnementListComponent } from 'libs/frontend/features/src/lib/abonnement/abonnement-list/abonnement-list.component';
-import { AbonnementCreateComponent } from 'libs/frontend/features/src/lib/abonnement/abonnement-create/abonnement-create.component';
 
 export const appRoutes: Route[] = [
   {

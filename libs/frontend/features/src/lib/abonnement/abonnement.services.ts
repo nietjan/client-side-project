@@ -7,11 +7,39 @@ import { BehaviorSubject, Observable, map, of } from 'rxjs';
 export class AbonnementService {
   endpoint = 'http://localhost:3000/api/location';
   private abonnements$ = new BehaviorSubject<IAbonnement[]>([]);
-  //TODO: extra array erbij dat ervoor zorgt dat de goede worden gepakt, alleen voor dit inlever moment
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {
+    const newAbbonees: IAbonnement[] = [
+      {
+        id: '1',
+        name: 'Yearly',
+        period: 12,
+        price: 10.5,
+      },
+      {
+        id: '2',
+        name: 'Montly',
+        period: 1,
+        price: 20,
+      },
+      {
+        id: '3',
+        name: 'Yearly',
+        period: 12,
+        price: 15,
+      },
+      {
+        id: '4',
+        name: 'Montly',
+        period: 1,
+        price: 22.5,
+      },
+    ];
 
-  public allAbonnements(options?: any): Observable<IAbonnement[] | null> {
+    this.abonnements$.next([...this.abonnements$.value, ...newAbbonees]);
+  }
+
+  public allAbonnements(_options?: any): Observable<IAbonnement[] | null> {
     // console.log(`list ${this.endpoint}`);
 
     // return this.http
@@ -27,8 +55,9 @@ export class AbonnementService {
     return this.abonnements$;
   }
 
+  //TODO: string array veranderen weer naar any bij options
   public allAbonnementsFromLocation(
-    options?: any,
+    options?: string[],
     locationId?: string
   ): Observable<IAbonnement[] | null> {
     // console.log(`list ${this.endpoint}`);
@@ -43,12 +72,16 @@ export class AbonnementService {
     //     tap(console.log),
     //     catchError(this.handleError)
     //   );
-    return this.abonnements$;
+    let abonnees: IAbonnement[] = [];
+    options?.forEach((id) => {
+      this.singleAbonnoment(id).subscribe((object) => abonnees.push(object));
+    });
+    return of(abonnees);
   }
 
   public singleAbonnoment(
     id: string | null,
-    options?: any
+    _options?: any
   ): Observable<IAbonnement> {
     // console.log(`read ${this.endpoint}`);
     // return this.http

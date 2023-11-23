@@ -5,10 +5,11 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { UiModule } from '@client-side/ui';
+import { AbonnementService } from './abonnement.services';
 @NgModule({
   declarations: [AbonnementCreateComponent, AbonnementListComponent],
-  providers: [],
-  exports: [AbonnementListComponent],
+  providers: [AbonnementService],
+  exports: [AbonnementListComponent, AbonnementCreateComponent],
   imports: [FormsModule, CommonModule, HttpClientModule, UiModule],
 })
 export class AbonnementModule {}

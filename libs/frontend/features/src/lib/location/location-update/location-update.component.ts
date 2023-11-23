@@ -23,11 +23,6 @@ export class LocationUpdateComponent {
     postalCode: 'postalCode',
   };
 
-  abonnoments: IAbonnement[] = [
-    { name: 'UpdatedYearly', period: 12, price: 102.5 },
-    { name: 'UpdatedMontly', period: 1, price: 109.99 },
-  ];
-
   locationToAdd: ILocation = {
     id: '',
     eMail: 'Updated - Email@update.com',
@@ -36,7 +31,7 @@ export class LocationUpdateComponent {
     openingsTime: new Date(),
     closingTime: new Date(),
     address: this.address,
-    abonnoments: this.abonnoments,
+    abonnements: ['1', '2'],
   };
 
   constructor(

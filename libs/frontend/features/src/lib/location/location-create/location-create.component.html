@@ -234,6 +234,7 @@
       </div>
     </div>
 
+    <!-- 
     <h5 class="mt-4">Abonnoments</h5>
     <table class="styled-table">
       <thead>
@@ -245,17 +246,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let abonnoment of location.abonnoments">
-          <td>{{ abonnoment.name }}</td>
-          <td>{{ abonnoment.price }}</td>
-          <td>{{ abonnoment.period }}</td>
+        <tr *ngFor="let abonnement of location.abonnements">
+          <td>{{ abonnement.name }}</td>
+          <td>{{ abonnement.price }}</td>
+          <td>{{ abonnement.period }}</td>
           <td>
-            <!-- TODO: inplement DELETE buton -->
+            TODO: inplement DELETE buton 
             <button class="btn btn-primary m-2">Delete</button>
           </td>
         </tr>
       </tbody>
-    </table>
+    </table> -->
 
     <!--location.hasTrainers -->
     <div class="form-group col-6 col-lg-2 mt-4">
@@ -277,7 +278,7 @@
         class="btn btn-primary"
         [disabled]="
           locationCreateForm.invalid ||
-          location.abonnoments.length == 0 ||
+          location.abonnements.length == 0 ||
           location.closingTime <= location.openingsTime
         "
       >

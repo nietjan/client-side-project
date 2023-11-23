@@ -27,7 +27,7 @@ export class LocationCreateComponent {
       city: '',
       country: '',
     },
-    abonnoments: [],
+    abonnements: [],
   };
 
   allAbonnements: IAbonnement[] = [];
