@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 import { LocationService } from '../location.services';
+import { AbonnementService } from '@client-side/frontend/features';
 import {
   ILocation,
   ICreateLocation,
-  ICreateAddress,
-  IAddress,
   IAbonnement,
-  ICreateAbonnement,
 } from '@client-side/shared/api';
 import { Router } from '@angular/router';
 
@@ -16,29 +14,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./location-create.component.css'],
 })
 export class LocationCreateComponent {
-  address: ICreateAddress = {
-    street: 'street',
-    homeNumber: '1',
-    city: 'city',
-    country: 'country',
-    postalCode: 'postalCode',
-  };
-
-  abonnoments: IAbonnement[] = [
-    { name: 'Yearly', period: 12, price: 12.5 },
-    { name: 'Monthly', period: 1, price: 19.99 },
-  ];
-
-  locationToAdd: ICreateLocation = {
-    eMail: 'create@create.com',
-    phoneNumber: '06 12345678',
-    hasTrainers: true,
-    openingsTime: new Date(),
-    closingTime: new Date(),
-    address: this.address,
-    abonnoments: this.abonnoments,
-  };
-
   location: ICreateLocation = {
     eMail: '',
     phoneNumber: '',
@@ -55,14 +30,19 @@ export class LocationCreateComponent {
     abonnoments: [],
   };
 
+  allAbonnements: IAbonnement[] = [];
+
   constructor(
     private locationService: LocationService,
+    private abonnementService: AbonnementService,
     private router: Router
-  ) {}
+  ) {
+    //TODO: Get all abonnements from DB
+  }
 
-  public create(): void {
+  public onSubmit(): void {
     var locationId = this.locationService.createLocation(
-      this.locationToAdd as ILocation
+      this.location as ILocation
     );
 
     //redirect back to list
@@ -71,6 +51,4 @@ export class LocationCreateComponent {
 
     //TODO: Add functie for id id is not null - when form is not correct
   }
-
-  onSubmit(): void {}
 }

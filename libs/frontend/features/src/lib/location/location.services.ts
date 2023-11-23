@@ -47,11 +47,13 @@ export class LocationService {
         ),
         abonnoments: [
           {
+            id: '',
             name: 'Yearly',
             period: 12,
             price: 10.5,
           },
           {
+            id: '',
             name: 'Montly',
             period: 1,
             price: 20,
@@ -74,11 +76,13 @@ export class LocationService {
         ),
         abonnoments: [
           {
+            id: '',
             name: 'Yearly',
             period: 12,
             price: 15,
           },
           {
+            id: '',
             name: 'Montly',
             period: 1,
             price: 22.5,
@@ -109,23 +113,6 @@ export class LocationService {
     //     catchError(this.handleError)
     //   );
     return this.locations$;
-  }
-
-  public allAbonnements(
-    locationId: string | null,
-    options?: any
-  ): Observable<IAbonnement[] | null> {
-    if (locationId == null) {
-      locationId = '0';
-    }
-
-    return this.locations$.pipe(
-      map(
-        (locationList) =>
-          locationList.find((location) => location.id == locationId)
-            ?.abonnoments
-      )
-    ) as Observable<IAbonnement[]>;
   }
 
   public singleLocation(

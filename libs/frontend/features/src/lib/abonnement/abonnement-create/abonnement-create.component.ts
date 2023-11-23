@@ -12,6 +12,7 @@ export class AbonnementCreateComponent {
   @Input() updateAbonnoment: IAbonnement | null | undefined;
 
   abonnoment: IAbonnement = {
+    id: '',
     name: '',
     price: 0,
     period: 0,

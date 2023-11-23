@@ -40,6 +40,10 @@ export class CreateAbonnementDto implements ICreateAbonnement {
 export class UpsertAbonnementDto implements IUpsertAbonnement {
   @IsString()
   @IsNotEmpty()
+  id!: string;
+
+  @IsString()
+  @IsNotEmpty()
   name!: string;
 
   @IsNotEmpty()
@@ -55,11 +59,12 @@ export class UpsertAbonnementDto implements IUpsertAbonnement {
 }
 
 export class UpdateAbonnementDto implements IUpdateAbonnement {
-  @IsNotEmpty()
-  locationId!: string;
-
   @IsString()
   @IsNotEmpty()
+  id!: string;
+
+  @IsString()
+  @IsOptional()
   name!: string;
 
   @IsNumber()
