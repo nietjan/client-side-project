@@ -1,4 +1,6 @@
-<a routerLink="create"><button class="btn btn-primary">Create</button></a>
+<a *ngIf="locationId == null || locationId == undefined" routerLink="create"
+  ><button class="btn btn-primary">New abonnoment</button></a
+>
 
 <h5>Abonnements</h5>
 
@@ -9,7 +11,11 @@
         <div class="card-body">
           <h5 class="card-title">{{ abonnement?.name }}</h5>
           <p class="card-text">€ {{ abonnement?.price }}</p>
-          <p class="card-text">{{ abonnement?.period }} Months</p>
+          <p class="card-text">
+            {{ abonnement?.period }}
+            <span *ngIf="abonnement?.period != 1">Months</span
+            ><span *ngIf="abonnement?.period == 1">Month</span>
+          </p>
           <p>
             <a *ngIf="locationId"
               ><button class="btn btn-primary">Select abonnoment</button></a

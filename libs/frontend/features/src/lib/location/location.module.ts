@@ -10,6 +10,8 @@ import { LocationUpdateComponent } from './location-update/location-update.compo
 import { UiModule } from '@client-side/ui';
 import { FormsModule } from '@angular/forms';
 import { AbonnementModule } from '../abonnement/abonnement.module';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+
 @NgModule({
   declarations: [
     LocationListComponent,
@@ -26,6 +28,7 @@ import { AbonnementModule } from '../abonnement/abonnement.module';
     UiModule,
     FormsModule,
     AbonnementModule,
+    NgMultiSelectDropDownModule,
   ],
 })
 export class LocationModule {}

@@ -234,29 +234,21 @@
       </div>
     </div>
 
-    <!-- 
-    <h5 class="mt-4">Abonnoments</h5>
-    <table class="styled-table">
-      <thead>
-        <tr>
-          <td>Name</td>
-          <td>price</td>
-          <td>period</td>
-          <td></td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let abonnement of location.abonnements">
-          <td>{{ abonnement.name }}</td>
-          <td>{{ abonnement.price }}</td>
-          <td>{{ abonnement.period }}</td>
-          <td>
-            TODO: inplement DELETE buton 
-            <button class="btn btn-primary m-2">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table> -->
+    <!--location.abonnement -->
+    <ng-multiselect-dropdown
+      class="mt-4"
+      [placeholder]="'Choose abonnement'"
+      [settings]="dropdownSettings"
+      [data]="dropdownList"
+      name="locationAbonnement"
+      [(ngModel)]="dropDownValues"
+      (onSelect)="onItemSelect($event)"
+      (onDeSelect)="OnItemDeselect($event)"
+    >
+    </ng-multiselect-dropdown>
+    <small style="color: red" *ngIf="dropDownValues.length == 0">
+      At least 1 abonnement needs to be selected
+    </small>
 
     <!--location.hasTrainers -->
     <div class="form-group col-6 col-lg-2 mt-4">
@@ -279,7 +271,10 @@
         [disabled]="
           locationCreateForm.invalid ||
           location.abonnements.length == 0 ||
-          location.closingTime <= location.openingsTime
+          location.closingTime <= location.openingsTime ||
+          dropDownValues.length == 0 ||
+          location.openingsTime == null ||
+          location.closingTime == null
         "
       >
         submit
@@ -290,6 +285,10 @@
   <div>
     <code>
       <pre>{{ location | json }}</pre>
+    </code>
+
+    <code>
+      <pre>{{ allAbonnements | json }}</pre>
     </code>
   </div>
 </div>
