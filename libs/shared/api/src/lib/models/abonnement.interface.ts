@@ -7,6 +7,8 @@ export interface IAbonnement {
   price: number;
 }
 
+//TODO: abonnoment aanpassen, of alles engels of alles nederlands
+
 //must have types
 export type ICreateAbonnement = Pick<IAbonnement, 'name' | 'price' | 'period'>;
 

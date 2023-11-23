@@ -1,0 +1,95 @@
+<div class="container-fluid">
+  <form
+    class="row"
+    #AbonnomentCreateForm="ngForm"
+    name="createAbonnoment"
+    (ngSubmit)="AbonnomentCreateForm.form.valid && onSubmit()"
+    novalidate
+  >
+    <!--Abonnoment.name -->
+    <div class="form-group col-6 col-lg-2">
+      <label for="locationCountry">Country</label>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="abonnoment.name"
+        name="abonnomentName"
+        #abonnomentName="ngModel"
+        [ngClass]="{ 'is-invalid': abonnomentName.invalid }"
+        required
+      />
+      <div
+        class="invalid-feedback"
+        *ngIf="abonnomentName.invalid && abonnomentName.touched"
+      >
+        <div *ngIf="abonnomentName.errors?.['required']">Name is required.</div>
+      </div>
+    </div>
+
+    <!--Abonnoment.price -->
+    <div class="form-group col-6 col-lg-2">
+      <label for="abonnomentPrice">Price</label>
+      <input
+        type="number"
+        class="form-control"
+        [(ngModel)]="abonnoment.price"
+        name="abonnomentPrice"
+        #abonnomentPrice="ngModel"
+        [ngClass]="{ 'is-invalid': abonnomentPrice.invalid }"
+        required
+      />
+      <div
+        class="invalid-feedback"
+        *ngIf="abonnomentPrice.invalid && abonnomentPrice.touched"
+      >
+        <div *ngIf="abonnomentPrice.errors?.['required']">
+          Price is required.
+        </div>
+      </div>
+    </div>
+
+    <!--Abonnoment.period -->
+    <div class="form-group col-6 col-lg-2">
+      <label for="locationCountry">Period</label>
+      <select
+        type="text"
+        class="form-control"
+        [(ngModel)]="abonnoment.period"
+        name="abonnomentPeriod"
+        #abonnomentPeriod="ngModel"
+        [ngClass]="{ 'is-invalid': abonnomentPeriod.invalid }"
+        required
+      >
+        <option [value]="1">1 month</option>
+        <option *ngFor="let value of periodNumberList" [value]="value">
+          {{ value }} months
+        </option>
+      </select>
+      <div
+        class="invalid-feedback"
+        *ngIf="abonnomentPeriod.invalid && abonnomentPeriod.touched"
+      >
+        <div *ngIf="abonnomentPeriod.errors?.['required']">
+          Period is required.
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="AbonnomentCreateForm.invalid"
+      >
+        supmit
+      </button>
+      <button class="btn btn-primary" (click)="cancel()">return</button>
+    </div>
+  </form>
+</div>
+
+<div>
+  <code>
+    <pre>{{ abonnoment | json }}</pre>
+  </code>
+</div>

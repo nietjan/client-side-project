@@ -6,33 +6,26 @@ import { HttpClientModule } from '@angular/common/http';
 import { LocationService } from './location.services';
 import { RouterModule } from '@angular/router';
 import { LocationCreateComponent } from './location-create/location-create.component';
-import { AbonnementListComponent } from './abonnement/abonnement-list/abonnement-list.component';
-import { AbonnementCreateComponent } from './abonnement/abonnement-create/abonnement-create.component';
 import { LocationUpdateComponent } from './location-update/location-update.component';
 import { UiModule } from '@client-side/ui';
 import { FormsModule } from '@angular/forms';
+import { AbonnementModule } from '@client-side/frontend/features';
 @NgModule({
   declarations: [
     LocationListComponent,
     LocationDetailComponent,
     LocationCreateComponent,
     LocationUpdateComponent,
-    AbonnementListComponent,
-    AbonnementCreateComponent,
   ],
   providers: [LocationService],
-  exports: [
-    LocationListComponent,
-    LocationDetailComponent,
-    AbonnementListComponent,
-    AbonnementCreateComponent,
-  ],
+  exports: [LocationListComponent, LocationDetailComponent],
   imports: [
     CommonModule,
     HttpClientModule,
     RouterModule,
     UiModule,
     FormsModule,
+    AbonnementModule,
   ],
 })
 export class LocationModule {}

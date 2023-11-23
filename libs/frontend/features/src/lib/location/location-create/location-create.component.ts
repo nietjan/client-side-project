@@ -39,9 +39,6 @@ export class LocationCreateComponent {
     abonnoments: this.abonnoments,
   };
 
-  abonnomentCreateScreenOpen: boolean = false;
-  abonnomentToUpdate: IAbonnement | null = null;
-
   location: ICreateLocation = {
     eMail: '',
     phoneNumber: '',
@@ -73,46 +70,6 @@ export class LocationCreateComponent {
       this.router.navigateByUrl(`/location/${locationId}`);
 
     //TODO: Add functie for id id is not null - when form is not correct
-  }
-
-  addAbonnoment(abonnoment: IAbonnement | null) {
-    // if abonnomentToUpdate is not null, then the abonnoment needs to be updated instead of added
-    if (this.abonnomentToUpdate != null) {
-      this.updateAbonnoment(abonnoment);
-    } else {
-      if (abonnoment != null) {
-        this.location.abonnoments.push(abonnoment);
-      }
-      this.abonnomentCreateScreenOpen = false;
-    }
-  }
-
-  updateAbonnoment(updateAbonnoment: IAbonnement | null) {
-    if (updateAbonnoment != null && this.abonnomentToUpdate != null) {
-      var index = this.location.abonnoments.indexOf(this.abonnomentToUpdate);
-
-      if (index !== -1) {
-        this.location.abonnoments[index] = updateAbonnoment;
-      }
-      this.abonnomentToUpdate = null;
-    }
-
-    this.abonnomentCreateScreenOpen = false;
-  }
-
-  openUpdateScreen(abonnement: IAbonnement) {
-    this.abonnomentToUpdate = abonnement;
-    this.openAbnnomentScreen();
-  }
-
-  openAbnnomentScreen() {
-    this.abonnomentCreateScreenOpen = true;
-  }
-
-  deleteAbonnoment(abonnement: IAbonnement) {
-    this.location.abonnoments.forEach((item, index) => {
-      if (item === abonnement) this.location.abonnoments.splice(index, 1);
-    });
   }
 
   onSubmit(): void {}

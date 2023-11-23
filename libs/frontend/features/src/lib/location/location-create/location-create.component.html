@@ -250,41 +250,12 @@
           <td>{{ abonnoment.price }}</td>
           <td>{{ abonnoment.period }}</td>
           <td>
-            <button
-              class="btn btn-primary"
-              (click)="openUpdateScreen(abonnoment)"
-            >
-              Update
-            </button>
-            <button
-              class="btn btn-primary m-2"
-              (click)="deleteAbonnoment(abonnoment)"
-            >
-              Delete
-            </button>
+            <button class="btn btn-primary">Update</button>
+            <button class="btn btn-primary m-2">Delete</button>
           </td>
         </tr>
       </tbody>
     </table>
-
-    <!-- Add abonnoment screen -->
-    <div class="mt-3">
-      <div *ngIf="abonnomentCreateScreenOpen == false">
-        <button class="btn btn-primary" (click)="openAbnnomentScreen()">
-          Add abonnoment
-        </button>
-      </div>
-
-      <!-- input of abonnomentToUpdate that is null if screen is opent to add a abonnoment-->
-      <!-- and IAbonnoment if screen is opent to update a abonnoment -->
-      <!-- Output is the new or updated abbonoment -->
-      <div *ngIf="abonnomentCreateScreenOpen" class="col-12">
-        <client-side-project-abonnement-create
-          [updateAbonnoment]="abonnomentToUpdate"
-          (newItemEvent)="addAbonnoment($event)"
-        ></client-side-project-abonnement-create>
-      </div>
-    </div>
 
     <!--location.hasTrainers -->
     <div class="form-group col-6 col-lg-2 mt-4">
@@ -298,6 +269,20 @@
         />
         <label for="locationHasTrainers">Has trainers</label>
       </div>
+    </div>
+
+    <div class="col-">
+      <button
+        type="supmit"
+        class="btn btn-primary"
+        [disabled]="
+          locationCreateForm.invalid ||
+          location.abonnoments.length == 0 ||
+          location.closingTime <= location.openingsTime
+        "
+      >
+        submit
+      </button>
     </div>
   </form>
 
