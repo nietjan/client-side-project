@@ -10,6 +10,7 @@ import {
   IsNotEmptyObject,
   ValidateNested,
   IsArray,
+  Matches,
 } from 'class-validator';
 import {
   ICreateLocation,
@@ -33,14 +34,19 @@ export class CreateLocationDto implements ICreateLocation {
   @IsNotEmpty()
   eMail!: string;
 
-  //TODO: change dateString to something that accepts only time
-  @IsDateString()
+  @IsString()
   @IsNotEmpty()
-  openingsTime!: Date;
+  @Matches(/^(?!00:00)(24:00|([0-1]\d|2[0-3]):[0-5]\d)$/g, {
+    message: 'OpeningsTime does not have valid value',
+  })
+  openingsTime!: string;
 
-  @IsDateString()
+  @IsString()
   @IsNotEmpty()
-  closingTime!: Date;
+  @Matches(/^(?!00:00)(24:00|([0-1]\d|2[0-3]):[0-5]\d)$/g, {
+    message: 'closingTime does not have valid value',
+  })
+  closingTime!: string;
 
   @IsBoolean()
   @IsNotEmpty()
@@ -70,13 +76,19 @@ export class UpsertLocationDto implements IUpsertLocation {
   @IsNotEmpty()
   eMail!: string;
 
-  @IsDate()
+  @IsString()
   @IsNotEmpty()
-  openingsTime!: Date;
+  @Matches(/^(?!00:00)(24:00|([0-1]\d|2[0-3]):[0-5]\d)$/g, {
+    message: 'OpeningsTime does not have valid value',
+  })
+  openingsTime!: string;
 
-  @IsDate()
+  @IsString()
   @IsNotEmpty()
-  closingTime!: Date;
+  @Matches(/^(?!00:00)(24:00|([0-1]\d|2[0-3]):[0-5]\d)$/g, {
+    message: 'closingTime does not have valid value',
+  })
+  closingTime!: string;
 
   @IsBoolean()
   @IsNotEmpty()
@@ -108,9 +120,15 @@ export class UpdateLocationDto implements IUpdateLocation {
 
   @IsDate()
   @IsOptional()
+  @Matches(/^(?!00:00)(24:00|([0-1]\d|2[0-3]):[0-5]\d)$/g, {
+    message: 'OpeningsTime does not have valid value',
+  })
   openingsTime!: Date;
 
   @IsDate()
+  @Matches(/^(?!00:00)(24:00|([0-1]\d|2[0-3]):[0-5]\d)$/g, {
+    message: 'closingTime does not have valid value',
+  })
   @IsOptional()
   closingTime!: Date;
 
