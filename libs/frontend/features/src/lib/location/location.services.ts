@@ -35,16 +35,8 @@ export class LocationService {
       {
         id: '1',
         phoneNumber: '0612345678',
-        closingTime: new Date(
-          `${current.getFullYear()}-${
-            current.getMonth() + 1
-          }-${current.getDate()} 19:41`
-        ),
-        openingsTime: new Date(
-          `${current.getFullYear()}-${
-            current.getMonth() + 1
-          }-${current.getDate()} 12:41`
-        ),
+        closingTime: '19:41',
+        openingsTime: '12:41',
         eMail: 'email@1.com',
         hasTrainers: true,
         address: new DummyAddresObject(
@@ -59,8 +51,8 @@ export class LocationService {
       {
         id: '2',
         phoneNumber: '0612345678',
-        closingTime: new Date(),
-        openingsTime: new Date(),
+        closingTime: '19:41',
+        openingsTime: '12:41',
         eMail: 'email@2.com',
         hasTrainers: true,
         address: new DummyAddresObject(

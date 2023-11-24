@@ -35,14 +35,14 @@ export class AbonnementCreateComponent {
         this.isUpdating = true;
         this.abonnementService
           .singleAbonnoment(id)
-          .subscribe((value) => (this.abonnoment = value));
+          .subscribe(
+            (value) => (this.abonnoment = { ...this.abonnoment, ...value })
+          );
       }
     });
   }
 
   onSubmit() {
-    console.log(this.isUpdating);
-
     if (this.isUpdating) {
       //Not update
       this.abonnementService.updateAbonnement(this.abonnoment);
@@ -51,6 +51,6 @@ export class AbonnementCreateComponent {
       this.abonnementService.createAbonnement(this.abonnoment);
     }
 
-    this.router.navigateByUrl('/abonnements');
+    this.router.navigateByUrl('/abonnement');
   }
 }

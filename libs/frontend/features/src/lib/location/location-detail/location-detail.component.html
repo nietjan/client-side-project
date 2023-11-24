@@ -6,8 +6,8 @@
     {{ location.address.country }}
   </p>
   <p>
-    Open from {{ location.openingsTime.toLocaleTimeString() }} till
-    {{ location.closingTime.toLocaleTimeString() }}
+    Open from {{ location.openingsTime }} till
+    {{ location.closingTime }}
   </p>
   <p *ngIf="location.hasTrainers == true">Trainers available</p>
   <p>{{ location.eMail }}</p>

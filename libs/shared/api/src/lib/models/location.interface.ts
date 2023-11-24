@@ -7,8 +7,8 @@ export interface ILocation {
   id: Id;
   phoneNumber: string;
   eMail: string;
-  openingsTime: Date;
-  closingTime: Date;
+  openingsTime: string;
+  closingTime: string;
   hasTrainers: boolean;
   address: IAddress;
   abonnements: string[];

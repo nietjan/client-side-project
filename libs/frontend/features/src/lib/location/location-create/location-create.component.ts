@@ -21,8 +21,8 @@ export class LocationCreateComponent implements OnInit {
     eMail: '',
     phoneNumber: '',
     hasTrainers: true,
-    openingsTime: new Date(''),
-    closingTime: new Date(''),
+    openingsTime: '00:00',
+    closingTime: '23:59',
     address: {
       street: '',
       homeNumber: '',
@@ -52,7 +52,9 @@ export class LocationCreateComponent implements OnInit {
         this.isUpdating = true;
         this.locationService
           .singleLocation(id)
-          .subscribe((value) => (this.location = value));
+          .subscribe(
+            (value) => (this.location = { ...this.location, ...value })
+          );
       }
     });
 
