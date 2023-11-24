@@ -6,8 +6,8 @@
     {{ location.address.country }}
   </p>
   <p>
-    Open from {{ location.openingsTime.toLocaleTimeString() }} till
-    {{ location.closingTime.toLocaleTimeString() }}
+    Open from {{ location.openingsTime }} till
+    {{ location.closingTime }}
   </p>
   <p *ngIf="location.hasTrainers == true">Trainers available</p>
   <p>{{ location.eMail }}</p>
@@ -26,8 +26,9 @@
   </button>
 
   <div class="mt-3">
+    <!-- TODO: location.abonnement aanpassen naar location.id -->
     <client-side-project-abonnement-list
-      [location]="location"
+      [locationId]="location.abonnements"
     ></client-side-project-abonnement-list>
   </div>
 </div>

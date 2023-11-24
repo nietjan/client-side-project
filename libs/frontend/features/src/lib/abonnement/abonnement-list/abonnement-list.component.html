@@ -1,0 +1,40 @@
+<a *ngIf="locationId == null || locationId == undefined" routerLink="create"
+  ><button class="btn btn-primary">New abonnoment</button></a
+>
+
+<h5>Abonnements</h5>
+
+<div *ngIf="abonnoments != null && abonnoments != undefined">
+  <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 g-4">
+    <div class="col" *ngFor="let abonnement of abonnoments">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ abonnement?.name }}</h5>
+          <p class="card-text">€ {{ abonnement?.price }}</p>
+          <p class="card-text">
+            {{ abonnement?.period }}
+            <span *ngIf="abonnement?.period != 1">Months</span
+            ><span *ngIf="abonnement?.period == 1">Month</span>
+          </p>
+          <p>
+            <a *ngIf="locationId"
+              ><button class="btn btn-primary">Select abonnoment</button></a
+            >
+          </p>
+          <div *ngIf="locationId == null || locationId == undefined">
+            <a routerLink="{{ abonnement.id }}/update">
+              <button class="btn btn-primary">Update</button></a
+            >
+            <button class="btn btn-primary" (click)="delete(abonnement.id)">
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="abonnoments == null || abonnoments == undefined">
+  <app-spinner></app-spinner>
+</div>

@@ -7,11 +7,11 @@ export interface ILocation {
   id: Id;
   phoneNumber: string;
   eMail: string;
-  openingsTime: Date;
-  closingTime: Date;
+  openingsTime: string;
+  closingTime: string;
   hasTrainers: boolean;
   address: IAddress;
-  abonnoments: IAbonnement[];
+  abonnements: string[];
 }
 
 //must have types
@@ -23,7 +23,7 @@ export type ICreateLocation = Pick<
   | 'address'
   | 'openingsTime'
   | 'closingTime'
-  | 'abonnoments'
+  | 'abonnements'
 >;
 
 export type IUpdateLocation = Partial<Omit<ILocation, 'id'>>;

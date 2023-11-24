@@ -1,2 +1,291 @@
-<button class="btn btn-primary" (click)="create()">add</button>
-<a routerLink="/location"><button class="btn btn-primary">back</button></a>
+<!-- <button class="btn btn-primary" (click)="create()">add</button>
+<a routerLink="/location"><button class="btn btn-primary">back</button></a> -->
+
+<div class="container-fluid">
+  <form
+    class="row"
+    #locationCreateForm="ngForm"
+    name="createLocation"
+    (ngSubmit)="locationCreateForm.form.valid && onSubmit()"
+    novalidate
+  >
+    <h1>Location</h1>
+    <!--location.Email -->
+    <div class="form-group col-12 col-lg-4">
+      <label for="locationEmail">E-mail</label>
+      <input
+        type="email"
+        class="form-control"
+        [(ngModel)]="location.eMail"
+        name="locationEmail"
+        #locationEmail="ngModel"
+        [ngClass]="{ 'is-invalid': locationEmail.invalid }"
+        required
+        email
+      />
+      <div
+        class="invalid-feedback"
+        *ngIf="locationEmail.invalid && locationEmail.touched"
+      >
+        <div *ngIf="locationEmail.errors?.['required']">
+          E-mail is required.
+        </div>
+        <div *ngIf="locationEmail.errors?.['email']">Not a valid E-mail</div>
+      </div>
+    </div>
+
+    <!--location.phoneNumber -->
+    <div class="form-group col-12 col-lg-4">
+      <label for="locationPhoneNumber">Phone number</label>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="location.phoneNumber"
+        name="locationPhoneNumber"
+        #locationPhoneNumber="ngModel"
+        [ngClass]="{ 'is-invalid': locationPhoneNumber.invalid }"
+        required
+        pattern="((\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?)?\d{3}[\s.-]?\d{4}"
+      />
+      <div
+        class="invalid-feedback"
+        *ngIf="locationPhoneNumber.invalid && locationPhoneNumber.touched"
+      >
+        <div *ngIf="locationPhoneNumber.errors?.['required']">
+          Phonenumber is required.
+        </div>
+        <div *ngIf="locationEmail.errors?.['pattern']">
+          Not a valid phone number
+        </div>
+      </div>
+    </div>
+
+    <!--location.openingsTime -->
+    <div class="form-group col-6 col-lg-2">
+      <label for="locationOpeningsTime">Openings Time</label>
+      <input
+        type="time"
+        class="form-control"
+        [(ngModel)]="location.openingsTime"
+        name="locationOpeningsTime"
+        #locationOpeningsTime="ngModel"
+        [ngClass]="{
+          'is-invalid': locationOpeningsTime.invalid
+        }"
+        required
+      />
+      <div
+        class="invalid-feedback"
+        *ngIf="locationOpeningsTime.invalid && locationOpeningsTime.touched"
+      >
+        <div *ngIf="locationOpeningsTime.errors?.['required']">
+          Openings time is required.
+        </div>
+      </div>
+    </div>
+
+    <!--location.closingTime -->
+    <div class="form-group col-6 col-lg-2">
+      <label for="locationClosingTime">Closing Time</label>
+      <input
+        type="time"
+        class="form-control"
+        [(ngModel)]="location.closingTime"
+        name="locationClosingTime"
+        #locationClosingTime="ngModel"
+        [ngClass]="{
+          'is-invalid':
+            locationClosingTime.invalid ||
+            locationClosingTime.value <= locationOpeningsTime.value
+        }"
+        required
+      />
+      <div
+        class="invalid-feedback"
+        *ngIf="locationClosingTime.invalid && locationClosingTime.touched"
+      >
+        <div *ngIf="locationClosingTime.errors?.['required']">
+          Closings time is required.
+        </div>
+      </div>
+      <div
+        class="invalid-feedback"
+        *ngIf="locationClosingTime.value <= locationOpeningsTime.value"
+      >
+        Closings time should be later than openings time.
+      </div>
+    </div>
+
+    <!-- location.address -->
+    <h5 class="mt-4">Address</h5>
+    <div class="col-12">
+      <div class="row">
+        <!--location.address.street -->
+        <div class="form-group col-sm-12 col-lg-4">
+          <label for="locationStreet">Street</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="location.address.street"
+            name="locationStreet"
+            #locationStreet="ngModel"
+            [ngClass]="{ 'is-invalid': locationStreet.invalid }"
+            required
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="locationStreet.invalid && locationStreet.touched"
+          >
+            <div *ngIf="locationStreet.errors?.['required']">
+              Street is required.
+            </div>
+          </div>
+        </div>
+
+        <!--location.address.homeNumber -->
+        <div class="form-group col-6 col-lg-4">
+          <label for="locationHomeNumber">Home number</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="location.address.homeNumber"
+            name="locationHomeNumber"
+            #locationHomeNumber="ngModel"
+            [ngClass]="{ 'is-invalid': locationHomeNumber.invalid }"
+            required
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="locationHomeNumber.invalid && locationHomeNumber.touched"
+          >
+            <div *ngIf="locationStreet.errors?.['required']">
+              Home number is required.
+            </div>
+          </div>
+        </div>
+
+        <!--location.address.postalCode -->
+        <div class="form-group col-6 col-lg-4">
+          <label for="locationPostalCode">Postal code</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="location.address.postalCode"
+            name="locationPostalCode"
+            #locationPostalCode="ngModel"
+            [ngClass]="{ 'is-invalid': locationPostalCode.invalid }"
+            required
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="locationPostalCode.invalid && locationPostalCode.touched"
+          >
+            <div *ngIf="locationPostalCode.errors?.['required']">
+              Postal code is required.
+            </div>
+          </div>
+        </div>
+
+        <!--location.address.city -->
+        <div class="form-group col-6 col-lg-4">
+          <label for="locationCity">city</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="location.address.city"
+            name="locationCity"
+            #locationCity="ngModel"
+            [ngClass]="{ 'is-invalid': locationCity.invalid }"
+            required
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="locationCity.invalid && locationCity.touched"
+          >
+            <div *ngIf="locationCity.errors?.['required']">
+              City is required.
+            </div>
+          </div>
+        </div>
+
+        <!--location.address.county -->
+        <div class="form-group col-6 col-lg-2">
+          <label for="locationCountry">Country</label>
+          <select
+            class="form-control"
+            [(ngModel)]="location.address.country"
+            name="locationCountry"
+            #locationCountry="ngModel"
+            [ngClass]="{ 'is-invalid': locationCountry.invalid }"
+            required
+          >
+            <option>Netherlands</option>
+            <option>Belgium</option>
+          </select>
+          <div
+            class="invalid-feedback"
+            *ngIf="locationCountry.invalid && locationCountry.touched"
+          >
+            <div *ngIf="locationCountry.errors?.['required']">
+              Country is required.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--location.abonnement -->
+    <ng-multiselect-dropdown
+      class="mt-4"
+      [placeholder]="'Choose abonnement'"
+      [settings]="dropdownSettings"
+      [data]="dropdownList"
+      name="locationAbonnement"
+      [(ngModel)]="dropDownValues"
+      (onSelect)="onItemSelect($event)"
+      (onDeSelect)="OnItemDeselect($event)"
+    >
+    </ng-multiselect-dropdown>
+    <small style="color: red" *ngIf="dropDownValues.length == 0">
+      At least 1 abonnement needs to be selected
+    </small>
+
+    <!--location.hasTrainers -->
+    <div class="form-group col-6 col-lg-2 mt-4">
+      <div class="form-check form-switch">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          [(ngModel)]="location.hasTrainers"
+          name="locationHasTrainers"
+          #locationHasTrainers="ngModel"
+        />
+        <label for="locationHasTrainers">Has trainers</label>
+      </div>
+    </div>
+
+    <div class="col-">
+      <button
+        type="supmit"
+        class="btn btn-primary"
+        [disabled]="
+          locationCreateForm.invalid ||
+          location.abonnements.length == 0 ||
+          location.closingTime <= location.openingsTime ||
+          dropDownValues.length == 0 ||
+          location.openingsTime == null ||
+          location.closingTime == null
+        "
+      >
+        submit
+      </button>
+      <button class="btn btn-primary" routerLink="/location">return</button>
+    </div>
+  </form>
+
+  <div>
+    <code>
+      <pre>{{ location | json }}</pre>
+    </code>
+  </div>
+</div>

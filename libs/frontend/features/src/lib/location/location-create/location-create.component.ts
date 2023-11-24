@@ -1,57 +1,131 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LocationService } from '../location.services';
+import { AbonnementService } from '@client-side/frontend/features';
 import {
   ILocation,
   ICreateLocation,
-  ICreateAddress,
-  IAddress,
   IAbonnement,
 } from '@client-side/shared/api';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 @Component({
   selector: 'client-side-project-location-create',
   templateUrl: './location-create.component.html',
   styleUrls: ['./location-create.component.css'],
 })
-export class LocationCreateComponent {
-  address: ICreateAddress = {
-    street: 'street',
-    homeNumber: '1',
-    city: 'city',
-    country: 'country',
-    postalCode: 'postalCode',
-  };
+export class LocationCreateComponent implements OnInit {
+  isUpdating: boolean = false;
 
-  abonnoments: IAbonnement[] = [
-    { name: 'Yearly', period: 12, price: 12.5 },
-    { name: 'Monthly', period: 1, price: 19.99 },
-  ];
-
-  locationToAdd: ICreateLocation = {
-    eMail: 'create@create.com',
-    phoneNumber: '06 12345678',
+  location: ICreateLocation = {
+    eMail: '',
+    phoneNumber: '',
     hasTrainers: true,
-    openingsTime: new Date(),
-    closingTime: new Date(),
-    address: this.address,
-    abonnoments: this.abonnoments,
+    openingsTime: '00:00',
+    closingTime: '23:59',
+    address: {
+      street: '',
+      homeNumber: '',
+      postalCode: '',
+      city: '',
+      country: '',
+    },
+    abonnements: [],
   };
+
+  //multiselect drop down
+  dropdownList: any[] = [];
+  dropdownSettings: IDropdownSettings = {};
+  allAbonnements: IAbonnement[] = [];
+  dropDownValues: any[] = [];
 
   constructor(
     private locationService: LocationService,
-    private router: Router
-  ) {}
+    private abonnementService: AbonnementService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
+    //if in param there is id, than it is a update
+    this.route.paramMap.subscribe((params) => {
+      let id = params.get('id');
+      if (id != null) {
+        this.isUpdating = true;
+        this.locationService
+          .singleLocation(id)
+          .subscribe(
+            (value) => (this.location = { ...this.location, ...value })
+          );
+      }
+    });
 
-  public create(): void {
-    var locationId = this.locationService.createLocation(
-      this.locationToAdd as ILocation
-    );
+    abonnementService.allAbonnements().subscribe((value) => {
+      if (value != null) {
+        this.allAbonnements = value;
+        console.log(value);
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.allAbonnements.forEach((element) => {
+      this.dropdownList.push({
+        id: element.id,
+        text: this.formatAbonnementString(element),
+      });
+    });
+
+    this.allAbonnements.forEach((element) => {
+      if (this.location.abonnements.find((id) => id === element.id)) {
+        this.dropDownValues.push({
+          id: element.id,
+          text: this.formatAbonnementString(element),
+        });
+      }
+    });
+
+    this.dropdownSettings = {
+      singleSelection: false,
+      noDataAvailablePlaceholderText: 'No abonnements available',
+      textField: 'text',
+      enableCheckAll: false,
+      allowSearchFilter: false,
+    };
+  }
+
+  addAbonnementToLocation(abonnement: IAbonnement) {
+    this.location.abonnements.push(abonnement.id);
+  }
+
+  public onSubmit(): void {
+    if (this.isUpdating) {
+      var locationId = this.locationService.updateLocation(
+        this.location as ILocation
+      );
+    } else {
+      var locationId = this.locationService.createLocation(
+        this.location as ILocation
+      );
+    }
 
     //redirect back to list
     if (locationId != null)
       this.router.navigateByUrl(`/location/${locationId}`);
 
     //TODO: Add functie for id id is not null - when form is not correct
+  }
+
+  //multiselect
+  onItemSelect(item: any) {
+    this.location.abonnements.push(item.id);
+  }
+
+  OnItemDeselect(item: any) {
+    this.location.abonnements = this.location.abonnements.filter(
+      (str) => str !== item.id
+    );
+  }
+
+  formatAbonnementString(abonnement: IAbonnement): string {
+    return `${abonnement.name} - €${abonnement.price} - ${abonnement.period} months`;
   }
 }

@@ -20,9 +20,10 @@
             {{ location?.address?.postalCode }}
           </p>
           <p *ngIf="location?.hasTrainers == true">Trainers available</p>
+          <p *ngIf="!location?.hasTrainers == true">No trainers available</p>
           <p>
-            Open from {{ location?.openingsTime?.toLocaleTimeString() }} till
-            {{ location?.closingTime?.toLocaleTimeString() }}
+            Open from {{ location?.openingsTime }} till
+            {{ location?.closingTime }}
           </p>
           <a routerLink="{{ location.id }}">
             <button class="btn btn-primary">Check</button>

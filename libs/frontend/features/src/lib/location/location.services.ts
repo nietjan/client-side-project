@@ -30,12 +30,13 @@ export class LocationService {
   private locations$ = new BehaviorSubject<ILocation[]>([]);
 
   constructor(private readonly http: HttpClient) {
+    const current = new Date();
     const newLocations: ILocation[] = [
       {
         id: '1',
-        phoneNumber: '06 12345678',
-        closingTime: new Date(),
-        openingsTime: new Date(),
+        phoneNumber: '0612345678',
+        closingTime: '19:41',
+        openingsTime: '12:41',
         eMail: 'email@1.com',
         hasTrainers: true,
         address: new DummyAddresObject(
@@ -45,24 +46,13 @@ export class LocationService {
           'Tilburg',
           'Netherlands'
         ),
-        abonnoments: [
-          {
-            name: 'Yearly',
-            period: 12,
-            price: 10.5,
-          },
-          {
-            name: 'Montly',
-            period: 1,
-            price: 20,
-          },
-        ],
+        abonnements: ['1', '2'],
       },
       {
         id: '2',
-        phoneNumber: '06 12345678',
-        closingTime: new Date(),
-        openingsTime: new Date(),
+        phoneNumber: '0612345678',
+        closingTime: '19:41',
+        openingsTime: '12:41',
         eMail: 'email@2.com',
         hasTrainers: true,
         address: new DummyAddresObject(
@@ -72,18 +62,7 @@ export class LocationService {
           'Breda',
           'Netherlands'
         ),
-        abonnoments: [
-          {
-            name: 'Yearly',
-            period: 12,
-            price: 15,
-          },
-          {
-            name: 'Montly',
-            period: 1,
-            price: 22.5,
-          },
-        ],
+        abonnements: ['3', '4'],
       },
     ];
 
@@ -109,23 +88,6 @@ export class LocationService {
     //     catchError(this.handleError)
     //   );
     return this.locations$;
-  }
-
-  public allAbonnements(
-    locationId: string | null,
-    options?: any
-  ): Observable<IAbonnement[] | null> {
-    if (locationId == null) {
-      locationId = '0';
-    }
-
-    return this.locations$.pipe(
-      map(
-        (locationList) =>
-          locationList.find((location) => location.id == locationId)
-            ?.abonnoments
-      )
-    ) as Observable<IAbonnement[]>;
   }
 
   public singleLocation(
@@ -166,9 +128,14 @@ export class LocationService {
   public createLocation(location: ILocation | null): string | null {
     if (location == null) return null;
 
-    location.id = (
-      parseInt(this.locations$.value[this.locations$.value.length - 1].id) + 1
-    ).toString();
+    let id = 1;
+    this.locations$.subscribe((i) =>
+      i.forEach((value) => {
+        if (parseInt(value.id) > id) id = parseInt(value.id);
+      })
+    );
+
+    location.id = (id + 1).toString();
 
     this.locations$.next([...this.locations$.value, location]);
 

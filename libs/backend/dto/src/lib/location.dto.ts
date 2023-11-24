@@ -9,6 +9,7 @@ import {
   IsDateString,
   IsNotEmptyObject,
   ValidateNested,
+  IsArray,
 } from 'class-validator';
 import {
   ICreateLocation,
@@ -32,6 +33,7 @@ export class CreateLocationDto implements ICreateLocation {
   @IsNotEmpty()
   eMail!: string;
 
+  //TODO: change dateString to something that accepts only time
   @IsDateString()
   @IsNotEmpty()
   openingsTime!: Date;
@@ -50,11 +52,9 @@ export class CreateLocationDto implements ICreateLocation {
   @Type(() => CreateAddressDto)
   address!: CreateAddressDto;
 
-  @IsObject()
-  @IsNotEmptyObject()
-  @ValidateNested({ each: true })
-  @Type(() => CreateAbonnementDto)
-  abonnoments!: CreateAbonnementDto[];
+  @IsArray()
+  @IsNotEmpty()
+  abonnements!: string[];
 }
 
 export class UpsertLocationDto implements IUpsertLocation {
@@ -88,11 +88,9 @@ export class UpsertLocationDto implements IUpsertLocation {
   @Type(() => CreateAddressDto)
   address!: CreateAddressDto;
 
-  @IsObject()
-  @IsNotEmptyObject()
-  @ValidateNested({ each: true })
-  @Type(() => CreateAbonnementDto)
-  abonnoments!: CreateAbonnementDto[];
+  @IsArray()
+  @IsNotEmpty()
+  abonnements!: string[];
 }
 
 export class UpdateLocationDto implements IUpdateLocation {
@@ -126,9 +124,7 @@ export class UpdateLocationDto implements IUpdateLocation {
   @Type(() => CreateAddressDto)
   address!: CreateAddressDto;
 
-  @IsObject()
+  @IsArray()
   @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => CreateAbonnementDto)
-  abonnoments!: CreateAbonnementDto[];
+  abonnements!: string[];
 }
