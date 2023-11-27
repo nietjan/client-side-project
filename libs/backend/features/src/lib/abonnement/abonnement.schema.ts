@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import { IAddress } from '../models/address.interface';
-import { AddressSchema } from './address.schema';
-import { ICreateAbonnement } from '../models/abonnement.interface';
+import { IAddress } from '../../../../../shared/api/src/lib/models/address.interface';
+import { AddressSchema } from '../address.schema';
+import { ICreateAbonnement } from '../../../../../shared/api/src/lib/models/abonnement.interface';
 
 export type AbonnementDocument = HydratedDocument<DbAbonnement>;
 

@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ICreateAddress } from '../models/address.interface';
+import { ICreateAddress } from '../../../../shared/api/src/lib/models/address.interface';
 
 @Schema()
 export class DbAddress implements ICreateAddress {

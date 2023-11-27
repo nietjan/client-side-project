@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
-import { IAddress } from '../models/address.interface';
-import { AddressSchema } from './address.schema';
+import { IAddress } from '../../../../../shared/api/src/lib/models/address.interface';
+import { AddressSchema } from '../address.schema';
 
 export type LocationDocument = HydratedDocument<DbLocation>;
 
