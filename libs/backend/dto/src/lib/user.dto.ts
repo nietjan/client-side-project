@@ -19,40 +19,49 @@ import {
   IUpdateAddress,
 } from '@client-side/shared/api';
 import { CreateAddressDto } from './address.dto';
+import { ApiProperty } from '@nestjs/swagger';
 
 /**
  * Use the `Pick` utility type to extract only the properties we want for
  * new to-do items
  */
 export class CreateUserDto implements ICreateUser {
+  @ApiProperty({ type: String })
   @IsString()
   @IsNotEmpty()
   name!: string;
 
+  @ApiProperty({ type: String })
   @IsDateString()
   @IsNotEmpty()
   dateOfBirith!: Date;
 
+  @ApiProperty({ type: String })
   @IsString()
   @IsNotEmpty()
   sex!: string;
 
+  @ApiProperty({ type: String })
   @IsPhoneNumber('NL')
   @IsNotEmpty()
   phoneNumber!: string;
 
+  @ApiProperty({ type: String })
   @IsEmail()
   @IsNotEmpty()
   eMail!: string;
 
+  @ApiProperty({ type: String })
   @IsStrongPassword()
   @IsNotEmpty()
   password!: string;
 
+  @ApiProperty({ type: String })
   @IsString()
   @IsNotEmpty()
   iban!: string;
 
+  @ApiProperty({ type: CreateAddressDto })
   @IsObject()
   @IsNotEmptyObject()
   @ValidateNested()
@@ -61,38 +70,47 @@ export class CreateUserDto implements ICreateUser {
 }
 
 export class UpsertUserDto implements IUpsertUser {
+  @ApiProperty({ type: String })
   @IsString()
   @IsNotEmpty()
   id!: string;
 
+  @ApiProperty({ type: String })
   @IsString()
   @IsNotEmpty()
   name!: string;
 
+  @ApiProperty({ type: String })
   @IsDateString()
   @IsNotEmpty()
   dateOfBirith!: Date;
 
+  @ApiProperty({ type: String })
   @IsString()
   @IsNotEmpty()
   sex!: string;
 
-  @IsString()
+  @ApiProperty({ type: String })
+  @IsPhoneNumber('NL')
   @IsNotEmpty()
   phoneNumber!: string;
 
+  @ApiProperty({ type: String })
   @IsEmail()
   @IsNotEmpty()
   eMail!: string;
 
+  @ApiProperty({ type: String })
   @IsStrongPassword()
   @IsNotEmpty()
   password!: string;
 
+  @ApiProperty({ type: String })
   @IsString()
   @IsNotEmpty()
   iban!: string;
 
+  @ApiProperty({ type: CreateAddressDto })
   @IsObject()
   @IsNotEmptyObject()
   @ValidateNested()
@@ -101,59 +119,45 @@ export class UpsertUserDto implements IUpsertUser {
 }
 
 export class UpdateUserDto implements IUpdateUser, IUpdateAddress {
+  @ApiProperty({ type: String })
   @IsString()
   @IsNotEmpty()
-  id!: string;
-
-  @IsString()
-  @IsOptional()
   name!: string;
 
+  @ApiProperty({ type: String })
   @IsDateString()
-  @IsOptional()
+  @IsNotEmpty()
   dateOfBirith!: Date;
 
+  @ApiProperty({ type: String })
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   sex!: string;
 
-  @IsString()
-  @IsOptional()
+  @ApiProperty({ type: String })
+  @IsPhoneNumber('NL')
+  @IsNotEmpty()
   phoneNumber!: string;
 
+  @ApiProperty({ type: String })
   @IsEmail()
-  @IsOptional()
+  @IsNotEmpty()
   eMail!: string;
 
+  @ApiProperty({ type: String })
   @IsStrongPassword()
-  @IsOptional()
+  @IsNotEmpty()
   password!: string;
 
+  @ApiProperty({ type: String })
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   iban!: string;
 
+  @ApiProperty({ type: CreateAddressDto })
   @IsObject()
-  @IsOptional()
-  address!: IAddress;
-
-  @IsString()
-  @IsOptional()
-  street!: string;
-
-  @IsString()
-  @IsOptional()
-  homeNumber!: string;
-
-  @IsString()
-  @IsOptional()
-  city!: string;
-
-  @IsString()
-  @IsOptional()
-  country!: string;
-
-  @IsString()
-  @IsOptional()
-  postalCode!: string;
+  @IsNotEmptyObject()
+  @ValidateNested()
+  @Type(() => CreateAddressDto)
+  address!: CreateAddressDto;
 }
