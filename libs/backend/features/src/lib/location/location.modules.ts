@@ -2,15 +2,13 @@ import { Module } from '@nestjs/common';
 import { LocationController } from './location.controller';
 import { LocationService } from './location.services';
 import { MongooseModule } from '@nestjs/mongoose';
-import { DbLocation, LocationSchema } from './location.schema';
 import { AbonnementModule } from '../abonnement/abonnement.modules';
+import { DbUser, UserSchema } from '../user/user.schema';
 
 @Module({
   imports: [
     AbonnementModule,
-    MongooseModule.forFeature([
-      { name: DbLocation.name, schema: LocationSchema },
-    ]),
+    MongooseModule.forFeature([{ name: DbUser.name, schema: UserSchema }]),
   ],
   controllers: [LocationController],
   providers: [LocationService],

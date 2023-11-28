@@ -31,10 +31,12 @@ export class CreateUserDto implements ICreateUser {
   @IsNotEmpty()
   name!: string;
 
-  @ApiProperty({ type: String })
+  @ApiProperty({
+    type: String,
+  })
   @IsDateString()
   @IsNotEmpty()
-  dateOfBirith!: Date;
+  dateOfBirith!: string;
 
   @ApiProperty({ type: String })
   @IsString()
@@ -80,10 +82,12 @@ export class UpsertUserDto implements IUpsertUser {
   @IsNotEmpty()
   name!: string;
 
-  @ApiProperty({ type: String })
-  @IsDateString()
+  @ApiProperty({
+    type: String,
+  })
+  @IsString()
   @IsNotEmpty()
-  dateOfBirith!: Date;
+  dateOfBirith!: string;
 
   @ApiProperty({ type: String })
   @IsString()
@@ -124,10 +128,12 @@ export class UpdateUserDto implements IUpdateUser, IUpdateAddress {
   @IsNotEmpty()
   name!: string;
 
-  @ApiProperty({ type: String })
-  @IsDateString()
+  @ApiProperty({
+    type: String,
+  })
+  @IsString()
   @IsNotEmpty()
-  dateOfBirith!: Date;
+  dateOfBirith!: string;
 
   @ApiProperty({ type: String })
   @IsString()

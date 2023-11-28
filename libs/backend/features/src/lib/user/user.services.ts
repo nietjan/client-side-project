@@ -1,43 +1,44 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { IUser } from '@client-side/shared/api';
-import { BehaviorSubject } from 'rxjs';
 import { Logger } from '@nestjs/common';
-import { CreateUserDto } from '@client-side/backend/dto';
+import { CreateUserDto, UpdateUserDto } from '@client-side/backend/dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, UpdateWriteOpResult } from 'mongoose';
+import { DbUser } from './user.schema';
+import { DeleteResult, ObjectId } from 'mongodb';
+import { IUser, IUpdateUser } from '@client-side/shared/api';
 
 @Injectable()
 export class UserService {
   TAG = 'UserService';
 
-  private users$ = new BehaviorSubject<IUser[]>([]);
+  constructor(@InjectModel(DbUser.name) private UserModel: Model<DbUser>) {}
 
-  getAll(): IUser[] {
+  getAll(): Promise<DbUser[]> {
     Logger.log('getAll', this.TAG);
-    return this.users$.value;
+    return this.UserModel.find().exec();
   }
 
-  getOne(id: string): IUser {
-    Logger.log(`getOne(${id})`, this.TAG);
-    const user = this.users$.value.find((td) => td.id === id);
-    if (!user) {
-      throw new NotFoundException(`User could not be found!`);
-    }
-    return user;
+  getOne(id: string): Promise<DbUser | null> {
+    Logger.log('getAll', this.TAG);
+    var objectId = new ObjectId(id);
+    return this.UserModel.findOne({ _id: objectId }).exec();
   }
 
-  /**
-   * Update the arg signature to match the DTO, but keep the
-   * return signature - we still want to respond with the complete
-   * object
-   */
-  create(user: CreateUserDto) {
+  create(User: CreateUserDto): Promise<DbUser> {
     Logger.log('create', this.TAG);
-    const current = this.users$.value;
-    // Use the incoming data, a randomized ID, and a default value of `false` to create the new to-do
-    const newUser: IUser = {
-      ...user,
-      id: '',
-    };
-    this.users$.next([...current, newUser]);
-    return newUser;
+    const createdUser = new this.UserModel(User);
+    return createdUser.save();
+  }
+
+  delete(id: string): Promise<DeleteResult> {
+    Logger.log('Delete', this.TAG);
+    return this.UserModel.deleteOne({ _id: new ObjectId(id) }).exec();
+  }
+
+  update(User: UpdateUserDto, id: string): Promise<UpdateWriteOpResult> {
+    return this.UserModel.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: User }
+    ).exec();
   }
 }

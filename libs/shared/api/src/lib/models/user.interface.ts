@@ -5,7 +5,7 @@ import { ICreateLocation } from './location.interface';
 export interface IUser {
   id: Id;
   name: string;
-  dateOfBirith: Date;
+  dateOfBirith: string;
   sex: string;
   phoneNumber: string;
   eMail: string;
