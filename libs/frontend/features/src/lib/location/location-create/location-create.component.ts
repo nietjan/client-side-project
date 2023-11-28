@@ -46,7 +46,7 @@ export class LocationCreateComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     //if in param there is id, than it is a update
-    this.route.paramMap.subscribe((params) => {
+    this.route.paramMap?.subscribe((params) => {
       let id = params.get('id');
       if (id != null) {
         this.isUpdating = true;

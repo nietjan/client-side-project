@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserListComponent } from './user-list.component';
+import { LocationService } from '../../location/location.services';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 
 describe('UserListComponent', () => {
   let component: UserListComponent;
@@ -8,6 +10,7 @@ describe('UserListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UserListComponent],
+      providers: [LocationService, HttpClient, HttpHandler],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserListComponent);
