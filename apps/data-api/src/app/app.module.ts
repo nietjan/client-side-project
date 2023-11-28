@@ -1,11 +1,16 @@
 import { Module } from '@nestjs/common';
-import { LocationModule, UserModule } from '@client-side/backend/features';
+import {
+  LocationModule,
+  UserModule,
+  AbonnementModule,
+} from '@client-side/backend/features';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
     LocationModule,
     UserModule,
+    AbonnementModule,
     MongooseModule.forRoot('mongodb://127.0.0.1:27017/clientSide'),
   ],
   controllers: [],

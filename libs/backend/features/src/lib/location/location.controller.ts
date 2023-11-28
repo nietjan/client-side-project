@@ -13,7 +13,6 @@ import {
   ApiResponse,
   ApiParam,
   ApiBody,
-  ApiHeader,
   ApiOperation,
 } from '@nestjs/swagger';
 import { NOTFOUND } from 'dns';
@@ -68,10 +67,8 @@ export class LocationController {
     try {
       return await this.locationService.create(data);
     } catch (error) {
-      if (typeof error === 'string') {
-        throw new HttpException(error, HttpStatus.BAD_REQUEST);
-      } else if (error instanceof Error) {
-        throw new HttpException(error, HttpStatus.BAD_REQUEST);
+      if (error instanceof Error) {
+        throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
       } else {
         throw new HttpException('', HttpStatus.INTERNAL_SERVER_ERROR);
       }
@@ -92,10 +89,8 @@ export class LocationController {
       }
       return result;
     } catch (error) {
-      if (typeof error === 'string') {
-        throw new HttpException(error, HttpStatus.BAD_REQUEST);
-      } else if (error instanceof Error) {
-        throw new HttpException(error, HttpStatus.BAD_REQUEST);
+      if (error instanceof Error) {
+        throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
       } else {
         throw new HttpException(
           'Server error',
@@ -123,10 +118,8 @@ export class LocationController {
       }
       return result;
     } catch (error) {
-      if (typeof error === 'string') {
-        throw new HttpException(error, HttpStatus.BAD_REQUEST);
-      } else if (error instanceof Error) {
-        throw new HttpException(error, HttpStatus.BAD_REQUEST);
+      if (error instanceof Error) {
+        throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
       } else {
         throw new HttpException(
           'Server error',
