@@ -8,6 +8,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, UpdateWriteOpResult } from 'mongoose';
 import { DbAbonnement } from './abonnement.schema';
 import { DeleteResult, ObjectId } from 'mongodb';
+import { IAbonnement } from '@client-side/shared/api';
 
 @Injectable()
 export class AbonnementService {
@@ -47,5 +48,17 @@ export class AbonnementService {
       { _id: new ObjectId(id) },
       { $set: Abonnement }
     ).exec();
+  }
+
+  async areAbonnements(abonnementIds: string[]): Promise<boolean> {
+    abonnementIds.forEach(async (abonnementId) => {
+      let count: number = await this.AbonnementModel.countDocuments({
+        $group: { _id: new ObjectId(abonnementId) },
+      }).exec();
+      if (count == 0) {
+        return false;
+      }
+    });
+    return true;
   }
 }

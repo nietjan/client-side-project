@@ -3,15 +3,19 @@ import { LocationController } from './location.controller';
 import { LocationService } from './location.services';
 import { DbLocation, LocationSchema } from './location.schema';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Connection, connect, Model } from 'mongoose';
+import mongoose, { UpdateWriteOpResult } from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import exp = require('constants');
-import { HttpException, HttpStatus } from '@nestjs/common';
-import { CreateLocationDto } from '@client-side/backend/dto';
+import { HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
+import { CreateLocationDto, UpdateLocationDto } from '@client-side/backend/dto';
+import { DeleteResult, ObjectId } from 'mongodb';
+import { AbonnementModule } from './../abonnement/abonnement.modules';
+import { AbonnementService } from '../abonnement/abonnement.services';
 
 describe('LocationController', () => {
   let controller: LocationController;
   let service: LocationService;
+  let abonnementService: AbonnementService;
   let mongod: MongoMemoryServer;
   // let mongoConnection: Connection;
   // let articleModel: Model<DbLocation>;
@@ -29,9 +33,11 @@ describe('LocationController', () => {
           { name: DbLocation.name, schema: LocationSchema },
         ]),
         MongooseModule.forRoot(uri),
+        AbonnementModule,
       ],
     }).compile();
 
+    abonnementService = module.get<AbonnementService>(AbonnementService);
     service = module.get<LocationService>(LocationService);
     controller = module.get<LocationController>(LocationController);
   });
@@ -113,6 +119,208 @@ describe('LocationController', () => {
       await expect(controller.getOne('1')).rejects.toEqual(
         new HttpException(`Not found`, HttpStatus.NOT_FOUND)
       );
+    });
+  });
+
+  describe('create', () => {
+    it('should return a location', async () => {
+      const input: CreateLocationDto = {
+        phoneNumber: '',
+        eMail: '',
+        openingsTime: '',
+        closingTime: '',
+        hasTrainers: true,
+        abonnements: ['1'],
+        address: {
+          street: '',
+          homeNumber: '',
+          city: '',
+          country: '',
+          postalCode: '',
+        },
+      };
+
+      const output: DbLocation = {
+        phoneNumber: '',
+        eMail: '',
+        openingsTime: '',
+        closingTime: '',
+        hasTrainers: true,
+        abonnements: [new mongoose.Schema.Types.ObjectId('1')],
+        address: {
+          street: '',
+          homeNumber: '',
+          city: '',
+          country: '',
+          postalCode: '',
+        },
+      };
+      const promiseResult: Promise<DbLocation> = Promise.resolve(output);
+      const promiseAbonnementResult: Promise<boolean> = Promise.resolve(true);
+      jest
+        .spyOn(abonnementService, 'areAbonnements')
+        .mockImplementation(() => promiseAbonnementResult);
+      jest.spyOn(service, 'create').mockImplementation(() => promiseResult);
+
+      let returnData: DbLocation | null = null;
+      await controller.create(input).then((data) => (returnData = data));
+      expect(returnData).toBe(output);
+    });
+
+    it('should return a exception with incorrect abonnements', async () => {
+      const input: CreateLocationDto = {
+        phoneNumber: '',
+        eMail: '',
+        openingsTime: '',
+        closingTime: '',
+        hasTrainers: true,
+        abonnements: ['1'],
+        address: {
+          street: '',
+          homeNumber: '',
+          city: '',
+          country: '',
+          postalCode: '',
+        },
+      };
+
+      const output: DbLocation = {
+        phoneNumber: '',
+        eMail: '',
+        openingsTime: '',
+        closingTime: '',
+        hasTrainers: true,
+        abonnements: [new mongoose.Schema.Types.ObjectId('1')],
+        address: {
+          street: '',
+          homeNumber: '',
+          city: '',
+          country: '',
+          postalCode: '',
+        },
+      };
+      const promiseResult: Promise<DbLocation> = Promise.resolve(output);
+      const promiseAbonnementResult: Promise<boolean> = Promise.resolve(false);
+      jest
+        .spyOn(abonnementService, 'areAbonnements')
+        .mockImplementation(() => promiseAbonnementResult);
+      jest.spyOn(service, 'create').mockImplementation(() => {
+        throw new HttpException(
+          `One or multiple abonnements are not found`,
+          HttpStatus.NOT_FOUND
+        );
+      });
+
+      await expect(controller.create(input)).rejects.toEqual(
+        new HttpException(
+          `One or multiple abonnements are not found`,
+          HttpStatus.NOT_FOUND
+        )
+      );
+    });
+
+    it('should return a exception with no abonnements', async () => {
+      const input: CreateLocationDto = {
+        phoneNumber: '',
+        eMail: '',
+        openingsTime: '',
+        closingTime: '',
+        hasTrainers: true,
+        abonnements: [],
+        address: {
+          street: '',
+          homeNumber: '',
+          city: '',
+          country: '',
+          postalCode: '',
+        },
+      };
+
+      const output: DbLocation = {
+        phoneNumber: '',
+        eMail: '',
+        openingsTime: '',
+        closingTime: '',
+        hasTrainers: true,
+        abonnements: [],
+        address: {
+          street: '',
+          homeNumber: '',
+          city: '',
+          country: '',
+          postalCode: '',
+        },
+      };
+      const promiseAbonnementResult: Promise<boolean> = Promise.resolve(false);
+      jest
+        .spyOn(abonnementService, 'areAbonnements')
+        .mockImplementation(() => promiseAbonnementResult);
+
+      jest.spyOn(service, 'create').mockImplementation(() => {
+        throw new HttpException(
+          `There needs to be atleast one abonnement`,
+          HttpStatus.NOT_FOUND
+        );
+      });
+
+      await expect(controller.create(input)).rejects.toEqual(
+        new HttpException(
+          `There needs to be atleast one abonnement`,
+          HttpStatus.NOT_FOUND
+        )
+      );
+    });
+  });
+
+  describe('update', () => {
+    it('should return a UpdateWriteOpResult', async () => {
+      const input: UpdateLocationDto = {
+        phoneNumber: '',
+        eMail: '',
+        openingsTime: '',
+        closingTime: '',
+        hasTrainers: true,
+        abonnements: ['1'],
+        address: {
+          street: '',
+          homeNumber: '',
+          city: '',
+          country: '',
+          postalCode: '',
+        },
+      };
+
+      let output: UpdateWriteOpResult = {
+        acknowledged: true,
+        matchedCount: 1,
+        modifiedCount: 1,
+        upsertedCount: 0,
+        upsertedId: null,
+      };
+      const promiseResult: Promise<UpdateWriteOpResult> =
+        Promise.resolve(output);
+
+      jest.spyOn(service, 'update').mockImplementation(() => promiseResult);
+
+      let returnData: UpdateWriteOpResult | null = null;
+      await controller.Update('1', input).then((data) => (returnData = data));
+      expect(returnData).toBe(output);
+    });
+  });
+
+  describe('Delete', () => {
+    it('should return a DeleteResult', async () => {
+      let output: DeleteResult = {
+        acknowledged: true,
+        deletedCount: 1,
+      };
+      const promiseResult: Promise<DeleteResult> = Promise.resolve(output);
+
+      jest.spyOn(service, 'delete').mockImplementation(() => promiseResult);
+
+      let returnData: DeleteResult | null = null;
+      await controller.delete('1').then((data) => (returnData = data));
+      expect(returnData).toBe(output);
     });
   });
 

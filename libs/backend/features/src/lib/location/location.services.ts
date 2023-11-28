@@ -6,13 +6,15 @@ import { Model, UpdateWriteOpResult } from 'mongoose';
 import { DbLocation } from './location.schema';
 import { DeleteResult, ObjectId } from 'mongodb';
 import { ILocation, IUpdateLocation } from '@client-side/shared/api';
+import { AbonnementService } from '../abonnement/abonnement.services';
 
 @Injectable()
 export class LocationService {
   TAG = 'LocationService';
 
   constructor(
-    @InjectModel(DbLocation.name) private LocationModel: Model<DbLocation>
+    @InjectModel(DbLocation.name) private LocationModel: Model<DbLocation>,
+    private abonnementService: AbonnementService
   ) {}
 
   getAll(): Promise<DbLocation[]> {
@@ -26,10 +28,21 @@ export class LocationService {
     return this.LocationModel.findOne({ _id: objectId }).exec();
   }
 
-  create(createLocationDto: CreateLocationDto): Promise<DbLocation> {
+  create(location: CreateLocationDto): Promise<DbLocation> {
     //TODO: Check if abonementId are correct
     Logger.log('create', this.TAG);
-    const createdLocation = new this.LocationModel(createLocationDto);
+
+    //check if there are abonnements
+    if (location.abonnements.length == 0) {
+      throw new RangeError('There needs to be atleast one abonnement');
+    }
+
+    //check if each id exists
+    if (!this.abonnementService.areAbonnements(location.abonnements)) {
+      throw new TypeError('One or multiple abonnements are found');
+    }
+
+    const createdLocation = new this.LocationModel(location);
     return createdLocation.save();
   }
 
@@ -42,7 +55,15 @@ export class LocationService {
     location: UpdateLocationDto,
     id: string
   ): Promise<UpdateWriteOpResult> {
-    //TODO: check abonnmentId are correct
+    //check if there are abonnements
+    if (location.abonnements.length == 0) {
+      throw new RangeError('There needs to be atleast one abonnement');
+    }
+
+    //check if each id exists
+    if (!this.abonnementService.areAbonnements(location.abonnements)) {
+      throw new TypeError('One or multiple abonnements are not found');
+    }
     return this.LocationModel.updateOne(
       { _id: new ObjectId(id) },
       { $set: location }

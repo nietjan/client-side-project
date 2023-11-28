@@ -70,7 +70,10 @@ export class LocationController {
       if (error instanceof Error) {
         throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
       } else {
-        throw new HttpException('', HttpStatus.INTERNAL_SERVER_ERROR);
+        throw new HttpException(
+          'Server erro',
+          HttpStatus.INTERNAL_SERVER_ERROR
+        );
       }
     }
   }

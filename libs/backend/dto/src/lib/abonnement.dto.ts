@@ -27,10 +27,6 @@ export class CreateAbonnementDto implements ICreateAbonnement {
   @IsNotEmpty()
   name!: string;
 
-  @ApiProperty({ type: String })
-  @IsNotEmpty()
-  locationId!: string;
-
   @ApiProperty({ type: Number })
   @IsNumber()
   @IsNotEmpty()
@@ -53,10 +49,6 @@ export class UpsertAbonnementDto implements IUpsertAbonnement {
   @IsNotEmpty()
   name!: string;
 
-  @ApiProperty({ type: String })
-  @IsNotEmpty()
-  locationId!: string;
-
   @ApiProperty({ type: Number })
   @IsNumber()
   @IsNotEmpty()
@@ -73,10 +65,6 @@ export class UpdateAbonnementDto implements IUpdateAbonnement {
   @IsString()
   @IsNotEmpty()
   name!: string;
-
-  @ApiProperty({ type: String })
-  @IsNotEmpty()
-  locationId!: string;
 
   @ApiProperty({ type: Number })
   @IsNumber()
