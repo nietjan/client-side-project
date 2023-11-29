@@ -71,7 +71,7 @@ export class LocationController {
         throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
       } else {
         throw new HttpException(
-          'Server erro',
+          'Server error',
           HttpStatus.INTERNAL_SERVER_ERROR
         );
       }
@@ -104,7 +104,7 @@ export class LocationController {
   }
 
   @Put(':id')
-  @ApiOperation({ summary: 'Delete location' })
+  @ApiOperation({ summary: 'update location' })
   @ApiParam({ name: 'id', description: 'Id of location', type: String })
   @ApiBody({ type: UpdateLocationDto })
   async Update(

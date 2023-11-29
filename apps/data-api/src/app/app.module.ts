@@ -3,6 +3,7 @@ import {
   LocationModule,
   UserModule,
   AbonnementModule,
+  RegistrationModule,
 } from '@client-side/backend/features';
 import { MongooseModule } from '@nestjs/mongoose';
 
@@ -11,6 +12,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     LocationModule,
     UserModule,
     AbonnementModule,
+    RegistrationModule,
     MongooseModule.forRoot('mongodb://127.0.0.1:27017/clientSide'),
   ],
   controllers: [],

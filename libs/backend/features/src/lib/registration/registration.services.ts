@@ -31,15 +31,15 @@ export class RegistrationService {
     //create query object with correct properties
     var query: any = {};
 
-    if (userId != null) {
+    if (userId != null && userId != undefined) {
       query.userId = userId;
     }
 
-    if (locationId != null) {
+    if (locationId != null && userId != undefined) {
       query.locationId = locationId;
     }
 
-    if (abonnementId != null) {
+    if (abonnementId != null && userId != undefined) {
       query.abonnementId = abonnementId;
     }
 
