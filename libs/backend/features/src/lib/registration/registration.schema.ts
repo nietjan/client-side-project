@@ -1,19 +1,25 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument, ObjectId } from 'mongoose';
 import { IRegistration } from '@client-side/shared/api';
 
 export type RegistrationDocument = HydratedDocument<DbRegistration>;
 
 @Schema()
-export class DbRegistration implements IRegistration {
-  @Prop({ required: true })
-  userId!: string;
+export class DbRegistration {
+  @Prop({
+    type: { type: mongoose.Schema.Types.ObjectId, ref: 'DbUser' },
+  })
+  userId!: ObjectId;
 
-  @Prop({ required: true })
-  locationId!: string;
+  @Prop({
+    type: { type: mongoose.Schema.Types.ObjectId, ref: 'DbLocation' },
+  })
+  locationId!: ObjectId;
 
-  @Prop({ required: true })
-  abonnementID!: string;
+  @Prop({
+    type: { type: mongoose.Schema.Types.ObjectId, ref: 'DbAbonnement' },
+  })
+  abonnementId!: ObjectId;
 
   @Prop({ required: true })
   registrationDate!: Date;

@@ -34,11 +34,12 @@ export class UserService {
   }
 
   delete(id: string): Promise<DeleteResult> {
-    Logger.log('Delete', this.TAG);
+    Logger.log('delete', this.TAG);
     return this.UserModel.deleteOne({ _id: new ObjectId(id) }).exec();
   }
 
   update(User: UpdateUserDto, id: string): Promise<UpdateWriteOpResult> {
+    Logger.log('update', this.TAG);
     return this.UserModel.updateOne(
       { _id: new ObjectId(id) },
       { $set: User }

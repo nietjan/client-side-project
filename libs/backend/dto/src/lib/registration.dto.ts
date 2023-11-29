@@ -22,6 +22,6 @@ export class CreateRegistrationDTO implements ICreateRegistration {
   @ApiProperty({ type: String })
   @IsString()
   @IsNotEmpty()
-  @MinLength(24, { message: 'Incorrect abonnementID' })
-  abonnementID!: string;
+  @MinLength(24, { message: 'Incorrect abonnementId' })
+  abonnementId!: string;
 }

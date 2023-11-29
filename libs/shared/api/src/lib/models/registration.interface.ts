@@ -1,11 +1,11 @@
 export interface IRegistration {
   userId: string;
   locationId: string;
-  abonnementID: string;
+  abonnementId: string;
   registrationDate: Date;
 }
 
 export type ICreateRegistration = Pick<
   IRegistration,
-  'userId' | 'locationId' | 'abonnementID'
+  'userId' | 'locationId' | 'abonnementId'
 >;
