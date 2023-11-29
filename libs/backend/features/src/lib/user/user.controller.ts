@@ -34,7 +34,7 @@ export class UserController {
     status: 200,
     description: 'Succesfully returns all users',
   })
-  async getAll(): Promise<DbUser[]> {
+  async getAll(): Promise<Object[]> {
     try {
       return await this.userService.getAll();
     } catch (error) {
@@ -45,7 +45,7 @@ export class UserController {
   @Get(':id')
   @ApiOperation({ summary: 'Get user with id' })
   @ApiParam({ name: 'id', description: 'Id of user', type: String })
-  async getOne(@Param('id') id: string): Promise<DbUser> {
+  async getOne(@Param('id') id: string): Promise<Object> {
     try {
       let result = await this.userService.getOne(id);
       if (result != null) {
@@ -63,9 +63,11 @@ export class UserController {
   @Post('')
   @ApiOperation({ summary: 'Create user' })
   @ApiBody({ type: CreateUserDto })
-  async create(@Body() data: CreateUserDto): Promise<DbUser> {
+  async create(@Body() data: CreateUserDto): Promise<Object> {
     try {
-      return await this.userService.create(data);
+      const result = await this.userService.create(data);
+      result.password == null;
+      return result;
     } catch (error) {
       if (error instanceof Error) {
         throw new HttpException(error.message, HttpStatus.BAD_REQUEST);

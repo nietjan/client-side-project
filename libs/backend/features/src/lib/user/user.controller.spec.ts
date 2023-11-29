@@ -56,7 +56,7 @@ describe('UserController', () => {
 
       jest.spyOn(service, 'getAll').mockImplementation(() => promiseResult);
 
-      let returnData: DbUser[] = [];
+      let returnData: Object[] = [];
       await controller.getAll().then((data) => (returnData = data));
       expect(returnData).toBe(result);
       expect(returnData.length).toBe(1);
@@ -68,7 +68,7 @@ describe('UserController', () => {
 
       jest.spyOn(service, 'getAll').mockImplementation(() => promiseResult);
 
-      let returnData: DbUser[] = [];
+      let returnData: Object[] = [];
       await controller.getAll().then((data) => (returnData = data));
       expect(returnData).toBe(result);
       expect(returnData.length).toBe(0);
@@ -98,7 +98,7 @@ describe('UserController', () => {
 
       jest.spyOn(service, 'getOne').mockImplementation(() => promiseResult);
 
-      let returnData: DbUser | null = null;
+      let returnData: Object | null = null;
       await controller.getOne('').then((data) => (returnData = data));
       expect(returnData).toBe(result);
     });
@@ -138,7 +138,7 @@ describe('UserController', () => {
 
       jest.spyOn(service, 'create').mockImplementation(() => promiseResult);
 
-      let returnData: DbUser | null = null;
+      let returnData: Object | null = null;
       await controller.create(result).then((data) => (returnData = data));
       expect(returnData).toBe(result);
     });

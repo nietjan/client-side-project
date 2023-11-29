@@ -13,15 +13,18 @@ export class UserService {
 
   constructor(@InjectModel(DbUser.name) private UserModel: Model<DbUser>) {}
 
-  getAll(): Promise<DbUser[]> {
+  getAll(): Promise<Object[]> {
     Logger.log('getAll', this.TAG);
-    return this.UserModel.find().exec();
+    return this.UserModel.find({}, { password: false }).exec();
   }
 
-  getOne(id: string): Promise<DbUser | null> {
+  getOne(id: string): Promise<Object | null> {
     Logger.log('getAll', this.TAG);
     var objectId = new ObjectId(id);
-    return this.UserModel.findOne({ _id: objectId }).exec();
+    return this.UserModel.findOne(
+      { _id: objectId },
+      { password: false }
+    ).exec();
   }
 
   create(User: CreateUserDto): Promise<DbUser> {
