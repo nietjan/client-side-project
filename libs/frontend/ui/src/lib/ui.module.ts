@@ -4,9 +4,10 @@ import { AboutComponent } from './about/about.component';
 import { HeaderComponent } from './header/header.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   declarations: [AboutComponent, HeaderComponent, SpinnerComponent],
   exports: [AboutComponent, HeaderComponent, SpinnerComponent],
 })
