@@ -3,6 +3,10 @@ import { IAddress } from './address.interface';
 import { ICreateLocation } from './location.interface';
 
 //add role
+export enum role {
+  EMPLOYEE,
+  USER,
+}
 
 export interface IUser {
   id: Id;
@@ -12,6 +16,7 @@ export interface IUser {
   phoneNumber: string;
   eMail: string;
   password: string;
+  role: role;
   iban: string;
   address: IAddress;
 }
@@ -27,6 +32,7 @@ export type ICreateUser = Pick<
   | 'password'
   | 'iban'
   | 'address'
+  | 'role'
 >;
 
 export type IUpdateUser = Partial<Omit<IUser, 'id'>>;

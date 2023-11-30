@@ -1,4 +1,9 @@
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { DbUser, UserDocument } from '../user/user.schema';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
@@ -29,10 +34,10 @@ export class AuthService {
     return null;
   }
 
-  async login(credentials: IUserCredentials): Promise<IUser> {
-    this.logger.log('login ' + credentials.eMail);
+  async login(credentials: IUserCredentials): Promise<any> {
+    this.logger.log('login ' + credentials.eMail + ' ' + credentials.password);
     return await this.UserModel.findOne({
-      emailAddress: credentials.eMail,
+      eMail: credentials.eMail,
     })
       .select('+password')
       .exec()
@@ -40,6 +45,7 @@ export class AuthService {
         if (user && user.password === credentials.password) {
           const payload = {
             user_id: user._id,
+            user_role: user.role,
           };
           return {
             _id: user._id,
@@ -54,7 +60,11 @@ export class AuthService {
         }
       })
       .catch((error) => {
-        return error;
+        if (error instanceof Error) {
+          throw new UnauthorizedException(error.message);
+        } else {
+          throw new InternalServerErrorException('Internal server error');
+        }
       });
   }
 }

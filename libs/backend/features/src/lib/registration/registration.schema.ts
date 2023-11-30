@@ -21,7 +21,7 @@ export class DbRegistration {
   })
   abonnementId!: ObjectId;
 
-  @Prop({ required: true })
+  @Prop({ required: true, default: new Date() })
   registrationDate!: Date;
 }
 
