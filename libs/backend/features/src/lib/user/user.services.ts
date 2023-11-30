@@ -29,6 +29,9 @@ export class UserService {
 
   create(User: CreateUserDto): Promise<DbUser> {
     Logger.log('create', this.TAG);
+
+    //TODO: check if user already exists
+
     const createdUser = new this.UserModel(User);
     return createdUser.save();
   }

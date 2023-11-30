@@ -22,7 +22,7 @@ export class RegistrationService {
     private abonnementService: AbonnementService
   ) {}
 
-  getAll(
+  get(
     userId?: string | null,
     locationId?: string | null,
     abonnementId?: string | null
@@ -44,20 +44,6 @@ export class RegistrationService {
     }
 
     return this.RegistrationModel.find(query).exec();
-  }
-
-  getOne(
-    userId: string,
-    locationId: string,
-    abonnementId: string
-  ): Promise<DbRegistration | null> {
-    Logger.log('getOne', this.TAG);
-
-    return this.RegistrationModel.findOne({
-      userId: userId,
-      locationId: locationId,
-      abonnementId: abonnementId,
-    }).exec();
   }
 
   async create(registration: ICreateRegistration): Promise<DbRegistration> {

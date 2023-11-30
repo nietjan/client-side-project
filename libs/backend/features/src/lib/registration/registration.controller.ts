@@ -61,9 +61,19 @@ export class RegistrationController {
   ): Promise<any> {
     try {
       //if result is array of 1 return it as a object else return as array
-      const result = await this.registrationService.getAll();
-      if (result.length == 1) {
-        return result[0];
+      const result = await this.registrationService.get();
+
+      //if al three query's have values than only 1 value is possible, so return a object instead of a array
+      if (
+        userId != undefined &&
+        locationId != undefined &&
+        abonnementId != undefined
+      ) {
+        if (result.length == 1) {
+          return result[0];
+        } else {
+          return {};
+        }
       } else {
         return result;
       }
