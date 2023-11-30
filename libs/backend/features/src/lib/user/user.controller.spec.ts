@@ -9,6 +9,9 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import exp = require('constants');
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from '@client-side/backend/dto';
+import { role } from '@client-side/shared/api';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthModule } from '../auth/auth.module';
 
 describe('UserController', () => {
   let controller: UserController;
@@ -25,6 +28,8 @@ describe('UserController', () => {
       imports: [
         MongooseModule.forFeature([{ name: DbUser.name, schema: UserSchema }]),
         MongooseModule.forRoot(uri),
+        JwtModule,
+        AuthModule,
       ],
     }).compile();
 
@@ -43,6 +48,7 @@ describe('UserController', () => {
           eMail: '',
           password: '',
           iban: '',
+          role: role.USER,
           address: {
             street: '',
             postalCode: '',
@@ -84,6 +90,7 @@ describe('UserController', () => {
         phoneNumber: '',
         eMail: '',
         password: '',
+        role: role.USER,
         iban: '',
         address: {
           street: '',
@@ -125,6 +132,7 @@ describe('UserController', () => {
         eMail: '',
         password: '',
         iban: '',
+        role: role.USER,
         address: {
           street: '',
           postalCode: '',
@@ -154,6 +162,7 @@ describe('UserController', () => {
         eMail: '',
         password: '',
         iban: '',
+        role: role.USER,
         address: {
           street: '',
           postalCode: '',
@@ -176,7 +185,9 @@ describe('UserController', () => {
       jest.spyOn(service, 'update').mockImplementation(() => promiseResult);
 
       let returnData: UpdateWriteOpResult | null = null;
-      await controller.Update('1', input).then((data) => (returnData = data));
+      await controller
+        .Update('1', input, { user: { user_id: '1' } })
+        .then((data) => (returnData = data));
       expect(returnData).toBe(output);
     });
   });
@@ -192,7 +203,9 @@ describe('UserController', () => {
       jest.spyOn(service, 'delete').mockImplementation(() => promiseResult);
 
       let returnData: DeleteResult | null = null;
-      await controller.delete('1').then((data) => (returnData = data));
+      await controller
+        .delete('1', { user: { user_id: '1' } })
+        .then((data) => (returnData = data));
       expect(returnData).toBe(output);
     });
   });

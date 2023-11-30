@@ -11,6 +11,8 @@ import { CreateLocationDto, UpdateLocationDto } from '@client-side/backend/dto';
 import { DeleteResult, ObjectId } from 'mongodb';
 import { AbonnementModule } from './../abonnement/abonnement.modules';
 import { AbonnementService } from '../abonnement/abonnement.services';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthModule } from '../auth/auth.module';
 
 describe('LocationController', () => {
   let controller: LocationController;
@@ -34,6 +36,8 @@ describe('LocationController', () => {
         ]),
         MongooseModule.forRoot(uri),
         AbonnementModule,
+        JwtModule,
+        AuthModule,
       ],
     }).compile();
 

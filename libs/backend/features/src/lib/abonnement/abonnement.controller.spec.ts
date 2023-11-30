@@ -12,6 +12,8 @@ import {
   CreateAbonnementDto,
   UpdateAbonnementDto,
 } from '@client-side/backend/dto';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthModule } from '../auth/auth.module';
 
 describe('AbonnementController', () => {
   let controller: AbonnementController;
@@ -30,6 +32,8 @@ describe('AbonnementController', () => {
           { name: DbAbonnement.name, schema: AbonnementSchema },
         ]),
         MongooseModule.forRoot(uri),
+        JwtModule,
+        AuthModule,
       ],
     }).compile();
 
