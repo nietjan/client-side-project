@@ -1,6 +1,7 @@
 import {
   ConflictException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
@@ -31,16 +32,43 @@ export class UserService {
     ).exec();
   }
 
-  async create(user: CreateUserDto): Promise<DbUser> {
+  async create(user: CreateUserDto): Promise<Object> {
     Logger.log('create', this.TAG);
 
     //check if user already exists
-    if (await this.UserModel.findOne({ emailAddress: user.eMail })) {
+    const alreadyExists = await this.UserModel.findOne({
+      eMail: user.eMail,
+    }).exec();
+    if (alreadyExists != null) {
       throw new ConflictException('User already exist');
     }
 
     const createdUser = new this.UserModel(user);
-    return createdUser.save();
+
+    return createdUser
+      .save()
+      .then((data) => {
+        return {
+          _id: createdUser.id,
+          name: createdUser.name,
+          dateOfBirith: createdUser.dateOfBirith,
+          sex: createdUser.sex,
+          phoneNumber: createdUser.phoneNumber,
+          eMail: createdUser.eMail,
+          iban: createdUser.iban,
+          role: createdUser.role,
+          address: {
+            street: createdUser.address.street,
+            homeNumber: createdUser.address.homeNumber,
+            city: createdUser.address.city,
+            country: createdUser.address.country,
+            postalCode: createdUser.address.postalCode,
+          },
+        };
+      })
+      .catch((error) => {
+        throw new InternalServerErrorException();
+      });
   }
 
   delete(id: string): Promise<DeleteResult> {

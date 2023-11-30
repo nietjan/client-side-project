@@ -9,6 +9,7 @@ import {
   IsStrongPassword,
   IsPhoneNumber,
   IsNotEmptyObject,
+  IsEnum,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import {
@@ -17,6 +18,7 @@ import {
   IUpdateUser,
   IUpsertUser,
   IUpdateAddress,
+  role,
 } from '@client-side/shared/api';
 import { CreateAddressDto } from './address.dto';
 import { ApiProperty } from '@nestjs/swagger';
@@ -53,8 +55,12 @@ export class CreateUserDto implements ICreateUser {
   @IsNotEmpty()
   eMail!: string;
 
+  @ApiProperty({ enum: ['USER', 'EMPLOYEE'] })
+  @IsEnum(role)
+  @IsOptional()
+  role!: role;
+
   @ApiProperty({ type: String })
-  @IsStrongPassword()
   @IsNotEmpty()
   password!: string;
 
@@ -109,6 +115,11 @@ export class UpsertUserDto implements IUpsertUser {
   @IsNotEmpty()
   password!: string;
 
+  @ApiProperty({ enum: ['USER', 'EMPLOYEE'] })
+  @IsOptional()
+  @IsEnum(role)
+  role!: role;
+
   @ApiProperty({ type: String })
   @IsString()
   @IsNotEmpty()
@@ -149,6 +160,11 @@ export class UpdateUserDto implements IUpdateUser, IUpdateAddress {
   @IsEmail()
   @IsNotEmpty()
   eMail!: string;
+
+  @ApiProperty({ enum: ['USER', 'EMPLOYEE'] })
+  @IsOptional()
+  @IsEnum(role)
+  role!: role;
 
   @ApiProperty({ type: String })
   @IsStrongPassword()

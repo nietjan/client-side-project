@@ -4,6 +4,7 @@ import {
   HttpException,
   HttpStatus,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { Get, Param, Post, Body } from '@nestjs/common';
 import { UserService } from './user.services';
@@ -20,6 +21,7 @@ import { DbUser } from './user.schema';
 import { DeleteResult } from 'mongodb';
 import { IUser, IUpdateUser } from '@client-side/shared/api';
 import { UpdateWriteOpResult } from 'mongoose';
+import { AuthGuard } from '../auth/guards/auth.guards';
 
 //TODO: add all ApiResponses
 @ApiTags('user')
@@ -65,9 +67,7 @@ export class UserController {
   @ApiBody({ type: CreateUserDto })
   async create(@Body() data: CreateUserDto): Promise<Object> {
     try {
-      const result = await this.userService.create(data);
-      result.password == null;
-      return result;
+      return await this.userService.create(data);
     } catch (error) {
       if (error instanceof Error) {
         throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
