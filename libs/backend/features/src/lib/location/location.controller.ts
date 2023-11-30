@@ -4,6 +4,7 @@ import {
   HttpException,
   HttpStatus,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { Get, Param, Post, Body } from '@nestjs/common';
 import { LocationService } from './location.services';
@@ -14,12 +15,14 @@ import {
   ApiParam,
   ApiBody,
   ApiOperation,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import { NOTFOUND } from 'dns';
 import { DbLocation } from './location.schema';
 import { DeleteResult } from 'mongodb';
 import { ILocation, IUpdateLocation } from '@client-side/shared/api';
 import { UpdateWriteOpResult } from 'mongoose';
+import { EmployeeOnlyGuard } from '../auth/guards/employee.only.guards';
 
 //TODO: add all ApiResponses
 @ApiTags('location')
@@ -63,6 +66,8 @@ export class LocationController {
   @Post('')
   @ApiOperation({ summary: 'Create location' })
   @ApiBody({ type: CreateLocationDto })
+  @UseGuards(EmployeeOnlyGuard)
+  @ApiBearerAuth()
   async create(@Body() data: CreateLocationDto): Promise<DbLocation> {
     try {
       return await this.locationService.create(data);
@@ -81,6 +86,8 @@ export class LocationController {
   @Delete(':id')
   @ApiOperation({ summary: 'Delete location' })
   @ApiParam({ name: 'id', description: 'Id of location', type: String })
+  @UseGuards(EmployeeOnlyGuard)
+  @ApiBearerAuth()
   async delete(@Param('id') id: string): Promise<DeleteResult> {
     try {
       const result = await this.locationService.delete(id);
@@ -107,6 +114,8 @@ export class LocationController {
   @ApiOperation({ summary: 'update location' })
   @ApiParam({ name: 'id', description: 'Id of location', type: String })
   @ApiBody({ type: UpdateLocationDto })
+  @UseGuards(EmployeeOnlyGuard)
+  @ApiBearerAuth()
   async Update(
     @Param('id') id: string,
     @Body() location: UpdateLocationDto

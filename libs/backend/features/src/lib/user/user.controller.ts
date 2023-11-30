@@ -5,6 +5,8 @@ import {
   HttpStatus,
   Put,
   UseGuards,
+  Request,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { Get, Param, Post, Body } from '@nestjs/common';
 import { UserService } from './user.services';
@@ -15,6 +17,7 @@ import {
   ApiParam,
   ApiBody,
   ApiOperation,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import { NOTFOUND } from 'dns';
 import { DbUser } from './user.schema';
@@ -83,7 +86,16 @@ export class UserController {
   @Delete(':id')
   @ApiOperation({ summary: 'Delete user' })
   @ApiParam({ name: 'id', description: 'Id of user', type: String })
-  async delete(@Param('id') id: string): Promise<DeleteResult> {
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  async delete(
+    @Param('id') id: string,
+    @Request() req: any
+  ): Promise<DeleteResult> {
+    if (id != req['user'].user_id) {
+      throw new UnauthorizedException('Not allowed to delete user');
+    }
+
     try {
       const result = await this.userService.delete(id);
       if (result.deletedCount == 0) {
@@ -109,10 +121,17 @@ export class UserController {
   @ApiOperation({ summary: 'Delete user' })
   @ApiParam({ name: 'id', description: 'Id of user', type: String })
   @ApiBody({ type: UpdateUserDto })
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   async Update(
     @Param('id') id: string,
-    @Body() user: UpdateUserDto
+    @Body() user: UpdateUserDto,
+    @Request() req: any
   ): Promise<UpdateWriteOpResult> {
+    if (id != req['user'].user_id) {
+      throw new UnauthorizedException('Not allowed to delete user');
+    }
+
     try {
       const result = await this.userService.update(user, id);
       if (result.modifiedCount == 0) {

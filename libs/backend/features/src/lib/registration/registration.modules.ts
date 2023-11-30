@@ -6,6 +6,8 @@ import { DbRegistration, RegistrationSchema } from './registration.schema';
 import { LocationModule } from '../location/location.modules';
 import { AbonnementModule } from '../abonnement/abonnement.modules';
 import { UserModule } from '../user/user.modules';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   controllers: [RegistrationController],
@@ -18,6 +20,8 @@ import { UserModule } from '../user/user.modules';
     MongooseModule.forFeature([
       { name: DbRegistration.name, schema: RegistrationSchema },
     ]),
+    JwtModule,
+    AuthModule,
   ],
 })
 export class RegistrationModule {}

@@ -10,12 +10,6 @@ export class CreateRegistrationDTO implements ICreateRegistration {
   @ApiProperty({ type: String })
   @IsString()
   @IsNotEmpty()
-  @MinLength(24, { message: 'Incorrect userId' })
-  userId!: string;
-
-  @ApiProperty({ type: String })
-  @IsString()
-  @IsNotEmpty()
   @MinLength(24, { message: 'Incorrect locationId' })
   locationId!: string;
 

@@ -4,6 +4,7 @@ import {
   HttpException,
   HttpStatus,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { Get, Param, Post, Body } from '@nestjs/common';
 import { AbonnementService } from './abonnement.services';
@@ -17,11 +18,13 @@ import {
   ApiParam,
   ApiBody,
   ApiOperation,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import { DbAbonnement } from './abonnement.schema';
 import { DeleteResult } from 'mongodb';
 import { IAbonnement, IUpdateAbonnement } from '@client-side/shared/api';
 import { UpdateWriteOpResult } from 'mongoose';
+import { EmployeeOnlyGuard } from '../auth/guards/employee.only.guards';
 
 //TODO: add all ApiResponses
 @ApiTags('abonnement')
@@ -71,6 +74,8 @@ export class AbonnementController {
   @Post('')
   @ApiOperation({ summary: 'Create abonnement' })
   @ApiBody({ type: CreateAbonnementDto })
+  @UseGuards(EmployeeOnlyGuard)
+  @ApiBearerAuth()
   async create(@Body() data: CreateAbonnementDto): Promise<DbAbonnement> {
     try {
       return await this.AbonnementService.create(data);
@@ -89,6 +94,8 @@ export class AbonnementController {
   @Delete(':id')
   @ApiOperation({ summary: 'Delete abonnement' })
   @ApiParam({ name: 'id', description: 'Id of abonnement', type: String })
+  @UseGuards(EmployeeOnlyGuard)
+  @ApiBearerAuth()
   async delete(@Param('id') id: string): Promise<DeleteResult> {
     try {
       const result = await this.AbonnementService.delete(id);
@@ -115,6 +122,8 @@ export class AbonnementController {
   @ApiOperation({ summary: 'Delete abonnement' })
   @ApiParam({ name: 'id', description: 'Id of abonnement', type: String })
   @ApiBody({ type: UpdateAbonnementDto })
+  @UseGuards(EmployeeOnlyGuard)
+  @ApiBearerAuth()
   async Update(
     @Param('id') id: string,
     @Body() Abonnement: UpdateAbonnementDto

@@ -4,6 +4,8 @@ import { LocationService } from './location.services';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AbonnementModule } from '../abonnement/abonnement.modules';
 import { DbLocation, LocationSchema } from './location.schema';
+import { AuthModule } from '../auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -11,6 +13,8 @@ import { DbLocation, LocationSchema } from './location.schema';
     MongooseModule.forFeature([
       { name: DbLocation.name, schema: LocationSchema },
     ]),
+    JwtModule,
+    AuthModule,
   ],
   controllers: [LocationController],
   providers: [LocationService],

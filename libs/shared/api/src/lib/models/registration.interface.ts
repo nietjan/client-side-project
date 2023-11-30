@@ -7,5 +7,5 @@ export interface IRegistration {
 
 export type ICreateRegistration = Pick<
   IRegistration,
-  'userId' | 'locationId' | 'abonnementId'
+  'locationId' | 'abonnementId'
 >;

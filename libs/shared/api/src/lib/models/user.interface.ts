@@ -4,8 +4,8 @@ import { ICreateLocation } from './location.interface';
 
 //add role
 export enum role {
-  EMPLOYEE,
-  USER,
+  EMPLOYEE = 'employee',
+  USER = 'user',
 }
 
 export interface IUser {

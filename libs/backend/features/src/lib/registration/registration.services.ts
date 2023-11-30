@@ -46,7 +46,10 @@ export class RegistrationService {
     return this.RegistrationModel.find(query).exec();
   }
 
-  async create(registration: ICreateRegistration): Promise<DbRegistration> {
+  async create(
+    registration: ICreateRegistration,
+    userId: string
+  ): Promise<DbRegistration> {
     Logger.log('create', this.TAG);
 
     //check if ids are correct, if is null than correct
@@ -57,17 +60,21 @@ export class RegistrationService {
 
     //add to db
     const createdRegistration = new this.RegistrationModel({
-      registrationDate: new Date(),
       ...registration,
+      registrationDate: new Date(),
+      userId: userId,
     });
     return createdRegistration.save();
   }
 
-  update(registration: ICreateRegistration): Promise<UpdateWriteOpResult> {
+  update(
+    registration: ICreateRegistration,
+    userId: string
+  ): Promise<UpdateWriteOpResult> {
     Logger.log('update', this.TAG);
     return this.RegistrationModel.updateOne(
       {
-        userId: new ObjectId(registration.userId),
+        userId: new ObjectId(userId),
         locationId: new ObjectId(registration.locationId),
         abonnementId: new ObjectId(registration.abonnementId),
       },
@@ -75,10 +82,13 @@ export class RegistrationService {
     ).exec();
   }
 
-  delete(registration: ICreateRegistration): Promise<DeleteResult> {
+  delete(
+    registration: ICreateRegistration,
+    userId: string
+  ): Promise<DeleteResult> {
     Logger.log('delete', this.TAG);
     return this.RegistrationModel.deleteOne({
-      userId: new ObjectId(registration.userId),
+      userId: new ObjectId(userId),
       locationId: new ObjectId(registration.locationId),
       abonnementId: new ObjectId(registration.abonnementId),
     }).exec();
@@ -87,12 +97,6 @@ export class RegistrationService {
   private async checkIds(
     registration: ICreateRegistration
   ): Promise<string | null> {
-    //if user == null than user does not exist
-    const user = await this.userService.getOne(registration.userId);
-    if (user == null) {
-      return 'userId is invalid';
-    }
-
     const location = await this.locationService.getOne(registration.locationId);
     if (location == null) {
       return 'locationId is invalid';

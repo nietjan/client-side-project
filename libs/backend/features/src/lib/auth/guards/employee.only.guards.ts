@@ -29,7 +29,7 @@ export class EmployeeOnlyGuard implements CanActivate {
       this.logger.log('payload', payload);
 
       //if user is not employee than not allowed
-      if (payload.user_role != role.EMPLOYEE) {
+      if (payload.user_role != role.EMPLOYEE.toString()) {
         throw new UnauthorizedException(
           'User is not authorized for this action'
         );

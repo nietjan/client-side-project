@@ -5,6 +5,8 @@ import {
   HttpStatus,
   Put,
   Query,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { Get, Param, Post, Body } from '@nestjs/common';
 import {
@@ -14,6 +16,7 @@ import {
   ApiBody,
   ApiOperation,
   ApiQuery,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import { NOTFOUND } from 'dns';
 import { DbRegistration } from './registration.schema';
@@ -23,6 +26,7 @@ import { RegistrationService } from './registration.services';
 import { CreateRegistrationDTO } from '@client-side/backend/dto';
 import { IRegistration, ICreateRegistration } from '@client-side/shared/api';
 import { DbUser } from '../user/user.schema';
+import { AuthGuard } from '../auth/guards/auth.guards';
 
 //TODO: add all ApiResponses
 @ApiTags('registration')
@@ -89,9 +93,14 @@ export class RegistrationController {
   @Post('')
   @ApiOperation({ summary: 'Create registration' })
   @ApiBody({ type: CreateRegistrationDTO })
-  async create(@Body() data: CreateRegistrationDTO): Promise<DbRegistration> {
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  async create(
+    @Body() data: CreateRegistrationDTO,
+    @Request() req: any
+  ): Promise<DbRegistration> {
     try {
-      return await this.registrationService.create(data);
+      return await this.registrationService.create(data, req['user'].user_id);
     } catch (error) {
       if (error instanceof Error) {
         throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
@@ -107,12 +116,6 @@ export class RegistrationController {
   @Delete('')
   @ApiOperation({ summary: 'Delete registration' })
   @ApiQuery({
-    name: 'userId',
-    type: String,
-    description: 'Id of user',
-    required: true,
-  })
-  @ApiQuery({
     name: 'locationId',
     type: String,
     description: 'Id of location',
@@ -124,32 +127,32 @@ export class RegistrationController {
     description: 'Id of abonnement',
     required: true,
   })
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   async delete(
-    @Query('userId') userId: string,
+    @Request() req: any,
     @Query('locationId') locationId: string,
     @Query('abonnementId') abonnementId: string
   ): Promise<DeleteResult> {
-    if (
-      userId == undefined ||
-      locationId == undefined ||
-      abonnementId == undefined
-    ) {
+    if (locationId == undefined || abonnementId == undefined) {
       throw new HttpException(
-        'Request requires userId, locationId, abonnementId query params',
+        'Request requires locationId and abonnementId query params',
         HttpStatus.BAD_REQUEST
       );
     }
 
     let methodParam: ICreateRegistration = {
-      userId: userId,
       locationId: locationId,
       abonnementId: abonnementId,
     };
     try {
-      const result = await this.registrationService.delete(methodParam);
+      const result = await this.registrationService.delete(
+        methodParam,
+        req['user'].user_id
+      );
       if (result.deletedCount == 0) {
         throw new HttpException(
-          `Location with id of User: ${userId}, id of location: ${locationId} and id of abonnement ${abonnementId} does not exist`,
+          `Registration with combination of user, location and abonnement does not exist`,
           HttpStatus.NOT_FOUND
         );
       }
@@ -169,14 +172,20 @@ export class RegistrationController {
   @Put('')
   @ApiOperation({ summary: 'update registration' })
   @ApiBody({ type: CreateRegistrationDTO })
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   async Update(
-    @Body() data: CreateRegistrationDTO
+    @Body() data: CreateRegistrationDTO,
+    @Request() req: any
   ): Promise<UpdateWriteOpResult> {
     try {
-      const result = await this.registrationService.update(data);
+      const result = await this.registrationService.update(
+        data,
+        req['user'].user_id
+      );
       if (result.modifiedCount == 0) {
         throw new HttpException(
-          `Location with userId: ${data.userId}, locationId: ${data.locationId} and abonnementId: ${data.abonnementId} does not exist`,
+          `Registration with combination of user, location and abonnement does not exist`,
           HttpStatus.NOT_FOUND
         );
       }

@@ -55,7 +55,7 @@ export class CreateUserDto implements ICreateUser {
   @IsNotEmpty()
   eMail!: string;
 
-  @ApiProperty({ enum: ['USER', 'EMPLOYEE'] })
+  @ApiProperty({ enum: ['user', 'employee'] })
   @IsEnum(role)
   @IsOptional()
   role!: role;
