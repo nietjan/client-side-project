@@ -22,6 +22,7 @@ import { UpdateWriteOpResult } from 'mongoose';
 import { RegistrationService } from './registration.services';
 import { CreateRegistrationDTO } from '@client-side/backend/dto';
 import { IRegistration, ICreateRegistration } from '@client-side/shared/api';
+import { DbUser } from '../user/user.schema';
 
 //TODO: add all ApiResponses
 @ApiTags('registration')
@@ -58,7 +59,7 @@ export class RegistrationController {
     @Query('userId') userId?: string,
     @Query('locationId') locationId?: string,
     @Query('abonnementId') abonnementId?: string
-  ): Promise<any> {
+  ): Promise<DbRegistration[] | DbRegistration> {
     try {
       //if result is array of 1 return it as a object else return as array
       const result = await this.registrationService.get();
@@ -72,7 +73,10 @@ export class RegistrationController {
         if (result.length == 1) {
           return result[0];
         } else {
-          return {};
+          throw new HttpException(
+            'Registration cannot be found',
+            HttpStatus.NOT_FOUND
+          );
         }
       } else {
         return result;
