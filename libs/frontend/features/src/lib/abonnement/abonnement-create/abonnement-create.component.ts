@@ -1,9 +1,10 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
-import { IAbonnement } from '@client-side/shared/api';
-import { Observable } from 'rxjs';
+import { IAbonnement, role } from '@client-side/shared/api';
+import { Observable, Subscription } from 'rxjs';
 import { AbonnementService } from '../abonnement.services';
 import { ActivatedRoute, Router } from '@angular/router';
+import { StorageService } from 'libs/frontend/ui/src/lib/storage.services';
 
 @Component({
   selector: 'client-side-project-abonnement-create',
@@ -12,6 +13,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AbonnementCreateComponent {
   isUpdating: boolean = false;
+  roleSubscription: Subscription | undefined = undefined;
+  canCreateNew: boolean = false;
 
   abonnoment: IAbonnement = {
     _id: '',
@@ -26,7 +29,8 @@ export class AbonnementCreateComponent {
   constructor(
     private abonnementService: AbonnementService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private storageService: StorageService
   ) {
     //if in param there is id, than it is a update
     this.route.paramMap?.subscribe((params) => {
@@ -38,11 +42,27 @@ export class AbonnementCreateComponent {
           .subscribe(
             (value) => (this.abonnoment = { ...this.abonnoment, ...value })
           );
+
+        //set if user can create new
+        this.roleSubscription = this.storageService
+          .getRole()
+          .subscribe((result) => {
+            if (result == role.EMPLOYEE) {
+              this.canCreateNew = true;
+            } else {
+              this.canCreateNew = false;
+            }
+          });
       }
     });
   }
 
   onSubmit() {
+    //if not allowed redirect
+    if (!this.canCreateNew) {
+      this.router.navigateByUrl('/abonnement');
+    }
+
     this.abonnoment.period = Number(this.abonnoment.period);
     if (this.isUpdating) {
       //update

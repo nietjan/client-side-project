@@ -9,7 +9,7 @@
     (ngSubmit)="locationCreateForm.form.valid && onSubmit()"
     novalidate
   >
-    <h1>Location</h1>
+    <h1 class="col-12">Location</h1>
     <!--location.Email -->
     <div class="form-group col-12 col-lg-4">
       <label for="locationEmail">E-mail</label>
@@ -116,8 +116,40 @@
       </div>
     </div>
 
+    <!--location.abonnement -->
+    <div class="form-group col-12 m-0">
+      <ng-multiselect-dropdown
+        class="mt-4"
+        [placeholder]="'Choose abonnement'"
+        [settings]="dropdownSettings"
+        [data]="dropdownList"
+        name="locationAbonnement"
+        [(ngModel)]="dropDownValues"
+        (onSelect)="onItemSelect($event)"
+        (onDeSelect)="OnItemDeselect($event)"
+      >
+      </ng-multiselect-dropdown>
+      <small style="color: red" *ngIf="dropDownValues.length == 0">
+        At least 1 abonnement needs to be selected
+      </small>
+    </div>
+
+    <!--location.hasTrainers -->
+    <div class="form-group col-6 col-lg-2 mt-4">
+      <div class="form-check form-switch">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          [(ngModel)]="location.hasTrainers"
+          name="locationHasTrainers"
+          #locationHasTrainers="ngModel"
+        />
+        <label for="locationHasTrainers">Has trainers</label>
+      </div>
+    </div>
+
     <!-- location.address -->
-    <h5 class="mt-4">Address</h5>
+    <h5 class="mt-4 col-12">Address</h5>
     <div class="col-12">
       <div class="row">
         <!--location.address.street -->
@@ -188,7 +220,7 @@
 
         <!--location.address.city -->
         <div class="form-group col-6 col-lg-4">
-          <label for="locationCity">city</label>
+          <label for="locationCity">City</label>
           <input
             type="text"
             class="form-control"
@@ -234,40 +266,10 @@
       </div>
     </div>
 
-    <!--location.abonnement -->
-    <ng-multiselect-dropdown
-      class="mt-4"
-      [placeholder]="'Choose abonnement'"
-      [settings]="dropdownSettings"
-      [data]="dropdownList"
-      name="locationAbonnement"
-      [(ngModel)]="dropDownValues"
-      (onSelect)="onItemSelect($event)"
-      (onDeSelect)="OnItemDeselect($event)"
-    >
-    </ng-multiselect-dropdown>
-    <small style="color: red" *ngIf="dropDownValues.length == 0">
-      At least 1 abonnement needs to be selected
-    </small>
-
-    <!--location.hasTrainers -->
-    <div class="form-group col-6 col-lg-2 mt-4">
-      <div class="form-check form-switch">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          [(ngModel)]="location.hasTrainers"
-          name="locationHasTrainers"
-          #locationHasTrainers="ngModel"
-        />
-        <label for="locationHasTrainers">Has trainers</label>
-      </div>
-    </div>
-
-    <div class="col-">
+    <div class="col-12">
       <button
         type="supmit"
-        class="btn btn-primary"
+        class="btn btn-primary mr-2"
         [disabled]="
           locationCreateForm.invalid ||
           location.abonnements.length == 0 ||

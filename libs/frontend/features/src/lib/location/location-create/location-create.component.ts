@@ -5,9 +5,12 @@ import {
   ILocation,
   ICreateLocation,
   IAbonnement,
+  role,
 } from '@client-side/shared/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { StorageService } from 'libs/frontend/ui/src/lib/storage.services';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'client-side-project-location-create',
@@ -16,6 +19,8 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 })
 export class LocationCreateComponent implements OnInit {
   isUpdating: boolean = false;
+  roleSubscription: Subscription | undefined = undefined;
+  canCreateNew: boolean = false;
 
   location: ICreateLocation = {
     eMail: '',
@@ -43,7 +48,8 @@ export class LocationCreateComponent implements OnInit {
     private locationService: LocationService,
     private abonnementService: AbonnementService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private storageService: StorageService
   ) {
     //if in param there is id, than it is a update
     this.route.paramMap?.subscribe((params) => {
@@ -64,6 +70,17 @@ export class LocationCreateComponent implements OnInit {
         console.log(value);
       }
     });
+
+    //set if user can create new
+    this.roleSubscription = this.storageService
+      .getRole()
+      .subscribe((result) => {
+        if (result == role.EMPLOYEE) {
+          this.canCreateNew = true;
+        } else {
+          this.canCreateNew = false;
+        }
+      });
   }
 
   ngOnInit() {
@@ -97,6 +114,11 @@ export class LocationCreateComponent implements OnInit {
   }
 
   public onSubmit(): void {
+    //if not allowed redirect
+    if (!this.canCreateNew) {
+      this.router.navigateByUrl('/abonnement');
+    }
+
     if (this.isUpdating) {
       var locationId = this.locationService.updateLocation(
         this.location as ILocation

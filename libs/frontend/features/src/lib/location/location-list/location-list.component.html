@@ -1,10 +1,10 @@
-<div *ngIf="locations != null && locations?.length != 0">
-  <div class="mb-2">
-    <a routerLink="create">
-      <button class="btn btn-primary">New location</button>
-    </a>
-  </div>
+<div *ngIf="canCreateNew" class="mb-2">
+  <a routerLink="create">
+    <button class="btn btn-primary">New location</button>
+  </a>
+</div>
 
+<div *ngIf="locations != null && locations?.length != 0">
   <div class="row col-2 col-md-3 col-lg-4 col-xl-6 g-4">
     <div class="col" *ngFor="let location of locations">
       <div class="card">

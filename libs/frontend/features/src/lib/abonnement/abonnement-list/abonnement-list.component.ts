@@ -67,5 +67,6 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.abonnementSubscription) this.abonnementSubscription.unsubscribe();
+    if (this.roleSubscription) this.roleSubscription.unsubscribe();
   }
 }
