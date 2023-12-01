@@ -61,7 +61,7 @@ export class UserService {
     //     catchError(this.handleError)
     //   );
     return this.users$.pipe(
-      map((userList) => userList.find((user) => user.id === id))
+      map((userList) => userList.find((user) => user._id === id))
     ) as Observable<IUser>;
   }
 

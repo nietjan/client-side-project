@@ -81,7 +81,7 @@ export class UpsertUserDto implements IUpsertUser {
   @ApiProperty({ type: String })
   @IsString()
   @IsNotEmpty()
-  id!: string;
+  _id!: string;
 
   @ApiProperty({ type: String })
   @IsString()
