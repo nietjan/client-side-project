@@ -28,7 +28,7 @@ import { EmployeeOnlyGuard } from '../auth/guards/employee.only.guards';
 
 //TODO: add all ApiResponses
 @ApiTags('abonnement')
-@Controller('Abonnement')
+@Controller('abonnement')
 export class AbonnementController {
   constructor(private AbonnementService: AbonnementService) {}
 

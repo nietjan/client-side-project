@@ -14,7 +14,7 @@ export class AbonnementCreateComponent {
   isUpdating: boolean = false;
 
   abonnoment: IAbonnement = {
-    id: '',
+    _id: '',
     name: '',
     price: 0,
     period: 0,
@@ -43,14 +43,22 @@ export class AbonnementCreateComponent {
   }
 
   onSubmit() {
+    this.abonnoment.period = Number(this.abonnoment.period);
     if (this.isUpdating) {
-      //Not update
-      this.abonnementService.updateAbonnement(this.abonnoment);
+      //update
+      this.abonnementService
+        .updateAbonnement(this.abonnoment)
+        .subscribe((value) => {
+          this.router.navigateByUrl('/abonnement');
+        });
     } else {
-      //Update
-      this.abonnementService.createAbonnement(this.abonnoment);
+      console.log('suptmit');
+      //create
+      this.abonnementService
+        .createAbonnement(this.abonnoment)
+        .subscribe((value) => {
+          this.router.navigateByUrl('/abonnement');
+        });
     }
-
-    this.router.navigateByUrl('/abonnement');
   }
 }

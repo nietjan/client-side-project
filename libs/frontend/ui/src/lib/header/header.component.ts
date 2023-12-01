@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { UiService } from '../ui.services';
-import { IUserCredentials } from '@client-side/shared/api';
+import { IUserCredentials, role } from '@client-side/shared/api';
+import { StorageService } from '../storage.services';
 
 @Component({
   selector: 'client-side-project-header',
@@ -15,7 +16,16 @@ export class HeaderComponent {
   userName: string | null = null;
   loginInfo: IUserCredentials = { eMail: '', password: '' };
 
-  constructor(private uiService: UiService) {}
+  constructor(
+    private uiService: UiService,
+    private storageService: StorageService
+  ) {
+    const tokenStorage = localStorage.getItem('token');
+    if (tokenStorage != null) {
+      this.signedIn = true;
+      this.userName = localStorage.getItem('name');
+    }
+  }
 
   onSubmit() {
     this.uiService.login(this.loginInfo).subscribe((value) => {
@@ -23,14 +33,19 @@ export class HeaderComponent {
       this.userName = value.name;
       this.loginInfo = { eMail: '', password: '' };
       this.signedIn = true;
+      localStorage.setItem('role', value.role);
+      localStorage.setItem('name', value.name);
+      this.storageService.setRole(value.role);
       localStorage.setItem('token', value.token);
     });
   }
 
   logOut() {
-    this.signedIn = false;
     this.userToken = null;
     this.userName = null;
+    this.signedIn = false;
+    localStorage.removeItem('role');
+    this.storageService.setRole(role.USER);
     localStorage.removeItem('token');
   }
 }

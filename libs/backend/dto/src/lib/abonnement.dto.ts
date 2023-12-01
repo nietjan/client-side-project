@@ -42,7 +42,7 @@ export class UpsertAbonnementDto implements IUpsertAbonnement {
   @ApiProperty({ type: String })
   @IsString()
   @IsNotEmpty()
-  id!: string;
+  _id!: string;
 
   @ApiProperty({ type: String })
   @IsString()

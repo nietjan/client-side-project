@@ -69,15 +69,15 @@ export class LocationCreateComponent implements OnInit {
   ngOnInit() {
     this.allAbonnements.forEach((element) => {
       this.dropdownList.push({
-        id: element.id,
+        id: element._id,
         text: this.formatAbonnementString(element),
       });
     });
 
     this.allAbonnements.forEach((element) => {
-      if (this.location.abonnements.find((id) => id === element.id)) {
+      if (this.location.abonnements.find((id) => id === element._id)) {
         this.dropDownValues.push({
-          id: element.id,
+          id: element._id,
           text: this.formatAbonnementString(element),
         });
       }
@@ -93,7 +93,7 @@ export class LocationCreateComponent implements OnInit {
   }
 
   addAbonnementToLocation(abonnement: IAbonnement) {
-    this.location.abonnements.push(abonnement.id);
+    this.location.abonnements.push(abonnement._id);
   }
 
   public onSubmit(): void {

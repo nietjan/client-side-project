@@ -3,13 +3,22 @@ import { AbonnementCreateComponent } from './abonnement-create/abonnement-create
 import { AbonnementListComponent } from './abonnement-list/abonnement-list.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { UiModule } from '@client-side/ui';
 import { AbonnementService } from './abonnement.services';
 import { RouterModule } from '@angular/router';
+import { HeadersInterceptor } from '@client-side/frontend/common';
+
 @NgModule({
   declarations: [AbonnementCreateComponent, AbonnementListComponent],
-  providers: [AbonnementService],
+  providers: [
+    AbonnementService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HeadersInterceptor,
+      multi: true,
+    },
+  ],
   exports: [AbonnementListComponent, AbonnementCreateComponent],
   imports: [
     FormsModule,

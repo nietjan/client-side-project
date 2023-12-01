@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 import { CreateLocationDto, UpdateLocationDto } from '@client-side/backend/dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -7,6 +12,7 @@ import { DbLocation } from './location.schema';
 import { DeleteResult, ObjectId } from 'mongodb';
 import { ILocation, IUpdateLocation } from '@client-side/shared/api';
 import { AbonnementService } from '../abonnement/abonnement.services';
+import { DbAbonnement } from '../abonnement/abonnement.schema';
 
 @Injectable()
 export class LocationService {

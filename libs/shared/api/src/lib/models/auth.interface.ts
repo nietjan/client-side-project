@@ -1,3 +1,5 @@
+import { role } from './user.interface';
+
 /**
  * User information required for loggin in
  */
@@ -10,6 +12,7 @@ export interface ILoginReturnInfo extends IToken {
   _id: string;
   name: string;
   eMail: string;
+  role: role;
 }
 
 export interface IToken {

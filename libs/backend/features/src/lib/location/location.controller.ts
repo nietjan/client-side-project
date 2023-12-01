@@ -23,12 +23,17 @@ import { DeleteResult } from 'mongodb';
 import { ILocation, IUpdateLocation } from '@client-side/shared/api';
 import { UpdateWriteOpResult } from 'mongoose';
 import { EmployeeOnlyGuard } from '../auth/guards/employee.only.guards';
+import { AbonnementService } from '../abonnement/abonnement.services';
+import { DbAbonnement } from '../abonnement/abonnement.schema';
 
 //TODO: add all ApiResponses
 @ApiTags('location')
 @Controller('location')
 export class LocationController {
-  constructor(private locationService: LocationService) {}
+  constructor(
+    private locationService: LocationService,
+    private abonnementService: AbonnementService
+  ) {}
 
   @Get('')
   //for auth use ApiHeader
@@ -43,6 +48,35 @@ export class LocationController {
     } catch (error) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
+  }
+
+  @Get(':id/abonnement')
+  @ApiOperation({ summary: 'Get all abonnements of location with id' })
+  @ApiParam({ name: 'id', description: 'Id of location', type: String })
+  async getAbonnementsOfLocation(
+    @Param('id') id: string
+  ): Promise<DbAbonnement[]> {
+    let location: DbLocation;
+    try {
+      let result = await this.locationService.getOne(id);
+      if (result != null) {
+        location = result;
+      } else
+        throw new HttpException(
+          `Location with id: ${id} not found`,
+          HttpStatus.NOT_FOUND
+        );
+    } catch (error) {
+      throw new HttpException('Server error', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    //create string array of abonnement ids
+    let idArr: string[] = [];
+    location.abonnements.forEach((value) => {
+      idArr.push(value.toString());
+    });
+
+    return this.abonnementService.getAllFromArray(idArr);
   }
 
   @Get(':id')

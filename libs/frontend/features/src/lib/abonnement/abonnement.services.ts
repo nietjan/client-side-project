@@ -1,149 +1,100 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IAbonnement, ILocation, url } from '@client-side/shared/api';
-import { BehaviorSubject, Observable, map, of } from 'rxjs';
+import {
+  ApiResponse,
+  IAbonnement,
+  ILocation,
+  url,
+} from '@client-side/shared/api';
+import {
+  BehaviorSubject,
+  Observable,
+  catchError,
+  map,
+  of,
+  tap,
+  throwError,
+} from 'rxjs';
 
 @Injectable()
 export class AbonnementService {
-  endpoint = `${url}location`;
-  private abonnements$ = new BehaviorSubject<IAbonnement[]>([]);
+  endpoint = `${url}abonnement`;
 
-  constructor(private readonly http: HttpClient) {
-    const newAbbonees: IAbonnement[] = [
-      {
-        id: '1',
-        name: 'Yearly',
-        period: 12,
-        price: 10.5,
-      },
-      {
-        id: '2',
-        name: 'Montly',
-        period: 1,
-        price: 20,
-      },
-      {
-        id: '3',
-        name: 'Yearly',
-        period: 12,
-        price: 15,
-      },
-      {
-        id: '4',
-        name: 'Montly',
-        period: 1,
-        price: 22.5,
-      },
-    ];
+  constructor(private readonly http: HttpClient) {}
 
-    this.abonnements$.next([...this.abonnements$.value, ...newAbbonees]);
-  }
+  public allAbonnements(): Observable<IAbonnement[]> {
+    console.log(`list ${this.endpoint}`);
 
-  public allAbonnements(_options?: any): Observable<IAbonnement[] | null> {
-    // console.log(`list ${this.endpoint}`);
-
-    // return this.http
-    //   .get<ApiResponse<ILocation[]>>(this.endpoint, {
-    //     ...options,
-    //     ...httpOptions,
-    //   })
-    //   .pipe(
-    //     map((response: any) => response.results as ILocation[]),
-    //     tap(console.log),
-    //     catchError(this.handleError)
-    //   );
-    return this.abonnements$;
+    return this.http.get<ApiResponse<IAbonnement[]>>(this.endpoint).pipe(
+      map((response: any) => response.results as IAbonnement[]),
+      tap(console.log),
+      catchError(this.handleError)
+    );
   }
 
   //TODO: string array veranderen weer naar any bij options
   public allAbonnementsFromLocation(
-    options?: string[],
     locationId?: string
   ): Observable<IAbonnement[] | null> {
-    // console.log(`list ${this.endpoint}`);
-
-    // return this.http
-    //   .get<ApiResponse<ILocation[]>>(this.endpoint, {
-    //     ...options,
-    //     ...httpOptions,
-    //   })
-    //   .pipe(
-    //     map((response: any) => response.results as ILocation[]),
-    //     tap(console.log),
-    //     catchError(this.handleError)
-    //   );
-    let abonnees: IAbonnement[] = [];
-    options?.forEach((id) => {
-      this.singleAbonnoment(id).subscribe((object) => abonnees.push(object));
-    });
-    return of(abonnees);
+    return this.http
+      .get<ApiResponse<IAbonnement[]>>(
+        `${url}location/${locationId}/abonnement`
+      )
+      .pipe(
+        map((response: any) => response.results as IAbonnement[]),
+        tap(console.log),
+        catchError(this.handleError)
+      );
   }
 
   public singleAbonnoment(
     id: string | null,
     _options?: any
   ): Observable<IAbonnement> {
-    // console.log(`read ${this.endpoint}`);
-    // return this.http
-    //   .get<ApiResponse<ILocation>>(this.endpoint, {
-    //     ...options,
-    //     ...httpOptions,
-    //   })
-    //   .pipe(
-    //     tap(console.log),
-    //     map((response: any) => response.results as ILocation),
-    //     catchError(this.handleError)
-    //   );
-    return this.abonnements$.pipe(
-      map((abonnementList) =>
-        abonnementList.find((abonnemnt) => abonnemnt.id == id)
-      )
-    ) as Observable<IAbonnement>;
+    return this.http
+      .get<ApiResponse<IAbonnement>>(`${this.endpoint}/${id}`)
+      .pipe(
+        map((response: any) => response.results as IAbonnement),
+        tap(console.log),
+        catchError(this.handleError)
+      );
   }
 
-  public removeAbonnement(id: string | null): boolean {
-    if (id == null) return false;
-
-    const arr: any[] = this.abonnements$.getValue();
-
-    arr.forEach((item, index) => {
-      if (item.id == id) {
-        arr.splice(index, 1);
-      }
+  public removeAbonnement(id: string | null) {
+    if (id == null) return;
+    const headers = { Authorization: localStorage.getItem('token') };
+    this.http.delete<ApiResponse<any>>(`${this.endpoint}/${id}`).subscribe({
+      error: (error) => {
+        tap(error), catchError(this.handleError);
+      },
     });
-
-    this.abonnements$.next(arr);
-
-    return true;
   }
 
-  public createAbonnement(abonnement: IAbonnement | null): string | null {
-    if (abonnement == null) return null;
-
-    let id = 1;
-    this.abonnements$.subscribe((i) =>
-      i.forEach((value) => {
-        if (parseInt(value.id) > id) id = parseInt(value.id);
-      })
-    );
-
-    abonnement.id = (id + 1).toString();
-
-    this.abonnements$.next([...this.abonnements$.value, abonnement]);
-
-    return abonnement.id;
+  public createAbonnement(abonnement: IAbonnement): Observable<IAbonnement> {
+    return this.http
+      .post<ApiResponse<IAbonnement>>(this.endpoint, abonnement)
+      .pipe(
+        map((response: any) => response.results as IAbonnement),
+        tap(console.log),
+        catchError(this.handleError)
+      );
   }
 
-  public updateAbonnement(abonnement: IAbonnement | null): string | null {
-    if (abonnement == null) return null;
-    else if (abonnement.id == null) return null;
+  public updateAbonnement(abonnement: IAbonnement): Observable<IAbonnement> {
+    return this.http
+      .put<ApiResponse<IAbonnement>>(
+        `${this.endpoint}/${abonnement._id}`,
+        abonnement
+      )
+      .pipe(
+        map((response: any) => response.results as IAbonnement),
+        tap(console.log),
+        catchError(this.handleError)
+      );
+  }
 
-    //delete
-    let succes: boolean = this.removeAbonnement(abonnement.id);
-    if (!succes) return null;
-
-    //add it again
-    this.abonnements$.next([...this.abonnements$.value, abonnement]);
-    return abonnement.id;
+  public handleError(error: HttpErrorResponse): Observable<any> {
+    console.log(`handleError in ${AbonnementService.name}`, error);
+    return throwError(() => new Error(error.message));
   }
 }

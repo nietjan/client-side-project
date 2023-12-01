@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 import {
   CreateAbonnementDto,
@@ -27,6 +32,26 @@ export class AbonnementService {
     Logger.log('getAll', this.TAG);
     var objectId = new ObjectId(id);
     return this.AbonnementModel.findOne({ _id: objectId }).exec();
+  }
+
+  getAllFromArray(ids: string[]): Promise<DbAbonnement[]> {
+    Logger.log('getAllFromLocation', this.TAG);
+
+    //create array of objectIds
+    let objectIds: ObjectId[] = [];
+    ids.forEach(function (item) {
+      objectIds.push(new ObjectId(item));
+    });
+
+    //find
+    try {
+      return this.AbonnementModel.find({ _id: { $in: objectIds } }).exec();
+    } catch (error) {
+      throw new HttpException(
+        'Internal server error',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 
   create(createAbonnementDto: CreateAbonnementDto): Promise<DbAbonnement> {

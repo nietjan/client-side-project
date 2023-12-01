@@ -7,11 +7,12 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { UiService } from './ui.services';
+import { StorageService } from './storage.services';
 
 @NgModule({
   imports: [CommonModule, RouterModule, FormsModule, HttpClientModule],
   declarations: [AboutComponent, HeaderComponent, SpinnerComponent],
-  providers: [UiService],
+  providers: [UiService, StorageService],
   exports: [SpinnerComponent, HeaderComponent],
 })
 export class UiModule {}
