@@ -4,6 +4,8 @@ import { AbonnementService } from '../abonnement.services';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { of } from 'rxjs';
+import { UiModule } from '@client-side/ui';
+import { StorageService } from 'libs/frontend/ui/src/lib/storage.services';
 
 describe('AboutComponent', () => {
   let component: AbonnementListComponent;
@@ -22,8 +24,9 @@ describe('AboutComponent', () => {
             params: of({ id: 123 }),
           },
         },
+        StorageService,
       ],
-      imports: [RouterModule],
+      imports: [RouterModule, UiModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AbonnementListComponent);
