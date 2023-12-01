@@ -8,7 +8,11 @@ import { DbUser, UserDocument } from '../user/user.schema';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { IUser, IUserCredentials } from '@client-side/shared/api';
+import {
+  ILoginReturnInfo,
+  IUser,
+  IUserCredentials,
+} from '@client-side/shared/api';
 
 @Injectable()
 export class AuthService {
@@ -34,7 +38,7 @@ export class AuthService {
     return null;
   }
 
-  async login(credentials: IUserCredentials): Promise<any> {
+  async login(credentials: IUserCredentials): Promise<ILoginReturnInfo> {
     this.logger.log('login ' + credentials.eMail + ' ' + credentials.password);
     return await this.UserModel.findOne({
       eMail: credentials.eMail,
@@ -47,12 +51,14 @@ export class AuthService {
             user_id: user._id,
             user_role: user.role,
           };
-          return {
-            _id: user._id,
+          const returnObject: ILoginReturnInfo = {
+            _id: user._id.toString(),
             name: user.name,
             eMail: user.eMail,
             token: this.jwtService.sign(payload),
           };
+
+          return returnObject;
         } else {
           const errMsg = 'Email not found or password invalid';
           this.logger.debug(errMsg);

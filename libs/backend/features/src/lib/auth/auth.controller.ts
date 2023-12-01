@@ -1,7 +1,7 @@
 import { Body, Controller, Logger, Post } from '@nestjs/common';
 import { AuthService } from './auth.services';
 import { Public } from './decorators/decorators';
-import { IUserCredentials } from '@client-side/shared/api';
+import { ILoginReturnInfo, IUserCredentials } from '@client-side/shared/api';
 import {
   ApiTags,
   ApiResponse,
@@ -30,7 +30,9 @@ export class AuthController {
     description: 'Email or password or incorrect',
   })
   @ApiBody({ type: UserCredentialsApiTag })
-  async login(@Body() credentials: IUserCredentials): Promise<any> {
+  async login(
+    @Body() credentials: IUserCredentials
+  ): Promise<ILoginReturnInfo> {
     this.logger.log('Login');
     return await this.authService.login(credentials);
   }

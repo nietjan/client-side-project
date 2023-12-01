@@ -5,10 +5,13 @@ import { HeaderComponent } from './header/header.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { UiService } from './ui.services';
 
 @NgModule({
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, HttpClientModule],
   declarations: [AboutComponent, HeaderComponent, SpinnerComponent],
-  exports: [AboutComponent, HeaderComponent, SpinnerComponent],
+  providers: [UiService],
+  exports: [SpinnerComponent, HeaderComponent],
 })
 export class UiModule {}

@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IAbonnement, ILocation } from '@client-side/shared/api';
+import { IAbonnement, ILocation, url } from '@client-side/shared/api';
 import { BehaviorSubject, Observable, map, of } from 'rxjs';
 
 @Injectable()
 export class AbonnementService {
-  endpoint = 'http://localhost:3000/api/location';
+  endpoint = `${url}location`;
   private abonnements$ = new BehaviorSubject<IAbonnement[]>([]);
 
   constructor(private readonly http: HttpClient) {

@@ -42,7 +42,7 @@
         aria-expanded="false"
       >
         <span *ngIf="!signedIn">Sign in</span>
-        <span *ngIf="signedIn">Set User tekst</span>
+        <span *ngIf="signedIn">{{ userName }}</span>
       </button>
       <div class="dropdown-menu">
         <!-- Login form -->
