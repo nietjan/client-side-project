@@ -3,7 +3,7 @@ import { IAddress } from './address.interface';
 import { IAbonnement } from './abonnement.interface';
 
 export interface ILocation {
-  id: Id;
+  _id: Id;
   phoneNumber: string;
   eMail: string;
   openingsTime: string;

@@ -89,7 +89,7 @@ export class UpsertLocationDto implements IUpsertLocation {
   @ApiProperty({ type: String })
   @IsString()
   @IsNotEmpty()
-  id!: string;
+  _id!: string;
 
   @ApiProperty({
     type: String,

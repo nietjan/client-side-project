@@ -47,10 +47,7 @@ export class AbonnementService {
       );
   }
 
-  public singleAbonnoment(
-    id: string | null,
-    _options?: any
-  ): Observable<IAbonnement> {
+  public singleAbonnoment(id: string | null): Observable<IAbonnement> {
     return this.http
       .get<ApiResponse<IAbonnement>>(`${this.endpoint}/${id}`)
       .pipe(
@@ -62,7 +59,7 @@ export class AbonnementService {
 
   public removeAbonnement(id: string | null) {
     if (id == null) return;
-    const headers = { Authorization: localStorage.getItem('token') };
+
     this.http.delete<ApiResponse<any>>(`${this.endpoint}/${id}`).subscribe({
       error: (error) => {
         tap(error), catchError(this.handleError);

@@ -45,74 +45,78 @@
         <span *ngIf="signedIn">{{ userName }}</span>
       </button>
       <div class="dropdown-menu">
-        <!-- Login form -->
-        <form
-          *ngIf="!signedIn"
-          class="px-4 py-3"
-          #LoginForm="ngForm"
-          name="LoginForm"
-          (ngSubmit)="LoginForm.form.valid && onSubmit()"
-          novalidate
-        >
-          <div class="form-group">
-            <label for="LoginEmail">E-mail</label>
-            <input
-              type="email"
-              class="form-control"
-              placeholder="email@example.com"
-              [(ngModel)]="loginInfo.eMail"
-              name="LoginEmail"
-              #LoginEmail="ngModel"
-              [ngClass]="{ 'is-invalid': LoginEmail.invalid }"
-              required
-              email
-            />
-            <div
-              class="invalid-feedback"
-              *ngIf="LoginEmail.invalid && LoginEmail.touched"
-            >
-              <div *ngIf="LoginEmail.errors?.['required']">
-                E-mail is required.
-              </div>
-              <div *ngIf="LoginEmail.errors?.['email']">Not a valid E-mail</div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="LoginPassword">Password</label>
-            <input
-              type="password"
-              class="form-control"
-              placeholder="Password"
-              [(ngModel)]="loginInfo.password"
-              name="LoginPassword"
-              #LoginPassword="ngModel"
-              [ngClass]="{ 'is-invalid': LoginPassword.invalid }"
-              required
-            />
-            <div
-              class="invalid-feedback"
-              *ngIf="LoginPassword.invalid && LoginPassword.touched"
-            >
-              <div *ngIf="LoginPassword.errors?.['required']">
-                Password is required.
-              </div>
-            </div>
-          </div>
-          <button
-            type="submit"
-            class="btn btn-primary"
-            [disabled]="LoginForm.invalid"
+        <!-- If not logged in -->
+        <div *ngIf="!signedIn">
+          <!-- Login form -->
+          <form
+            class="px-4 py-3"
+            #LoginForm="ngForm"
+            name="LoginForm"
+            (ngSubmit)="LoginForm.form.valid && onSubmit()"
+            novalidate
           >
-            Sign in
-          </button>
-        </form>
-        <div *ngIf="!signedIn" class="dropdown-divider"></div>
-        <a *ngIf="!signedIn" class="dropdown-item" href=""
-          >New around here? Sign up</a
-        >
+            <div class="form-group">
+              <label for="LoginEmail">E-mail</label>
+              <input
+                type="email"
+                class="form-control"
+                placeholder="email@example.com"
+                [(ngModel)]="loginInfo.eMail"
+                name="LoginEmail"
+                #LoginEmail="ngModel"
+                [ngClass]="{ 'is-invalid': LoginEmail.invalid }"
+                required
+                email
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="LoginEmail.invalid && LoginEmail.touched"
+              >
+                <div *ngIf="LoginEmail.errors?.['required']">
+                  E-mail is required.
+                </div>
+                <div *ngIf="LoginEmail.errors?.['email']">
+                  Not a valid E-mail
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="LoginPassword">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                placeholder="Password"
+                [(ngModel)]="loginInfo.password"
+                name="LoginPassword"
+                #LoginPassword="ngModel"
+                [ngClass]="{ 'is-invalid': LoginPassword.invalid }"
+                required
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="LoginPassword.invalid && LoginPassword.touched"
+              >
+                <div *ngIf="LoginPassword.errors?.['required']">
+                  Password is required.
+                </div>
+              </div>
+            </div>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="LoginForm.invalid"
+            >
+              Sign in
+            </button>
+          </form>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="">New around here? Sign up</a>
+        </div>
 
-        <!-- All links of user, like log Out, See account etc. -->
-        <a *ngIf="signedIn" class="dropdown-item" (click)="logOut()">Log out</a>
+        <!-- If logged in -->
+        <div *ngIf="signedIn">
+          <a class="dropdown-item" (click)="logOut()">Log out</a>
+        </div>
       </div>
     </div>
   </div>
