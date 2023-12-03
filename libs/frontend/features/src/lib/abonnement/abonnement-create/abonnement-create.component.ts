@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
-import { IAbonnement, role } from '@client-side/shared/api';
+import { IAbonnement, ROLE } from '@client-side/shared/api';
 import { Observable, Subscription } from 'rxjs';
 import { AbonnementService } from '../abonnement.services';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -47,7 +47,7 @@ export class AbonnementCreateComponent {
         this.roleSubscription = this.storageService
           .getRole()
           .subscribe((result) => {
-            if (result == role.EMPLOYEE) {
+            if (result == ROLE.EMPLOYEE) {
               this.canCreateNew = true;
             } else {
               this.canCreateNew = false;

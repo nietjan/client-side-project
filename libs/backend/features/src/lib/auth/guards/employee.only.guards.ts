@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { role } from '@client-side/shared/api';
+import { ROLE } from '@client-side/shared/api';
 
 @Injectable()
 export class EmployeeOnlyGuard implements CanActivate {
@@ -29,7 +29,7 @@ export class EmployeeOnlyGuard implements CanActivate {
       this.logger.log('payload', payload);
 
       //if user is not employee than not allowed
-      if (payload.user_role != role.EMPLOYEE.toString()) {
+      if (payload.user_role != ROLE.EMPLOYEE.toString()) {
         throw new UnauthorizedException(
           'User is not authorized for this action'
         );

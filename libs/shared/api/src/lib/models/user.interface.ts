@@ -1,12 +1,7 @@
 import { Id } from './id.type';
 import { IAddress } from './address.interface';
 import { ICreateLocation } from './location.interface';
-
-//add role
-export enum role {
-  EMPLOYEE = 'employee',
-  USER = 'user',
-}
+import { ROLE } from './role.interface';
 
 export interface IUser {
   _id: Id;
@@ -16,7 +11,7 @@ export interface IUser {
   phoneNumber: string;
   eMail: string;
   password: string;
-  role: role;
+  role: ROLE;
   iban: string;
   address: IAddress;
 }

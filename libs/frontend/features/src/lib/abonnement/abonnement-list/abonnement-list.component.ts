@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { IAbonnement, ILocation, role } from '@client-side/shared/api';
+import { IAbonnement, ILocation, ROLE } from '@client-side/shared/api';
 import { Subscription, of } from 'rxjs';
 import { AbonnementService } from '../abonnement.services';
 import { StorageService } from 'libs/frontend/ui/src/lib/storage.services';
@@ -43,7 +43,7 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
       this.roleSubscription = this.storageService
         .getRole()
         .subscribe((result) => {
-          if (result == role.EMPLOYEE) {
+          if (result == ROLE.EMPLOYEE) {
             this.canCreateNew = true;
           } else {
             this.canCreateNew = false;

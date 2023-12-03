@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ILocation, role } from '@client-side/shared/api';
+import { ILocation, ROLE } from '@client-side/shared/api';
 import { Subscription } from 'rxjs';
 import { LocationService } from '../location.services';
 import { StorageService } from 'libs/frontend/ui/src/lib/storage.services';
@@ -32,7 +32,7 @@ export class LocationListComponent implements OnInit, OnDestroy {
     this.roleSubscription = this.storageService
       .getRole()
       .subscribe((result) => {
-        if (result == role.EMPLOYEE) {
+        if (result == ROLE.EMPLOYEE) {
           this.canCreateNew = true;
         } else {
           this.canCreateNew = false;

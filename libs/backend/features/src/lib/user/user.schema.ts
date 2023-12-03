@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { IAddress } from '../../../../../shared/api/src/lib/models/address.interface';
 import { AddressSchema } from '../address.schema';
-import { role } from '@client-side/shared/api';
+import { ROLE } from '@client-side/shared/api';
 
 export type UserDocument = HydratedDocument<DbUser>;
 
@@ -29,8 +29,8 @@ export class DbUser {
   @Prop({ required: true })
   iban!: string;
 
-  @Prop({ required: true, default: role.USER, type: String })
-  role!: role;
+  @Prop({ required: true, default: ROLE.USER, type: String })
+  role!: ROLE;
 
   @Prop({ type: AddressSchema })
   address!: IAddress;

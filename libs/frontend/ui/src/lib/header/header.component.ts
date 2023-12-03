@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { UiService } from '../ui.services';
-import { IUserCredentials, role } from '@client-side/shared/api';
+import { IUserCredentials, ROLE } from '@client-side/shared/api';
 import { StorageService } from '../storage.services';
 
 @Component({
@@ -45,7 +45,7 @@ export class HeaderComponent {
     this.userName = null;
     this.signedIn = false;
     localStorage.removeItem('role');
-    this.storageService.setRole(role.USER);
+    this.storageService.setRole(ROLE.USER);
     localStorage.removeItem('token');
   }
 }

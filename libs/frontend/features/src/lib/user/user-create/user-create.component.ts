@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { IUser, role } from '@client-side/shared/api';
+import { IUser, ROLE } from '@client-side/shared/api';
 import { Subscription } from 'rxjs';
 import { UserService } from '../user.services';
 
@@ -17,7 +17,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     phoneNumber: '',
     eMail: '',
     password: '',
-    role: role.USER,
+    role: ROLE.USER,
     iban: '',
     address: {
       street: '',

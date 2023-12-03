@@ -5,7 +5,7 @@ import {
   ILocation,
   ICreateLocation,
   IAbonnement,
-  role,
+  ROLE,
 } from '@client-side/shared/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
@@ -75,7 +75,7 @@ export class LocationCreateComponent implements OnInit {
     this.roleSubscription = this.storageService
       .getRole()
       .subscribe((result) => {
-        if (result == role.EMPLOYEE) {
+        if (result == ROLE.EMPLOYEE) {
           this.canCreateNew = true;
         } else {
           this.canCreateNew = false;
