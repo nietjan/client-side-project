@@ -54,7 +54,7 @@
         <div *ngIf="locationPhoneNumber.errors?.['required']">
           Phonenumber is required.
         </div>
-        <div *ngIf="locationEmail.errors?.['pattern']">
+        <div *ngIf="locationPhoneNumber.errors?.['pattern']">
           Not a valid phone number
         </div>
       </div>
@@ -184,7 +184,6 @@
             name="locationHomeNumber"
             #locationHomeNumber="ngModel"
             [ngClass]="{ 'is-invalid': locationHomeNumber.invalid }"
-            required
           />
           <div
             class="invalid-feedback"

@@ -28,9 +28,31 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     },
   };
 
-  constructor(private userService: UserService) {}
+  maxDateOfBirth: string = '';
+  minDateOfBirth: string = '';
+
+  roles: string[] = [];
+
+  constructor(private userService: UserService) {
+    let date = new Date();
+    date.setFullYear(new Date().getFullYear() - 16);
+    this.maxDateOfBirth = date.toISOString().split('T')[0];
+
+    date.setFullYear(new Date().getFullYear() - 120);
+    this.minDateOfBirth = date.toISOString().split('T')[0];
+
+    console.log(this.minDateOfBirth, this.maxDateOfBirth);
+
+    //fill roles array
+    const stringKeys = Object.values(ROLE);
+    stringKeys.forEach((key) => {
+      this.roles.push(key.valueOf());
+    });
+  }
 
   ngOnInit(): void {}
 
   ngOnDestroy(): void {}
+
+  onSubmit(): void {}
 }

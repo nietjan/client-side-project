@@ -5,8 +5,8 @@
 </div>
 
 <div *ngIf="locations != null && locations?.length != 0">
-  <div class="row col-2 col-md-3 col-lg-4 col-xl-6 g-4">
-    <div class="col" *ngFor="let location of locations">
+  <div class="row">
+    <div class="col-6 col-md-4 col-lg-3" *ngFor="let location of locations">
       <div class="card">
         <img
           src="./assets/img/placeholder.jpg"

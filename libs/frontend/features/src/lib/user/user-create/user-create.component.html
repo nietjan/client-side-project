@@ -1,0 +1,315 @@
+<div class="container-fluid">
+  <form
+    class="row"
+    #userCreateForm="ngForm"
+    name="createuser"
+    (ngSubmit)="userCreateForm.form.valid && onSubmit()"
+    novalidate
+  >
+    <h1 class="col-12">User</h1>
+    <!--user.name -->
+    <div class="form-group col-sm-12 col-lg-4">
+      <label for="userName">Name</label>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="user.name"
+        name="userName"
+        #userName="ngModel"
+        [ngClass]="{ 'is-invalid': userName.invalid }"
+        required
+      />
+      <div
+        class="invalid-feedback"
+        *ngIf="userName.invalid && userName.touched"
+      >
+        <div *ngIf="userName.errors?.['required']">Name is required.</div>
+      </div>
+    </div>
+
+    <!-- user.dateOfBirth -->
+    <div class="form-group col-sm-12 col-lg-4">
+      <label for="userDateOfBirth">Date of birth</label>
+      <input
+        type="date"
+        class="form-control"
+        [(ngModel)]="user.dateOfBirith"
+        name="userDateOfBirth"
+        #userDateOfBirth="ngModel"
+        [ngClass]="{
+          'is-invalid':
+            userDateOfBirth.invalid ||
+            userDateOfBirth.value > maxDateOfBirth ||
+            userDateOfBirth.value < minDateOfBirth
+        }"
+        [max]="maxDateOfBirth"
+        [min]="minDateOfBirth"
+        required
+      />
+      <div
+        class="invalid-feedback"
+        *ngIf="userDateOfBirth.invalid && userDateOfBirth.touched"
+      >
+        <div *ngIf="userDateOfBirth.errors?.['required']">
+          Date of birth is required.
+        </div>
+      </div>
+      <div
+        class="invalid-feedback"
+        *ngIf="
+          userDateOfBirth.touched &&
+          (userDateOfBirth.value > maxDateOfBirth ||
+            userDateOfBirth.value < minDateOfBirth)
+        "
+      >
+        You need to be between 16 and 120 years
+      </div>
+    </div>
+
+    <!-- user.sex -->
+    <div class="form-group col-6 col-lg-2">
+      <label for="userSex">Sex</label>
+      <select
+        class="form-control"
+        [(ngModel)]="user.sex"
+        name="userSex"
+        #userSex="ngModel"
+        [ngClass]="{ 'is-invalid': userSex.invalid }"
+        required
+      >
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Else">Else</option>
+      </select>
+      <div class="invalid-feedback" *ngIf="userSex.invalid && userSex.touched">
+        <div *ngIf="userSex.errors?.['required']">Sex is required.</div>
+      </div>
+    </div>
+
+    <!-- user.role -->
+    <div class="form-group col-6 col-lg-2">
+      <label for="userRole">Role</label>
+      <select
+        class="form-control"
+        [(ngModel)]="user.role"
+        name="userRole"
+        #userRole="ngModel"
+        [ngClass]="{ 'is-invalid': userRole.invalid }"
+        required
+      >
+        <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+      </select>
+      <div
+        class="invalid-feedback"
+        *ngIf="userRole.invalid && userRole.touched"
+      >
+        <div *ngIf="userRole.errors?.['required']">Role is required.</div>
+      </div>
+    </div>
+
+    <!-- user.eMail -->
+    <div class="form-group col-12 col-lg-4">
+      <label for="userEmail">E-mail</label>
+      <input
+        type="email"
+        class="form-control"
+        [(ngModel)]="user.eMail"
+        name="userEmail"
+        #userEmail="ngModel"
+        [ngClass]="{ 'is-invalid': userEmail.invalid }"
+        required
+        email
+      />
+      <div
+        class="invalid-feedback"
+        *ngIf="userEmail.invalid && userEmail.touched"
+      >
+        <div *ngIf="userEmail.errors?.['required']">E-mail is required.</div>
+        <div *ngIf="userEmail.errors?.['email']">Not a valid E-mail</div>
+      </div>
+    </div>
+
+    <!--user.phoneNumber -->
+    <div class="form-group col-12 col-lg-4">
+      <label for="userPhoneNumber">Phone number</label>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="user.phoneNumber"
+        name="userPhoneNumber"
+        #userPhoneNumber="ngModel"
+        [ngClass]="{ 'is-invalid': userPhoneNumber.invalid }"
+        required
+        pattern="((\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?)?\d{3}[\s.-]?\d{4}"
+      />
+      <div
+        class="invalid-feedback"
+        *ngIf="userPhoneNumber.invalid && userPhoneNumber.touched"
+      >
+        <div *ngIf="userPhoneNumber.errors?.['required']">
+          Phonenumber is required.
+        </div>
+        <div *ngIf="userPhoneNumber.errors?.['pattern']">
+          Not a valid phone number
+        </div>
+      </div>
+    </div>
+
+    <!--user.iban -->
+    <div class="form-group col-sm-12 col-lg-4">
+      <label for="userIban">IBAN</label>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="user.iban"
+        name="userIban"
+        #userIban="ngModel"
+        [ngClass]="{ 'is-invalid': userIban.invalid }"
+        required
+      />
+      <div
+        class="invalid-feedback"
+        *ngIf="userIban.invalid && userIban.touched"
+      >
+        <div *ngIf="userIban.errors?.['required']">IBAN is required.</div>
+      </div>
+    </div>
+
+    <!-- user.address -->
+    <h5 class="mt-4 col-12">Address</h5>
+    <div class="col-12">
+      <div class="row">
+        <!--user.address.street -->
+        <div class="form-group col-sm-12 col-lg-4">
+          <label for="userStreet">Street</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="user.address.street"
+            name="userStreet"
+            #userStreet="ngModel"
+            [ngClass]="{ 'is-invalid': userStreet.invalid }"
+            required
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="userStreet.invalid && userStreet.touched"
+          >
+            <div *ngIf="userStreet.errors?.['required']">
+              Street is required.
+            </div>
+          </div>
+        </div>
+
+        <!--user.address.homeNumber -->
+        <div class="form-group col-6 col-lg-4">
+          <label for="userHomeNumber">Home number</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="user.address.homeNumber"
+            name="userHomeNumber"
+            #userHomeNumber="ngModel"
+            [ngClass]="{ 'is-invalid': userHomeNumber.invalid }"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="userHomeNumber.invalid && userHomeNumber.touched"
+          >
+            <div *ngIf="userStreet.errors?.['required']">
+              Home number is required.
+            </div>
+          </div>
+        </div>
+
+        <!--user.address.postalCode -->
+        <div class="form-group col-6 col-lg-4">
+          <label for="userPostalCode">Postal code</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="user.address.postalCode"
+            name="userPostalCode"
+            #userPostalCode="ngModel"
+            [ngClass]="{ 'is-invalid': userPostalCode.invalid }"
+            required
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="userPostalCode.invalid && userPostalCode.touched"
+          >
+            <div *ngIf="userPostalCode.errors?.['required']">
+              Postal code is required.
+            </div>
+          </div>
+        </div>
+
+        <!--user.address.city -->
+        <div class="form-group col-6 col-lg-4">
+          <label for="userCity">City</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="user.address.city"
+            name="userCity"
+            #userCity="ngModel"
+            [ngClass]="{ 'is-invalid': userCity.invalid }"
+            required
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="userCity.invalid && userCity.touched"
+          >
+            <div *ngIf="userCity.errors?.['required']">City is required.</div>
+          </div>
+        </div>
+
+        <!--user.address.county -->
+        <div class="form-group col-6 col-lg-2">
+          <label for="userCountry">Country</label>
+          <select
+            class="form-control"
+            [(ngModel)]="user.address.country"
+            name="userCountry"
+            #userCountry="ngModel"
+            [ngClass]="{ 'is-invalid': userCountry.invalid }"
+            required
+          >
+            <option>Netherlands</option>
+            <option>Belgium</option>
+          </select>
+          <div
+            class="invalid-feedback"
+            *ngIf="userCountry.invalid && userCountry.touched"
+          >
+            <div *ngIf="userCountry.errors?.['required']">
+              Country is required.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- supmit and return buttons -->
+    <div class="col-12">
+      <button
+        type="supmit"
+        class="btn btn-primary mr-2"
+        [disabled]="
+          userCreateForm.invalid ||
+          userDateOfBirth.value > maxDateOfBirth ||
+          userDateOfBirth.value < minDateOfBirth
+        "
+      >
+        submit
+      </button>
+      <button class="btn btn-primary" routerLink="/user">return</button>
+    </div>
+  </form>
+
+  <div>
+    <code>
+      <pre>{{ user | json }}</pre>
+    </code>
+  </div>
+</div>
