@@ -22,7 +22,8 @@ export class LocationCreateComponent implements OnInit {
   roleSubscription: Subscription | undefined = undefined;
   canCreateNew: boolean = false;
 
-  location: ICreateLocation = {
+  location: ILocation = {
+    _id: '',
     eMail: '',
     phoneNumber: '',
     hasTrainers: true,
@@ -120,13 +121,9 @@ export class LocationCreateComponent implements OnInit {
     }
 
     if (this.isUpdating) {
-      var locationId = this.locationService.updateLocation(
-        this.location as ILocation
-      );
+      var locationId = this.locationService.updateLocation(this.location);
     } else {
-      var locationId = this.locationService.createLocation(
-        this.location as ILocation
-      );
+      var locationId = this.locationService.createLocation(this.location);
     }
 
     //redirect back to list

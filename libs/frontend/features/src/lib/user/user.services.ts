@@ -65,6 +65,10 @@ export class UserService {
     ) as Observable<IUser>;
   }
 
+  public createUser(user: IUser) {}
+
+  public updateUser(user: IUser) {}
+
   /**
    * Handle errors.
    */

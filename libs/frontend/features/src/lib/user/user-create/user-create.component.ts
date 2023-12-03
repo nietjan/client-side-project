@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IUser, ROLE } from '@client-side/shared/api';
-import { Subscription } from 'rxjs';
 import { UserService } from '../user.services';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'client-side-project-user-create',
@@ -27,13 +27,19 @@ export class UserCreateComponent implements OnInit, OnDestroy {
       country: '',
     },
   };
+  isUpdating: boolean = false;
 
   maxDateOfBirth: string = '';
   minDateOfBirth: string = '';
 
   roles: string[] = [];
 
-  constructor(private userService: UserService) {
+  constructor(
+    private userService: UserService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
+    //set min and max date
     let date = new Date();
     date.setFullYear(new Date().getFullYear() - 16);
     this.maxDateOfBirth = date.toISOString().split('T')[0];
@@ -48,11 +54,31 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     stringKeys.forEach((key) => {
       this.roles.push(key.valueOf());
     });
+
+    //if in param there is id, than it is a update
+    this.route.paramMap?.subscribe((params) => {
+      let id = params.get('id');
+      if (id != null) {
+        this.isUpdating = true;
+        this.userService
+          .singleUser(id)
+          .subscribe((value) => (this.user = { ...this.user, ...value }));
+      }
+    });
   }
 
   ngOnInit(): void {}
 
   ngOnDestroy(): void {}
 
-  onSubmit(): void {}
+  public onSubmit(): void {
+    if (this.isUpdating) {
+      var locationId = this.userService.updateUser(this.user);
+    } else {
+      var locationId = this.userService.createUser(this.user);
+    }
+
+    //redirect back to list
+    if (locationId != null) this.router.navigateByUrl(`/location`);
+  }
 }
