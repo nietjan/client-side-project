@@ -1,7 +1,7 @@
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { map, catchError, tap, filter } from 'rxjs/operators';
-import { ApiResponse, IUser } from '@client-side/shared/api';
+import { ApiResponse, IUser, url } from '@client-side/shared/api';
 import { Injectable } from '@angular/core';
 
 /**
@@ -18,8 +18,7 @@ export const httpOptions = {
  */
 @Injectable()
 export class UserService {
-  endpoint = 'http://localhost:3000/api/user';
-  private users$ = new BehaviorSubject<IUser[]>([]);
+  endpoint = `${url}user`;
 
   constructor(private readonly http: HttpClient) {}
 
@@ -28,46 +27,63 @@ export class UserService {
    *
    * @options options - optional URL queryparam options
    */
-  public allUsers(options?: any): Observable<IUser[] | null> {
-    // console.log(`list ${this.endpoint}`);
+  public allUsers(): Observable<IUser[] | null> {
+    console.log(`list ${this.endpoint}`);
 
-    // return this.http
-    //   .get<ApiResponse<IUser[]>>(this.endpoint, {
-    //     ...options,
-    //     ...httpOptions,
-    //   })
-    //   .pipe(
-    //     map((response: any) => response.results as IUser[]),
-    //     tap(console.log),
-    //     catchError(this.handleError)
-    //   );
-    return this.users$;
+    return this.http.get<ApiResponse<IUser[]>>(this.endpoint).pipe(
+      map((response: any) => response.results as IUser[]),
+      tap(console.log),
+      catchError(this.handleError)
+    );
   }
 
   /**
    * Get a single item from the service.
    *
    */
-  public singleUser(id: string | null, options?: any): Observable<IUser> {
-    // console.log(`read ${this.endpoint}`);
-    // return this.http
-    //   .get<ApiResponse<IUser>>(this.endpoint, {
-    //     ...options,
-    //     ...httpOptions,
-    //   })
-    //   .pipe(
-    //     tap(console.log),
-    //     map((response: any) => response.results as IUser),
-    //     catchError(this.handleError)
-    //   );
-    return this.users$.pipe(
-      map((userList) => userList.find((user) => user._id === id))
-    ) as Observable<IUser>;
+  public singleUser(id: string): Observable<IUser> {
+    console.log(`read ${this.endpoint}`);
+
+    return this.http.get<ApiResponse<IUser>>(`${this.endpoint}/${id}`).pipe(
+      map((response: any) => response.results as IUser),
+      tap(console.log),
+      catchError(this.handleError)
+    );
   }
 
-  public createUser(user: IUser) {}
+  public removeUser(id: string | null) {
+    console.log(`remove ${this.endpoint}`);
 
-  public updateUser(user: IUser) {}
+    if (id == null) return;
+
+    this.http.delete<ApiResponse<any>>(`${this.endpoint}/${id}`).subscribe({
+      error: (error) => {
+        tap(error), catchError(this.handleError);
+      },
+    });
+  }
+
+  public createUser(user: IUser): Observable<IUser> {
+    console.log(`create ${this.endpoint}`);
+
+    return this.http.post<ApiResponse<IUser>>(this.endpoint, user).pipe(
+      map((response: any) => response.results as IUser),
+      tap(console.log),
+      catchError(this.handleError)
+    );
+  }
+
+  public updateUser(user: IUser): Observable<IUser> {
+    console.log(`update ${this.endpoint}`);
+
+    return this.http
+      .put<ApiResponse<IUser>>(`${this.endpoint}/${user._id}`, user)
+      .pipe(
+        map((response: any) => response.results as IUser),
+        tap(console.log),
+        catchError(this.handleError)
+      );
+  }
 
   /**
    * Handle errors.

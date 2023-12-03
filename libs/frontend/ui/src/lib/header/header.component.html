@@ -117,6 +117,9 @@
 
         <!-- If logged in -->
         <div *ngIf="signedIn">
+          <a class="dropdown-item" routerLink="/user/{{ userId }}"
+            >Check account</a
+          >
           <a class="dropdown-item" (click)="logOut()">Log out</a>
         </div>
       </div>

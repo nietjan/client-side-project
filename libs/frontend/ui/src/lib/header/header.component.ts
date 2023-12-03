@@ -14,6 +14,7 @@ export class HeaderComponent {
   signedIn: boolean = false;
   userToken: string | null = null;
   userName: string | null = null;
+  userId: string | null = null;
   loginInfo: IUserCredentials = { eMail: '', password: '' };
 
   constructor(
@@ -33,6 +34,7 @@ export class HeaderComponent {
       this.userName = value.name;
       this.loginInfo = { eMail: '', password: '' };
       this.signedIn = true;
+      this.userId = value._id;
       localStorage.setItem('role', value.role);
       localStorage.setItem('name', value.name);
       this.storageService.setRole(value.role);
@@ -43,6 +45,7 @@ export class HeaderComponent {
   logOut() {
     this.userToken = null;
     this.userName = null;
+    this.userId = null;
     this.signedIn = false;
     localStorage.removeItem('role');
     this.storageService.setRole(ROLE.USER);
