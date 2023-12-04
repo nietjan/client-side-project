@@ -26,6 +26,7 @@ export class RegistrationListComponent implements OnInit, OnDestroy {
   roleSubscription: Subscription | undefined = undefined;
   registrationList: IRegistrationInfo[] = [];
   emtpyApiResponse: boolean = false;
+  canDelete: boolean = false;
 
   showUserRegistrationInfo: boolean = false;
   showLocationRegistrationInfo: boolean = false;
@@ -36,7 +37,6 @@ export class RegistrationListComponent implements OnInit, OnDestroy {
     private locationService: LocationService,
     private abonnementSerice: AbonnementService,
     private userService: UserService,
-    private storageService: StorageService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -83,6 +83,11 @@ export class RegistrationListComponent implements OnInit, OnDestroy {
     if (this.showUserRegistrationInfo == false) {
       //get registrations of User
       userId = paramId;
+
+      //if id is same as id of localStorage than user can delete
+      if (userId == localStorage.getItem('id')) {
+        this.canDelete = true;
+      }
     } else if (this.showLocationRegistrationInfo == false) {
       //get registrations of location
       locationId = paramId;
@@ -115,14 +120,26 @@ export class RegistrationListComponent implements OnInit, OnDestroy {
   private async fillObject(
     registration: IRegistration
   ): Promise<IRegistrationInfo> {
-    let user: IUser | null = null;
-    let location: ILocation | null = null;
-    let abonnement: IAbonnement | null = null;
+    let user: { name: string; _id: string } | null = null;
+    let location: {
+      _id: string;
+      street: string;
+      homeNumber: string;
+      postalCode: string;
+      city: string;
+    } | null = null;
+    let abonnement: { name: string; _id: string } | null = null;
 
     //fill user info if needed
     if (this.showUserRegistrationInfo) {
       this.userService.singleUser(registration.userId).subscribe((value) => {
-        user = value;
+        if (value == null) user = value;
+        else {
+          user = {
+            _id: value._id,
+            name: value.name,
+          };
+        }
       });
     }
 
@@ -131,7 +148,16 @@ export class RegistrationListComponent implements OnInit, OnDestroy {
       this.locationService
         .singleLocation(registration.locationId)
         .subscribe((value) => {
-          location = value;
+          if (value == null) location = value;
+          else {
+            location = {
+              _id: value._id,
+              street: value.address.street,
+              homeNumber: value.address.homeNumber,
+              postalCode: value.address.postalCode,
+              city: value.address.city,
+            };
+          }
         });
     }
 
@@ -140,7 +166,13 @@ export class RegistrationListComponent implements OnInit, OnDestroy {
       this.abonnementSerice
         .singleAbonnoment(registration.abonnementId)
         .subscribe((value) => {
-          abonnement = value;
+          if (value == null) abonnement = value;
+          else {
+            abonnement = {
+              _id: value._id,
+              name: value.name,
+            };
+          }
         });
     }
 
@@ -155,5 +187,15 @@ export class RegistrationListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.registrationSubscription)
       this.registrationSubscription.unsubscribe();
+  }
+
+  unRegister(
+    locationId: string | null | undefined,
+    abonnementId: string | null | undefined
+  ) {
+    if (locationId == undefined) locationId = null;
+    if (abonnementId == undefined) abonnementId = null;
+
+    this.registrationService.removeRegistration(locationId, abonnementId);
   }
 }

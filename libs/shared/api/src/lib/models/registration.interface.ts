@@ -16,7 +16,13 @@ export type ICreateRegistration = Pick<
 
 export interface IRegistrationInfo {
   registration: IRegistration;
-  user: IUser | null;
-  location: ILocation | null;
-  abonnement: IAbonnement | null;
+  user: { name: string; _id: string } | null;
+  location: {
+    _id: string;
+    street: string;
+    homeNumber: string;
+    postalCode: string;
+    city: string;
+  } | null;
+  abonnement: { name: string; _id: string } | null;
 }

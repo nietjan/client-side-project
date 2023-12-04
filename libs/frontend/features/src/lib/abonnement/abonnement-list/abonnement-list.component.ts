@@ -17,7 +17,7 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
   abonnoments: IAbonnement[] | null = null;
   abonnementSubscription: Subscription | undefined = undefined;
   roleSubscription: Subscription | undefined = undefined;
-  canCreateNew: boolean = false;
+  isEmployee: boolean = false;
 
   constructor(
     private abonnementService: AbonnementService,
@@ -44,9 +44,7 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
         .getRole()
         .subscribe((result) => {
           if (result == ROLE.EMPLOYEE) {
-            this.canCreateNew = true;
-          } else {
-            this.canCreateNew = false;
+            this.isEmployee = true;
           }
         });
     }

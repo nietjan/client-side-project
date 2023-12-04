@@ -20,7 +20,7 @@
     ></client-side-project-abonnement-list>
   </div>
 
-  <div *ngIf="canCreateNew">
+  <div *ngIf="isEmployee">
     <a routerLink="update" class="mr-2">
       <button class="btn btn-primary">Update</button>
     </a>
@@ -28,6 +28,10 @@
     <button (click)="removeLocation(location._id)" class="btn btn-primary">
       delete
     </button>
+
+    <a routerLink="registration" class="mr-2">
+      <button class="btn btn-primary">Check registrations</button>
+    </a>
   </div>
 </div>
 

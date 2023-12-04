@@ -10,10 +10,10 @@
               User: {{ registration.user?.name }}
             </li>
             <li *ngIf="showLocationRegistrationInfo" class="list-group-item">
-              Location: {{ registration.location?.address?.street }}
-              {{ registration.location?.address?.homeNumber }},
-              {{ registration.location?.address?.postalCode }}
-              {{ registration.location?.address?.city }}
+              Location: {{ registration.location?.street }}
+              {{ registration.location?.homeNumber }},
+              {{ registration.location?.postalCode }}
+              {{ registration.location?.city }}
             </li>
             <li *ngIf="showAbonnementRegistrationInfo" class="list-group-item">
               Abonnement: {{ registration.abonnement?.name }}
@@ -43,6 +43,17 @@
               class="card-link"
               >Check abonnement</a
             >
+            <button
+              (click)="
+                unRegister(
+                  registration.location?._id,
+                  registration.abonnement?._id
+                )
+              "
+              class="btn btn-primary"
+            >
+              Go somewhere
+            </button>
           </div>
         </div>
       </div>

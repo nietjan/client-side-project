@@ -1,5 +1,5 @@
 <a
-  *ngIf="(locationId == null || locationId == undefined) && canCreateNew"
+  *ngIf="(locationId == null || locationId == undefined) && isEmployee"
   routerLink="create"
   ><button class="btn btn-primary">New abonnoment</button></a
 >
@@ -26,13 +26,22 @@
               ><button class="btn btn-primary">Select abonnoment</button></a
             >
           </p>
-          <div *ngIf="locationId == null || locationId == undefined">
+          <div
+            *ngIf="
+              (locationId == null || locationId == undefined) && isEmployee
+            "
+          >
             <a routerLink="{{ abonnement._id }}/update">
               <button class="btn btn-primary mr-2">Update</button></a
             >
             <button class="btn btn-primary" (click)="delete(abonnement._id)">
               Delete
             </button>
+            <a routerLink="{{ abonnement._id }}/registration">
+              <button class="btn btn-primary mr-2">
+                Check registrations
+              </button></a
+            >
           </div>
         </div>
       </div>

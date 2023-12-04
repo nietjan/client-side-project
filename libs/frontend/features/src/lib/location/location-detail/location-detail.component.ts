@@ -15,7 +15,7 @@ export class LocationDetailComponent implements OnInit, OnDestroy {
   locationSubscription: Subscription | undefined = undefined;
   locationId: string | null = null;
   roleSubscription: Subscription | undefined = undefined;
-  canCreateNew: boolean = false;
+  isEmployee: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -44,9 +44,7 @@ export class LocationDetailComponent implements OnInit, OnDestroy {
       .getRole()
       .subscribe((result) => {
         if (result == ROLE.EMPLOYEE) {
-          this.canCreateNew = true;
-        } else {
-          this.canCreateNew = false;
+          this.isEmployee = true;
         }
       });
   }
