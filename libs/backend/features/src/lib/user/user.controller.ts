@@ -92,6 +92,7 @@ export class UserController {
     @Param('id') id: string,
     @Request() req: any
   ): Promise<DeleteResult> {
+    //TODO: also delete registrations with this id
     if (id != req['user'].user_id) {
       throw new UnauthorizedException('Not allowed to delete user');
     }
@@ -104,6 +105,7 @@ export class UserController {
           HttpStatus.NOT_FOUND
         );
       }
+
       return result;
     } catch (error) {
       if (error instanceof Error) {

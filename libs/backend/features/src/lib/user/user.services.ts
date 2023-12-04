@@ -11,12 +11,16 @@ import { Model, UpdateWriteOpResult } from 'mongoose';
 import { DbUser } from './user.schema';
 import { DeleteResult, ObjectId } from 'mongodb';
 import { IUser, IUpdateUser } from '@client-side/shared/api';
+import { RegistrationService } from '../registration/registration.services';
 
 @Injectable()
 export class UserService {
   TAG = 'UserService';
 
-  constructor(@InjectModel(DbUser.name) private UserModel: Model<DbUser>) {}
+  constructor(
+    @InjectModel(DbUser.name) private UserModel: Model<DbUser>,
+    private registrationService: RegistrationService
+  ) {}
 
   getAll(): Promise<Object[]> {
     Logger.log('getAll', this.TAG);
@@ -71,9 +75,20 @@ export class UserService {
       });
   }
 
-  delete(id: string): Promise<DeleteResult> {
+  async delete(id: string): Promise<DeleteResult> {
     Logger.log('delete', this.TAG);
-    return this.UserModel.deleteOne({ _id: new ObjectId(id) }).exec();
+    const result = await this.UserModel.deleteOne({
+      _id: new ObjectId(id),
+    }).exec();
+
+    //also delete registrations if user is deleted
+    if (result.deletedCount > 0) {
+      this.registrationService.delete(id, null, null);
+    }
+    return {
+      acknowledged: result.acknowledged,
+      deletedCount: result.deletedCount,
+    };
   }
 
   update(User: UpdateUserDto, id: string): Promise<UpdateWriteOpResult> {

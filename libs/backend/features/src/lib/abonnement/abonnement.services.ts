@@ -14,13 +14,16 @@ import { Model, UpdateWriteOpResult } from 'mongoose';
 import { DbAbonnement } from './abonnement.schema';
 import { DeleteResult, ObjectId } from 'mongodb';
 import { IAbonnement } from '@client-side/shared/api';
+import { RegistrationService } from '../registration/registration.services';
 
 @Injectable()
 export class AbonnementService {
   TAG = 'AbonnementService';
 
   constructor(
-    @InjectModel(DbAbonnement.name) private AbonnementModel: Model<DbAbonnement>
+    @InjectModel(DbAbonnement.name)
+    private AbonnementModel: Model<DbAbonnement>,
+    private registrationService: RegistrationService
   ) {}
 
   getAll(): Promise<DbAbonnement[]> {
@@ -60,9 +63,20 @@ export class AbonnementService {
     return createdAbonnement.save();
   }
 
-  delete(id: string): Promise<DeleteResult> {
+  async delete(id: string): Promise<DeleteResult> {
     Logger.log('Delete', this.TAG);
-    return this.AbonnementModel.deleteOne({ _id: new ObjectId(id) }).exec();
+    let result = await this.AbonnementModel.deleteOne({
+      _id: new ObjectId(id),
+    }).exec();
+
+    //also delete registrations if user is deleted
+    if (result.deletedCount > 0) {
+      this.registrationService.delete(null, null, id);
+    }
+    return {
+      acknowledged: result.acknowledged,
+      deletedCount: result.deletedCount,
+    };
   }
 
   update(

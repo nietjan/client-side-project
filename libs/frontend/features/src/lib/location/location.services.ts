@@ -18,11 +18,6 @@ export class LocationService {
 
   constructor(private readonly http: HttpClient) {}
 
-  /**
-   * Get all items.
-   *
-   * @options options - optional URL queryparam options
-   */
   public allLocations(): Observable<ILocation[] | null> {
     console.log(`list ${this.endpoint}`);
 

@@ -141,14 +141,11 @@ export class RegistrationController {
       );
     }
 
-    let methodParam: ICreateRegistration = {
-      locationId: locationId,
-      abonnementId: abonnementId,
-    };
     try {
       const result = await this.registrationService.delete(
-        methodParam,
-        req['user'].user_id
+        req['user'].user_id,
+        locationId,
+        abonnementId
       );
       if (result.deletedCount == 0) {
         throw new HttpException(

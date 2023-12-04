@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { DbUser, UserSchema } from './user.schema';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from '../auth/auth.module';
+import { RegistrationModule } from '../registration/registration.modules';
 
 @Module({
   controllers: [UserController],
@@ -14,6 +15,7 @@ import { AuthModule } from '../auth/auth.module';
     MongooseModule.forFeature([{ name: DbUser.name, schema: UserSchema }]),
     JwtModule,
     AuthModule,
+    RegistrationModule,
   ],
 })
 export class UserModule {}

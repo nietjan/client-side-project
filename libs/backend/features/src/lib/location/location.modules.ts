@@ -6,6 +6,7 @@ import { AbonnementModule } from '../abonnement/abonnement.modules';
 import { DbLocation, LocationSchema } from './location.schema';
 import { AuthModule } from '../auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
+import { RegistrationModule } from '../registration/registration.modules';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { JwtModule } from '@nestjs/jwt';
     ]),
     JwtModule,
     AuthModule,
+    RegistrationModule,
   ],
   controllers: [LocationController],
   providers: [LocationService],

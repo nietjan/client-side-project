@@ -97,6 +97,7 @@ export class AbonnementController {
   @UseGuards(EmployeeOnlyGuard)
   @ApiBearerAuth()
   async delete(@Param('id') id: string): Promise<DeleteResult> {
+    //TODO: also delete registrations with this id
     try {
       const result = await this.AbonnementService.delete(id);
       if (result.deletedCount == 0) {

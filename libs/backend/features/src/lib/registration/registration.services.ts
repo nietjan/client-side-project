@@ -83,15 +83,28 @@ export class RegistrationService {
   }
 
   delete(
-    registration: ICreateRegistration,
-    userId: string
+    userId: string | null,
+    locationId: string | null,
+    abonnementId: string | null
   ): Promise<DeleteResult> {
     Logger.log('delete', this.TAG);
-    return this.RegistrationModel.deleteOne({
-      userId: new ObjectId(userId),
-      locationId: new ObjectId(registration.locationId),
-      abonnementId: new ObjectId(registration.abonnementId),
-    }).exec();
+
+    //create query object with correct properties
+    var query: any = {};
+
+    if (userId != null && userId != undefined) {
+      query.userId = userId;
+    }
+
+    if (locationId != null && userId != undefined) {
+      query.locationId = locationId;
+    }
+
+    if (abonnementId != null && userId != undefined) {
+      query.abonnementId = abonnementId;
+    }
+
+    return this.RegistrationModel.deleteOne(query).exec();
   }
 
   private async checkIds(

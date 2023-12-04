@@ -13,6 +13,7 @@ import { DeleteResult, ObjectId } from 'mongodb';
 import { ILocation, IUpdateLocation } from '@client-side/shared/api';
 import { AbonnementService } from '../abonnement/abonnement.services';
 import { DbAbonnement } from '../abonnement/abonnement.schema';
+import { RegistrationService } from '../registration/registration.services';
 
 @Injectable()
 export class LocationService {
@@ -20,7 +21,8 @@ export class LocationService {
 
   constructor(
     @InjectModel(DbLocation.name) private LocationModel: Model<DbLocation>,
-    private abonnementService: AbonnementService
+    private abonnementService: AbonnementService,
+    private registrationService: RegistrationService
   ) {}
 
   getAll(): Promise<DbLocation[]> {
@@ -52,9 +54,20 @@ export class LocationService {
     return createdLocation.save();
   }
 
-  delete(id: string): Promise<DeleteResult> {
+  async delete(id: string): Promise<DeleteResult> {
     Logger.log('Delete', this.TAG);
-    return this.LocationModel.deleteOne({ _id: new ObjectId(id) }).exec();
+    const result = await this.LocationModel.deleteOne({
+      _id: new ObjectId(id),
+    }).exec();
+
+    //also delete registrations if user is deleted
+    if (result.deletedCount > 0) {
+      this.registrationService.delete(null, id, null);
+    }
+    return {
+      acknowledged: result.acknowledged,
+      deletedCount: result.deletedCount,
+    };
   }
 
   update(
