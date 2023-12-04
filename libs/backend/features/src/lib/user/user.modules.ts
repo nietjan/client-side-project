@@ -6,16 +6,22 @@ import { DbUser, UserSchema } from './user.schema';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from '../auth/auth.module';
 import { RegistrationModule } from '../registration/registration.modules';
+import {
+  DbRegistration,
+  RegistrationSchema,
+} from '../registration/registration.schema';
 
 @Module({
   controllers: [UserController],
   providers: [UserService],
   exports: [UserService],
   imports: [
-    MongooseModule.forFeature([{ name: DbUser.name, schema: UserSchema }]),
+    MongooseModule.forFeature([
+      { name: DbUser.name, schema: UserSchema },
+      { name: DbRegistration.name, schema: RegistrationSchema },
+    ]),
     JwtModule,
     AuthModule,
-    RegistrationModule,
   ],
 })
 export class UserModule {}

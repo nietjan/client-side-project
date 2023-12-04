@@ -14,6 +14,7 @@ import { ILocation, IUpdateLocation } from '@client-side/shared/api';
 import { AbonnementService } from '../abonnement/abonnement.services';
 import { DbAbonnement } from '../abonnement/abonnement.schema';
 import { RegistrationService } from '../registration/registration.services';
+import { DbRegistration } from '../registration/registration.schema';
 
 @Injectable()
 export class LocationService {
@@ -22,7 +23,8 @@ export class LocationService {
   constructor(
     @InjectModel(DbLocation.name) private LocationModel: Model<DbLocation>,
     private abonnementService: AbonnementService,
-    private registrationService: RegistrationService
+    @InjectModel(DbRegistration.name)
+    private RegistrationModel: Model<DbRegistration>
   ) {}
 
   getAll(): Promise<DbLocation[]> {
@@ -62,7 +64,9 @@ export class LocationService {
 
     //also delete registrations if user is deleted
     if (result.deletedCount > 0) {
-      this.registrationService.delete(null, id, null);
+      this.RegistrationModel.deleteOne({
+        locationId: new ObjectId(id),
+      }).exec();
     }
     return {
       acknowledged: result.acknowledged,

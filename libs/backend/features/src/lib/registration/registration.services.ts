@@ -17,7 +17,6 @@ export class RegistrationService {
   constructor(
     @InjectModel(DbRegistration.name)
     private RegistrationModel: Model<DbRegistration>,
-    private userService: UserService,
     private locationService: LocationService,
     private abonnementService: AbonnementService
   ) {}

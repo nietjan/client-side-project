@@ -15,6 +15,7 @@ import { DbAbonnement } from './abonnement.schema';
 import { DeleteResult, ObjectId } from 'mongodb';
 import { IAbonnement } from '@client-side/shared/api';
 import { RegistrationService } from '../registration/registration.services';
+import { DbRegistration } from '../registration/registration.schema';
 
 @Injectable()
 export class AbonnementService {
@@ -23,7 +24,8 @@ export class AbonnementService {
   constructor(
     @InjectModel(DbAbonnement.name)
     private AbonnementModel: Model<DbAbonnement>,
-    private registrationService: RegistrationService
+    @InjectModel(DbRegistration.name)
+    private RegistrationModel: Model<DbRegistration>
   ) {}
 
   getAll(): Promise<DbAbonnement[]> {
@@ -71,7 +73,9 @@ export class AbonnementService {
 
     //also delete registrations if user is deleted
     if (result.deletedCount > 0) {
-      this.registrationService.delete(null, null, id);
+      this.RegistrationModel.deleteOne({
+        abonnementId: new ObjectId(id),
+      }).exec();
     }
     return {
       acknowledged: result.acknowledged,

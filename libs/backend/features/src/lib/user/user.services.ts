@@ -12,6 +12,7 @@ import { DbUser } from './user.schema';
 import { DeleteResult, ObjectId } from 'mongodb';
 import { IUser, IUpdateUser } from '@client-side/shared/api';
 import { RegistrationService } from '../registration/registration.services';
+import { DbRegistration } from '../registration/registration.schema';
 
 @Injectable()
 export class UserService {
@@ -19,7 +20,8 @@ export class UserService {
 
   constructor(
     @InjectModel(DbUser.name) private UserModel: Model<DbUser>,
-    private registrationService: RegistrationService
+    @InjectModel(DbRegistration.name)
+    private RegistrationModel: Model<DbRegistration>
   ) {}
 
   getAll(): Promise<Object[]> {
@@ -83,7 +85,9 @@ export class UserService {
 
     //also delete registrations if user is deleted
     if (result.deletedCount > 0) {
-      this.registrationService.delete(id, null, null);
+      this.RegistrationModel.deleteOne({
+        userId: new ObjectId(id),
+      }).exec();
     }
     return {
       acknowledged: result.acknowledged,
