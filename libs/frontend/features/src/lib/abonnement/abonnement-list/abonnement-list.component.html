@@ -22,9 +22,20 @@
             ><span *ngIf="abonnement?.period == 1">Month</span>
           </p>
           <p>
-            <a *ngIf="locationId"
-              ><button class="btn btn-primary">Select abonnoment</button></a
+            <button
+              *ngIf="locationId && !isRegisterd(abonnement._id)"
+              (click)="register(abonnement._id)"
+              class="btn btn-primary"
             >
+              Register for abonnoment
+            </button>
+            <button
+              class="btn btn-primary"
+              *ngIf="locationId && isRegisterd(abonnement._id)"
+              (click)="deregister(abonnement._id)"
+            >
+              Deregiser for abonnement
+            </button>
           </p>
           <div
             *ngIf="
@@ -37,6 +48,7 @@
             <button class="btn btn-primary" (click)="delete(abonnement._id)">
               Delete
             </button>
+
             <a routerLink="{{ abonnement._id }}/registration">
               <button class="btn btn-primary mr-2">
                 Check registrations

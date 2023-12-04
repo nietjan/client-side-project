@@ -39,6 +39,7 @@ export class HeaderComponent {
       localStorage.setItem('role', value.role);
       localStorage.setItem('name', value.name);
       this.storageService.setRole(value.role);
+      this.storageService.setUserId(value._id);
       localStorage.setItem('token', value.token);
     });
   }
@@ -50,6 +51,7 @@ export class HeaderComponent {
     this.signedIn = false;
     localStorage.removeItem('role');
     this.storageService.setRole(ROLE.USER);
+    this.storageService.setUserId(null);
     localStorage.removeItem('token');
   }
 

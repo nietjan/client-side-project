@@ -12,14 +12,7 @@ import { SharedModule } from '../shared.module';
 
 @NgModule({
   declarations: [AbonnementCreateComponent, AbonnementListComponent],
-  providers: [
-    AbonnementService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: HeadersInterceptor,
-      multi: true,
-    },
-  ],
+  providers: [],
   exports: [AbonnementListComponent, AbonnementCreateComponent],
   imports: [SharedModule],
 })

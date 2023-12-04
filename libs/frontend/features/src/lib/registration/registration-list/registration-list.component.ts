@@ -108,7 +108,11 @@ export class RegistrationListComponent implements OnInit, OnDestroy {
     this.registrationSubscription = this.registrationService
       .getRegistrations(userId, locationId, abonnementId)
       .subscribe((results) => {
-        if (results?.length == 0) this.emtpyApiResponse = true;
+        results = results as IRegistration[] | null;
+
+        if (results?.length == 0 || results == null)
+          this.emtpyApiResponse = true;
+
         console.log(`results: ${results}`);
         results?.forEach(async (value) => {
           this.registrationList.push(await this.fillObject(value));

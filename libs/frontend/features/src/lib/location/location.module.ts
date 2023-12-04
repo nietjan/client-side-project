@@ -19,14 +19,7 @@ import { SharedModule } from '../shared.module';
     LocationDetailComponent,
     LocationCreateComponent,
   ],
-  providers: [
-    LocationService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: HeadersInterceptor,
-      multi: true,
-    },
-  ],
+  providers: [],
   exports: [LocationListComponent, LocationDetailComponent],
   imports: [
     SharedModule,

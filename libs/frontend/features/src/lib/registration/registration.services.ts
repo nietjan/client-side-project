@@ -29,7 +29,7 @@ export class RegistrationService {
     userId: string | null,
     locationId: string | null,
     abonnementId: string | null
-  ): Observable<IRegistration[] | null> {
+  ): Observable<IRegistration[] | IRegistration | null> {
     console.log(`list ${this.endpoint}`);
 
     //setup query
@@ -44,13 +44,23 @@ export class RegistrationService {
       query += `abonnementId=${abonnementId}`;
     }
 
-    return this.http
-      .get<ApiResponse<IRegistration[]>>(`${this.endpoint}?${query}`)
-      .pipe(
-        map((response: any) => response.results as IRegistration[]),
-        tap(console.log),
-        catchError(this.handleError)
-      );
+    if (userId && locationId && abonnementId) {
+      return this.http
+        .get<ApiResponse<IRegistration>>(`${this.endpoint}?${query}`)
+        .pipe(
+          map((response: any) => response.results as IRegistration),
+          tap(console.log),
+          catchError(this.handleError)
+        );
+    } else {
+      return this.http
+        .get<ApiResponse<IRegistration[]>>(`${this.endpoint}?${query}`)
+        .pipe(
+          map((response: any) => response.results as IRegistration[]),
+          tap(console.log),
+          catchError(this.handleError)
+        );
+    }
   }
 
   public removeRegistration(
@@ -71,8 +81,8 @@ export class RegistrationService {
   }
 
   public createRegistration(
-    registration: IRegistration
-  ): Observable<ILocation> {
+    registration: ICreateRegistration
+  ): Observable<IRegistration> {
     return this.http
       .post<ApiResponse<IRegistration>>(this.endpoint, registration)
       .pipe(

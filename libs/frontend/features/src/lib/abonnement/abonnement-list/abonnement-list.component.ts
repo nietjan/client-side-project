@@ -1,8 +1,14 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { IAbonnement, ILocation, ROLE } from '@client-side/shared/api';
+import {
+  IAbonnement,
+  ILocation,
+  IRegistration,
+  ROLE,
+} from '@client-side/shared/api';
 import { Subscription, of } from 'rxjs';
 import { AbonnementService } from '../abonnement.services';
 import { StorageService } from 'libs/frontend/ui/src/lib/storage.services';
+import { RegistrationService } from '../../registration/registration.services';
 
 @Component({
   selector: 'client-side-project-abonnement-list',
@@ -17,11 +23,15 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
   abonnoments: IAbonnement[] | null = null;
   abonnementSubscription: Subscription | undefined = undefined;
   roleSubscription: Subscription | undefined = undefined;
+  userIdSubscription: Subscription | undefined = undefined;
+
   isEmployee: boolean = false;
+  abonnementRegistration: Map<string, boolean> = new Map<string, boolean>();
 
   constructor(
     private abonnementService: AbonnementService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private registrationService: RegistrationService
   ) {}
 
   ngOnInit(): void {
@@ -31,6 +41,7 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
         .allAbonnementsFromLocation(this.locationId)
         .subscribe((results) => {
           this.abonnoments = results;
+          this.checkIfAbonnementsAreRegisterd();
         });
     } else {
       this.abonnementSubscription = this.abonnementService
@@ -52,6 +63,31 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
     console.log(this.abonnoments);
   }
 
+  checkIfAbonnementsAreRegisterd() {
+    //check only when in list of locations
+    if (this.locationId == null || this.locationId == undefined) return;
+
+    this.userIdSubscription = this.storageService
+      .getUserId()
+      .subscribe((value) => {
+        if (value == null) return;
+
+        //check if for each abonnement if user has a registration
+        this.abonnoments?.forEach((abonnement) => {
+          this.registrationService
+            .getRegistrations(value, this.locationId!, abonnement._id)
+            .subscribe((registration) => {
+              if (registration != null) {
+                this.abonnementRegistration.set(
+                  (registration as IRegistration).abonnementId,
+                  true
+                );
+              }
+            });
+        });
+      });
+  }
+
   delete(id: string): void {
     this.abonnementService.removeAbonnement(id);
 
@@ -66,5 +102,39 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.abonnementSubscription) this.abonnementSubscription.unsubscribe();
     if (this.roleSubscription) this.roleSubscription.unsubscribe();
+    if (this.userIdSubscription) this.userIdSubscription.unsubscribe();
+  }
+
+  register(abonnementId: string) {
+    //can only register when on schreen of location
+    if (!this.locationId) {
+      return;
+    }
+
+    this.registrationService
+      .createRegistration({
+        locationId: this.locationId,
+        abonnementId: abonnementId,
+      })
+      .subscribe((value) => {
+        this.abonnementRegistration.set(value.abonnementId, true);
+      });
+  }
+
+  deregister(abonnementId: string) {
+    //can only register when on schreen of location
+    if (!this.locationId) {
+      return;
+    }
+
+    this.registrationService.removeRegistration(this.locationId, abonnementId);
+    this.abonnementRegistration.delete(abonnementId);
+  }
+
+  //check if abonnement is registerd
+  isRegisterd(abonnementId: string): boolean {
+    let result = this.abonnementRegistration.get(abonnementId);
+    if (result == undefined) return false;
+    return result;
   }
 }

@@ -15,16 +15,8 @@ import { LocationModule } from '../location/location.module';
 
 @NgModule({
   declarations: [RegistrationListComponent],
-  providers: [
-    RegistrationService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: HeadersInterceptor,
-      multi: true,
-    },
-    RegistrationService,
-  ],
+  providers: [],
   exports: [RegistrationListComponent],
-  imports: [SharedModule, AbonnementModule, LocationModule, UserModule],
+  imports: [SharedModule],
 })
 export class RegistrationModule {}
