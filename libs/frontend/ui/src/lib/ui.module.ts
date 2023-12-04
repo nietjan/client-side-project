@@ -8,9 +8,16 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { UiService } from './ui.services';
 import { StorageService } from './storage.services';
+import { UserModule } from '@client-side/frontend/features';
 
 @NgModule({
-  imports: [CommonModule, RouterModule, FormsModule, HttpClientModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    HttpClientModule,
+    UserModule,
+  ],
   declarations: [AboutComponent, HeaderComponent, SpinnerComponent],
   providers: [UiService, StorageService],
   exports: [SpinnerComponent, HeaderComponent],

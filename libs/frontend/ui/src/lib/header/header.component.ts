@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { UiService } from '../ui.services';
 import { IUserCredentials, ROLE } from '@client-side/shared/api';
 import { StorageService } from '../storage.services';
+import { UserService } from '@client-side/frontend/features';
 
 @Component({
   selector: 'client-side-project-header',
@@ -19,7 +20,8 @@ export class HeaderComponent {
 
   constructor(
     private uiService: UiService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private userService: UserService
   ) {
     const tokenStorage = localStorage.getItem('token');
     if (tokenStorage != null) {
@@ -50,5 +52,10 @@ export class HeaderComponent {
     localStorage.removeItem('role');
     this.storageService.setRole(ROLE.USER);
     localStorage.removeItem('token');
+  }
+
+  public deleteAccount(): void {
+    this.userService.removeUser(this.userId);
+    this.logOut();
   }
 }

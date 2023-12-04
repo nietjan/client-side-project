@@ -13,3 +13,4 @@ export * from './lib//abonnement/abonnement-list/abonnement-list.component';
 
 //Services
 export * from './lib/abonnement/abonnement.services';
+export * from './lib/user/user.services';
