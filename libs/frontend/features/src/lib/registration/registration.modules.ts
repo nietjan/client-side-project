@@ -11,6 +11,7 @@ import { RegistrationService } from './registration.services';
 import { UserModule } from '../user/user.module';
 import { RegistrationListComponent } from './registration-list/registration-list.component';
 import { SharedModule } from '../shared.module';
+import { LocationModule } from '../location/location.module';
 
 @NgModule({
   declarations: [RegistrationListComponent],
@@ -21,8 +22,9 @@ import { SharedModule } from '../shared.module';
       useClass: HeadersInterceptor,
       multi: true,
     },
+    RegistrationService,
   ],
-  exports: [],
+  exports: [RegistrationListComponent],
   imports: [SharedModule, AbonnementModule, LocationModule, UserModule],
 })
-export class LocationModule {}
+export class RegistrationModule {}

@@ -27,6 +27,16 @@ export class UiService {
       );
   }
 
+  deleteUser() {
+    this.http
+      .delete<ApiResponse<any>>(`${url}user/${localStorage.getItem('id')}`)
+      .subscribe({
+        error: (error) => {
+          tap(error), catchError(this.handleError);
+        },
+      });
+  }
+
   public handleError(error: HttpErrorResponse): Observable<any> {
     console.log('handleError in UiService', error);
     return throwError(() => new Error(error.message));

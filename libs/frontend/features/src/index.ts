@@ -2,6 +2,7 @@
 export * from './lib/user/user.module';
 export * from './lib/location/location.module';
 export * from './lib/abonnement/abonnement.module';
+export * from './lib/registration/registration.modules';
 
 //components
 export * from './lib/location/location-list/location-list.component';

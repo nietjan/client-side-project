@@ -4,6 +4,7 @@ import {
   AbonnementModule,
   LocationModule,
   UserModule,
+  RegistrationModule,
 } from '@client-side/frontend/features';
 import { UiModule } from '@client-side/ui';
 
@@ -15,6 +16,7 @@ import { UiModule } from '@client-side/ui';
     UserModule,
     UiModule,
     AbonnementModule,
+    RegistrationModule,
   ],
   selector: 'client-side-project-root',
   templateUrl: './app.component.html',

@@ -1,0 +1,57 @@
+<h5>Registrations</h5>
+
+<div *ngIf="registrationList.length != 0">
+  <div class="row">
+    <div class="col-6 mt-2" *ngFor="let registration of registrationList">
+      <div class="card">
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li *ngIf="showUserRegistrationInfo" class="list-group-item">
+              User: {{ registration.user?.name }}
+            </li>
+            <li *ngIf="showLocationRegistrationInfo" class="list-group-item">
+              Location: {{ registration.location?.address?.street }}
+              {{ registration.location?.address?.homeNumber }},
+              {{ registration.location?.address?.postalCode }}
+              {{ registration.location?.address?.city }}
+            </li>
+            <li *ngIf="showAbonnementRegistrationInfo" class="list-group-item">
+              Abonnement: {{ registration.abonnement?.name }}
+            </li>
+            <li class="list-group-item">
+              {{
+                registration.registration.registrationDate.toLocaleDateString()
+              }}
+            </li>
+          </ul>
+          <div class="card-body">
+            <a
+              *ngIf="showUserRegistrationInfo"
+              routerLink="/user/{{ registration.user?._id }}"
+              class="card-link"
+              >Check user</a
+            >
+            <a
+              *ngIf="showLocationRegistrationInfo"
+              routerLink="/location/{{ registration.location?._id }}"
+              class="card-link"
+              >Check location</a
+            >
+            <a
+              *ngIf="showAbonnementRegistrationInfo"
+              routerLink="/location/{{ registration.abonnement?._id }}"
+              class="card-link"
+              >Check abonnement</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="emtpyApiResponse">No registrations found</div>
+
+<div *ngIf="registrationList.length == 0 && emtpyApiResponse == false">
+  <app-spinner></app-spinner>
+</div>

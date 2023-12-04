@@ -33,7 +33,7 @@
     </ul>
 
     <!-- Account tab -->
-    <div class="btn-group dropleft">
+    <div class="btn-group float-right">
       <button
         type="button"
         class="btn btn-danger dropdown-toggle"
@@ -44,7 +44,7 @@
         <span *ngIf="!signedIn">Sign in</span>
         <span *ngIf="signedIn">{{ userName }}</span>
       </button>
-      <div class="dropdown-menu">
+      <div class="dropdown-menu dropdown-menu-right">
         <!-- If not logged in -->
         <div *ngIf="!signedIn">
           <!-- Login form -->
@@ -121,7 +121,7 @@
             >Check account</a
           >
           <a class="dropdown-item" (click)="logOut()">Log out</a>
-          <a class="dropdown-item">Delete account</a>
+          <a class="dropdown-item" (click)="deleteAccount()">Delete account</a>
         </div>
       </div>
     </div>

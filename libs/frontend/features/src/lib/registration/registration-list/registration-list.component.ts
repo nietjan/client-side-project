@@ -25,6 +25,7 @@ export class RegistrationListComponent implements OnInit, OnDestroy {
   registrationSubscription: Subscription | undefined = undefined;
   roleSubscription: Subscription | undefined = undefined;
   registrationList: IRegistrationInfo[] = [];
+  emtpyApiResponse: boolean = false;
 
   showUserRegistrationInfo: boolean = false;
   showLocationRegistrationInfo: boolean = false;
@@ -61,49 +62,9 @@ export class RegistrationListComponent implements OnInit, OnDestroy {
       this.showLocationRegistrationInfo = true;
       this.showAbonnementRegistrationInfo = true;
     }
-    let adress: IAddress = {
-      street: '',
-      postalCode: '',
-      city: '',
-      country: '',
-      homeNumber: '',
-    };
-    let re1: IRegistrationInfo = {
-      registration: {
-        userId: '',
-        locationId: '',
-        abonnementId: '',
-        registrationDate: new Date(),
-      },
-      user: {
-        name: 'name',
-        _id: '',
-        phoneNumber: 'phone',
-        iban: 'iban',
-        sex: 'sex',
-        dateOfBirith: 'date',
-        eMail: 'email',
-        password: 'pass',
-        role: ROLE.USER,
-        address: adress,
-      },
-      location: {
-        _id: '',
-        phoneNumber: 'phone',
-        eMail: 'email',
-        openingsTime: 'openig',
-        closingTime: 'closing',
-        hasTrainers: true,
-        address: adress,
-        abonnements: [],
-      },
-      abonnement: { name: 'name', period: 1, price: 1, _id: '' },
-    };
 
-    this.registrationList.push(re1, re1, re1);
-
-    //const ids = this.setupForRegistrationsList();
-    //this.fillList(ids[0], ids[1], ids[2]);
+    const ids = this.setupForRegistrationsList();
+    this.fillList(ids[0], ids[1], ids[2]);
   }
 
   //setup for filling list
@@ -142,6 +103,7 @@ export class RegistrationListComponent implements OnInit, OnDestroy {
     this.registrationSubscription = this.registrationService
       .getRegistrations(userId, locationId, abonnementId)
       .subscribe((results) => {
+        if (results?.length == 0) this.emtpyApiResponse = true;
         console.log(`results: ${results}`);
         results?.forEach(async (value) => {
           this.registrationList.push(await this.fillObject(value));

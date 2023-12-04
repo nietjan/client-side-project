@@ -20,9 +20,8 @@ export class HeaderComponent {
 
   constructor(
     private uiService: UiService,
-    private storageService: StorageService
-  ) // private userService: UserService
-  {
+    private storageService: StorageService // private userService: UserService
+  ) {
     const tokenStorage = localStorage.getItem('token');
     if (tokenStorage != null) {
       this.signedIn = true;
@@ -54,8 +53,8 @@ export class HeaderComponent {
     localStorage.removeItem('token');
   }
 
-  // public deleteAccount(): void {
-  //   this.userService.removeUser(this.userId);
-  //   this.logOut();
-  // }
+  public deleteAccount(): void {
+    this.uiService.deleteUser();
+    this.logOut();
+  }
 }
