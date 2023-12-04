@@ -65,7 +65,7 @@ export class LocationService {
   }
 
   public handleError(error: HttpErrorResponse): Observable<any> {
-    console.log(`handleError in ${AbonnementService.name}`, error);
+    console.log(`handleError in ${LocationService.name}`, error);
     return throwError(() => new Error(error.message));
   }
 }
