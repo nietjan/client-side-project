@@ -76,13 +76,17 @@ export class UserService {
   public updateUser(user: IUser): Observable<IUser> {
     console.log(`update ${this.endpoint}`);
 
-    return this.http
+    let result = this.http
       .put<ApiResponse<IUser>>(`${this.endpoint}/${user._id}`, user)
       .pipe(
         map((response: any) => response.results as IUser),
         tap(console.log),
         catchError(this.handleError)
       );
+    result.subscribe((value) => {
+      console.log(value);
+    });
+    return result;
   }
 
   /**

@@ -13,7 +13,6 @@ export class HeaderComponent {
   //for collapsing navbar
   isCollapsed: boolean = true;
   signedIn: boolean = false;
-  userToken: string | null = null;
   userName: string | null = null;
   userId: string | null = null;
   loginInfo: IUserCredentials = { eMail: '', password: '' };
@@ -26,12 +25,12 @@ export class HeaderComponent {
     if (tokenStorage != null) {
       this.signedIn = true;
       this.userName = localStorage.getItem('name');
+      this.userId = localStorage.getItem('id');
     }
   }
 
   onSubmit() {
     this.uiService.login(this.loginInfo).subscribe((value) => {
-      this.userToken = value.token;
       this.userName = value.name;
       this.loginInfo = { eMail: '', password: '' };
       this.signedIn = true;
@@ -45,7 +44,6 @@ export class HeaderComponent {
   }
 
   logOut() {
-    this.userToken = null;
     this.userName = null;
     this.userId = null;
     this.signedIn = false;

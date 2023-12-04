@@ -30,5 +30,16 @@ export type ICreateUser = Pick<
   | 'role'
 >;
 
-export type IUpdateUser = Partial<Omit<IUser, '_id'>>;
+export type IUpdateUser = Pick<
+  IUser,
+  | 'name'
+  | 'dateOfBirith'
+  | 'sex'
+  | 'phoneNumber'
+  | 'eMail'
+  | 'iban'
+  | 'address'
+  | 'role'
+>;
+
 export type IUpsertUser = IUser;

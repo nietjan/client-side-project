@@ -27,6 +27,11 @@
       <li class="nav-item">
         <a class="nav-link" routerLink="abonnement">Abonnements</a>
       </li>
+      <li *ngIf="signedIn" class="nav-item">
+        <a class="nav-link" routerLink="user/{{ userId }}/registration"
+          >Registrations</a
+        >
+      </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="about">About</a>
       </li>
@@ -117,7 +122,7 @@
 
         <!-- If logged in -->
         <div *ngIf="signedIn">
-          <a class="dropdown-item" routerLink="/user/{{ userId }}"
+          <a class="dropdown-item" routerLink="/user/{{ userId }}/update"
             >Check account</a
           >
           <a class="dropdown-item" (click)="logOut()">Log out</a>

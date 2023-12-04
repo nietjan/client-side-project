@@ -175,6 +175,28 @@
       </div>
     </div>
 
+    <!--user.password -->
+    <div *ngIf="!isUpdating" class="form-group col-sm-12 col-lg-4">
+      <label for="userPassword">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        [(ngModel)]="user.password"
+        name="userPassword"
+        #userPassword="ngModel"
+        [ngClass]="{ 'is-invalid': userPassword.invalid }"
+        required
+      />
+      <div
+        class="invalid-feedback"
+        *ngIf="userPassword.invalid && userPassword.touched"
+      >
+        <div *ngIf="userPassword.errors?.['required']">
+          Password is required.
+        </div>
+      </div>
+    </div>
+
     <!-- user.address -->
     <h5 class="mt-4 col-12">Address</h5>
     <div class="col-12">

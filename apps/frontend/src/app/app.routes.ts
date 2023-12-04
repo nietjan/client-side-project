@@ -76,4 +76,9 @@ export const appRoutes: Route[] = [
     pathMatch: 'full',
     component: RegistrationListComponent,
   },
+  {
+    path: 'user/:id/update',
+    pathMatch: 'full',
+    component: UserCreateComponent,
+  },
 ];

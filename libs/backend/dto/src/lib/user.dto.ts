@@ -111,7 +111,6 @@ export class UpsertUserDto implements IUpsertUser {
   eMail!: string;
 
   @ApiProperty({ type: String })
-  @IsStrongPassword()
   @IsNotEmpty()
   password!: string;
 
@@ -165,11 +164,6 @@ export class UpdateUserDto implements IUpdateUser, IUpdateAddress {
   @IsOptional()
   @IsEnum(ROLE)
   role!: ROLE;
-
-  @ApiProperty({ type: String })
-  @IsStrongPassword()
-  @IsNotEmpty()
-  password!: string;
 
   @ApiProperty({ type: String })
   @IsString()
