@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { AbonnementModule } from '../abonnement/abonnement.module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { HeadersInterceptor } from '@client-side/frontend/common';
+import { SharedModule } from '../shared.module';
 
 @NgModule({
   declarations: [
@@ -28,11 +29,8 @@ import { HeadersInterceptor } from '@client-side/frontend/common';
   ],
   exports: [LocationListComponent, LocationDetailComponent],
   imports: [
-    CommonModule,
-    HttpClientModule,
-    RouterModule,
+    SharedModule,
     UiModule,
-    FormsModule,
     AbonnementModule,
     NgMultiSelectDropDownModule,
   ],

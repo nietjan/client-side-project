@@ -9,9 +9,11 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { HeadersInterceptor } from '@client-side/frontend/common';
 import { RegistrationService } from './registration.services';
 import { UserModule } from '../user/user.module';
+import { RegistrationListComponent } from './registration-list/registration-list.component';
+import { SharedModule } from '../shared.module';
 
 @NgModule({
-  declarations: [],
+  declarations: [RegistrationListComponent],
   providers: [
     RegistrationService,
     {
@@ -21,15 +23,6 @@ import { UserModule } from '../user/user.module';
     },
   ],
   exports: [],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    UiModule,
-    AbonnementModule,
-    RouterModule,
-    LocationModule,
-    UserModule,
-    NgMultiSelectDropDownModule,
-  ],
+  imports: [SharedModule, AbonnementModule, LocationModule, UserModule],
 })
 export class LocationModule {}

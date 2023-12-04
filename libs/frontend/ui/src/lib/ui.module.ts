@@ -11,13 +11,7 @@ import { StorageService } from './storage.services';
 import { UserModule } from '@client-side/frontend/features';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule,
-    FormsModule,
-    HttpClientModule,
-    UserModule,
-  ],
+  imports: [CommonModule, RouterModule, FormsModule, HttpClientModule],
   declarations: [AboutComponent, HeaderComponent, SpinnerComponent],
   providers: [UiService, StorageService],
   exports: [SpinnerComponent, HeaderComponent],

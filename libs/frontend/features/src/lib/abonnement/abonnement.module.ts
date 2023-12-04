@@ -8,6 +8,7 @@ import { UiModule } from '@client-side/ui';
 import { AbonnementService } from './abonnement.services';
 import { RouterModule } from '@angular/router';
 import { HeadersInterceptor } from '@client-side/frontend/common';
+import { SharedModule } from '../shared.module';
 
 @NgModule({
   declarations: [AbonnementCreateComponent, AbonnementListComponent],
@@ -20,12 +21,6 @@ import { HeadersInterceptor } from '@client-side/frontend/common';
     },
   ],
   exports: [AbonnementListComponent, AbonnementCreateComponent],
-  imports: [
-    FormsModule,
-    CommonModule,
-    HttpClientModule,
-    UiModule,
-    RouterModule,
-  ],
+  imports: [SharedModule],
 })
 export class AbonnementModule {}

@@ -6,6 +6,7 @@ import {
   LocationCreateComponent,
   AbonnementListComponent,
   AbonnementCreateComponent,
+  RegistrationListComponent,
 } from '@client-side/frontend/features';
 import { UserCreateComponent } from 'libs/frontend/features/src/lib/user/user-create/user-create.component';
 
@@ -36,6 +37,11 @@ export const appRoutes: Route[] = [
     component: LocationCreateComponent,
   },
   {
+    path: 'location/:id/registration',
+    pathMatch: 'full',
+    component: RegistrationListComponent,
+  },
+  {
     path: 'location/:id',
     pathMatch: 'full',
     component: LocationDetailComponent,
@@ -56,8 +62,18 @@ export const appRoutes: Route[] = [
     component: AbonnementCreateComponent,
   },
   {
+    path: 'abonnement/:id/registration',
+    pathMatch: 'full',
+    component: RegistrationListComponent,
+  },
+  {
     path: 'user/create',
     pathMatch: 'full',
     component: UserCreateComponent,
+  },
+  {
+    path: 'user/:id/registration',
+    pathMatch: 'full',
+    component: RegistrationListComponent,
   },
 ];

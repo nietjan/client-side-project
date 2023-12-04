@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   IAbonnement,
+  IAddress,
   ILocation,
   IRegistration,
   IRegistrationInfo,
@@ -17,8 +18,8 @@ import { UserService } from '../../user/user.services';
 
 @Component({
   selector: 'client-side-project-registration-list',
-  templateUrl: './location-list.component.html',
-  styleUrls: ['./location-list.component.css'],
+  templateUrl: './registration-list.component.html',
+  styleUrls: ['./registration-list.component.css'],
 })
 export class RegistrationListComponent implements OnInit, OnDestroy {
   registrationSubscription: Subscription | undefined = undefined;
@@ -60,9 +61,49 @@ export class RegistrationListComponent implements OnInit, OnDestroy {
       this.showLocationRegistrationInfo = true;
       this.showAbonnementRegistrationInfo = true;
     }
+    let adress: IAddress = {
+      street: '',
+      postalCode: '',
+      city: '',
+      country: '',
+      homeNumber: '',
+    };
+    let re1: IRegistrationInfo = {
+      registration: {
+        userId: '',
+        locationId: '',
+        abonnementId: '',
+        registrationDate: new Date(),
+      },
+      user: {
+        name: 'name',
+        _id: '',
+        phoneNumber: 'phone',
+        iban: 'iban',
+        sex: 'sex',
+        dateOfBirith: 'date',
+        eMail: 'email',
+        password: 'pass',
+        role: ROLE.USER,
+        address: adress,
+      },
+      location: {
+        _id: '',
+        phoneNumber: 'phone',
+        eMail: 'email',
+        openingsTime: 'openig',
+        closingTime: 'closing',
+        hasTrainers: true,
+        address: adress,
+        abonnements: [],
+      },
+      abonnement: { name: 'name', period: 1, price: 1, _id: '' },
+    };
 
-    const ids = this.setupForRegistrationsList();
-    this.fillList(ids[0], ids[1], ids[2]);
+    this.registrationList.push(re1, re1, re1);
+
+    //const ids = this.setupForRegistrationsList();
+    //this.fillList(ids[0], ids[1], ids[2]);
   }
 
   //setup for filling list
