@@ -85,7 +85,7 @@ export class UserService {
 
     //also delete registrations if user is deleted
     if (result.deletedCount > 0) {
-      this.RegistrationModel.deleteOne({
+      this.RegistrationModel.deleteMany({
         userId: new ObjectId(id),
       }).exec();
     }

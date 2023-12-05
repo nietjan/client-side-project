@@ -113,10 +113,7 @@ export class LocationController {
         );
     } catch (error) {
       if (error instanceof Error) {
-        throw new HttpException(
-          error.message,
-          HttpStatus.INTERNAL_SERVER_ERROR
-        );
+        throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
       }
       throw new HttpException('Server error', HttpStatus.INTERNAL_SERVER_ERROR);
     }

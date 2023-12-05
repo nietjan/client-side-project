@@ -77,7 +77,7 @@ export class LocationService {
     return favoriteAbonnement;
   }
 
-  create(location: CreateLocationDto): Promise<DbLocation> {
+  async create(location: CreateLocationDto): Promise<DbLocation> {
     //TODO: Check if abonementId are correct
     Logger.log('create', this.TAG);
 
@@ -92,7 +92,13 @@ export class LocationService {
     }
 
     const createdLocation = new this.LocationModel(location);
-    return createdLocation.save();
+    const result = await createdLocation.save();
+
+    //neo4j
+    const query = `CREATE(:Location{_id: '${result._id}'})`;
+    await this.neo4jService.write(query);
+
+    return result;
   }
 
   async delete(id: string): Promise<DeleteResult> {
@@ -101,19 +107,24 @@ export class LocationService {
       _id: new ObjectId(id),
     }).exec();
 
-    //also delete registrations if user is deleted
+    //also delete registrations if location is deleted
     if (result.deletedCount > 0) {
-      this.RegistrationModel.deleteOne({
+      this.RegistrationModel.deleteMany({
         locationId: new ObjectId(id),
       }).exec();
     }
+
+    //neo4j --> Delete location with relation to abonnement and registration. Also delete registrations with relation to this location and their relations
+    const query = `MATCH (location:Location {_id:'${id}'}) OPTIONAL MATCH (location)-[locationAbonnement]-() OPTIONAL MATCH (location)-[locationRegistration:hasRegistration]-(registration:Registration)-[registrationAbonnement]-()  DELETE location,locationAbonnement,locationRegistration,registration,registrationAbonnement`;
+    await this.neo4jService.write(query);
+
     return {
       acknowledged: result.acknowledged,
       deletedCount: result.deletedCount,
     };
   }
 
-  update(
+  async update(
     location: UpdateLocationDto,
     id: string
   ): Promise<UpdateWriteOpResult> {
@@ -126,9 +137,16 @@ export class LocationService {
     if (!this.abonnementService.areAbonnements(location.abonnements)) {
       throw new TypeError('One or multiple abonnements are not found');
     }
-    return this.LocationModel.updateOne(
+
+    const locationFromDb = await this.LocationModel.findOne({
+      _id: new ObjectId(id),
+    });
+
+    const result = await this.LocationModel.updateOne(
       { _id: new ObjectId(id) },
       { $set: location }
     ).exec();
+
+    return result;
   }
 }

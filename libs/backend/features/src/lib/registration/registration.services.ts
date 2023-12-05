@@ -9,6 +9,7 @@ import { DbRegistration } from './registration.schema';
 import { UserService } from '../user/user.services';
 import { LocationService } from '../location/location.services';
 import { AbonnementService } from '../abonnement/abonnement.services';
+import { Neo4jService } from 'nest-neo4j/dist';
 
 @Injectable()
 export class RegistrationService {
@@ -18,7 +19,8 @@ export class RegistrationService {
     @InjectModel(DbRegistration.name)
     private RegistrationModel: Model<DbRegistration>,
     private locationService: LocationService,
-    private abonnementService: AbonnementService
+    private abonnementService: AbonnementService,
+    private readonly neo4jService: Neo4jService
   ) {}
 
   get(
@@ -63,7 +65,18 @@ export class RegistrationService {
       registrationDate: new Date(),
       userId: userId,
     });
-    return createdRegistration.save();
+    const result = await createdRegistration.save();
+
+    //Neo4J - creating registration
+    let query = `Create(registration:Registration{userId: '${userId}', locationId: '${registration.locationId}', abonnementId: '${registration.abonnementId}'}) `;
+    //creating relation registration - abonnement
+    query += `MATCH(abonnement:Abonnement) WHERE abonnement._id = '${registration.abonnementId}}' CREATE (abonnement)-[:hasRegistration]->(registration)`;
+    //creating relation registration - location
+    query += `MATCH(location:Location) WHERE location._id = '${registration.locationId}' CREATE (location)-[:hasRegistration]->(registration) return location, abonnement, registration`;
+
+    await this.neo4jService.write(query);
+
+    return result;
   }
 
   update(
@@ -81,7 +94,7 @@ export class RegistrationService {
     ).exec();
   }
 
-  delete(
+  async delete(
     userId: string | null,
     locationId: string | null,
     abonnementId: string | null
@@ -103,7 +116,13 @@ export class RegistrationService {
       query.abonnementId = abonnementId;
     }
 
-    return this.RegistrationModel.deleteOne(query).exec();
+    const result = await this.RegistrationModel.deleteOne(query).exec();
+
+    //neo4j
+    const neo4JQuery = `MATCH (registration:Registration {userId: '${userId}', locationId: '${locationId}', abonnementId: '${abonnementId}'}) OPTIONAL MATCH (registration)-[r]-() DELETE registration,r`;
+    await this.neo4jService.write(neo4JQuery);
+
+    return result;
   }
 
   private async checkIds(

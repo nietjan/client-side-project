@@ -16,6 +16,7 @@ import { DeleteResult, ObjectId } from 'mongodb';
 import { IAbonnement } from '@client-side/shared/api';
 import { RegistrationService } from '../registration/registration.services';
 import { DbRegistration } from '../registration/registration.schema';
+import { Neo4jService } from 'nest-neo4j/dist';
 
 @Injectable()
 export class AbonnementService {
@@ -25,7 +26,8 @@ export class AbonnementService {
     @InjectModel(DbAbonnement.name)
     private AbonnementModel: Model<DbAbonnement>,
     @InjectModel(DbRegistration.name)
-    private RegistrationModel: Model<DbRegistration>
+    private RegistrationModel: Model<DbRegistration>,
+    private readonly neo4jService: Neo4jService
   ) {}
 
   getAll(): Promise<DbAbonnement[]> {
@@ -59,10 +61,18 @@ export class AbonnementService {
     }
   }
 
-  create(createAbonnementDto: CreateAbonnementDto): Promise<DbAbonnement> {
+  async create(
+    createAbonnementDto: CreateAbonnementDto
+  ): Promise<DbAbonnement> {
     Logger.log('create', this.TAG);
     const createdAbonnement = new this.AbonnementModel(createAbonnementDto);
-    return createdAbonnement.save();
+    const result = await createdAbonnement.save();
+
+    //Neo4J
+    const query = `Create(:Abonnement{_id: '${result._id}'})`;
+    await this.neo4jService.write(query);
+
+    return result;
   }
 
   async delete(id: string): Promise<DeleteResult> {
@@ -71,12 +81,17 @@ export class AbonnementService {
       _id: new ObjectId(id),
     }).exec();
 
-    //also delete registrations if user is deleted
+    //also delete registrations if abonnement is deleted
     if (result.deletedCount > 0) {
-      this.RegistrationModel.deleteOne({
+      this.RegistrationModel.deleteMany({
         abonnementId: new ObjectId(id),
       }).exec();
     }
+
+    //neo4j --> Delete abonnement with relation to location and registration. Also delete registrations with relation to this abonnement and their relations
+    const query = `MATCH (abonnement:Abonnement {_id:'${id}'}) OPTIONAL MATCH (abonnement)-[abonnementLocation]-() OPTIONAL MATCH (abonnement)-[abonnementRegistration:hasRegistration]-(registration:Registration)-[registrationLocation]-()  DELETE abonnement,abonnementLocation,abonnementRegistration,registration,registrationLocation`;
+    await this.neo4jService.write(query);
+
     return {
       acknowledged: result.acknowledged,
       deletedCount: result.deletedCount,

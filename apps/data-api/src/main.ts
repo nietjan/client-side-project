@@ -32,6 +32,8 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(globalPrefix, app, document);
 
+  console.log(`NEO4J_PASSWORD: ${process.env.NEO4J_PASSWORD}`);
+
   const port = process.env.PORT || 3000;
   await app.listen(port);
   Logger.log(
