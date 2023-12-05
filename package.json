@@ -32,6 +32,7 @@
     "jquery": "^3.7.1",
     "mongodb-memory-server": "^9.1.1",
     "mongoose": "^8.0.1",
+    "nest-neo4j": "^0.3.1",
     "ng-multiselect-dropdown": "^1.0.0",
     "popper.js": "^1.16.1",
     "reflect-metadata": "^0.1.13",

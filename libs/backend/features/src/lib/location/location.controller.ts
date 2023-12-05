@@ -25,6 +25,7 @@ import { UpdateWriteOpResult } from 'mongoose';
 import { EmployeeOnlyGuard } from '../auth/guards/employee.only.guards';
 import { AbonnementService } from '../abonnement/abonnement.services';
 import { DbAbonnement } from '../abonnement/abonnement.schema';
+import { isInstance } from 'class-validator';
 
 //TODO: add all ApiResponses
 @ApiTags('location')
@@ -77,6 +78,48 @@ export class LocationController {
     });
 
     return this.abonnementService.getAllFromArray(idArr);
+  }
+
+  @Get(':id/abonnement/favorite')
+  @ApiOperation({ summary: 'Get favorite abonnement location with id' })
+  @ApiParam({ name: 'id', description: 'Id of location', type: String })
+  async getFavoriteAbonnementsOfLocation(
+    @Param('id') id: string
+  ): Promise<DbAbonnement> {
+    try {
+      // let location = await this.locationService.getOne(id);
+      // if (location == null) {
+      //   throw new HttpException(
+      //     `Location with id: ${id} not found`,
+      //     HttpStatus.NOT_FOUND
+      //   );
+      // }
+      // //create string array of abonnement ids
+      // let idArr: string[] = [];
+      // location.abonnements.forEach((value) => {
+      //   idArr.push(value.toString());
+      // });
+
+      let idArr = ['1', '2'];
+
+      //get favorite
+      let result = await this.locationService.getFavoriteAbonnement(id, idArr);
+      if (result != null) {
+        return result;
+      } else
+        throw new HttpException(
+          `Location with id: ${id} not found`,
+          HttpStatus.NOT_FOUND
+        );
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new HttpException(
+          error.message,
+          HttpStatus.INTERNAL_SERVER_ERROR
+        );
+      }
+      throw new HttpException('Server error', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @Get(':id')

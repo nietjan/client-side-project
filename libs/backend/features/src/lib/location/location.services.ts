@@ -2,6 +2,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
@@ -15,6 +16,8 @@ import { AbonnementService } from '../abonnement/abonnement.services';
 import { DbAbonnement } from '../abonnement/abonnement.schema';
 import { RegistrationService } from '../registration/registration.services';
 import { DbRegistration } from '../registration/registration.schema';
+import { Neo4jService } from 'nest-neo4j';
+import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class LocationService {
@@ -24,7 +27,8 @@ export class LocationService {
     @InjectModel(DbLocation.name) private LocationModel: Model<DbLocation>,
     private abonnementService: AbonnementService,
     @InjectModel(DbRegistration.name)
-    private RegistrationModel: Model<DbRegistration>
+    private RegistrationModel: Model<DbRegistration>,
+    private readonly neo4jService: Neo4jService
   ) {}
 
   getAll(): Promise<DbLocation[]> {
@@ -33,9 +37,44 @@ export class LocationService {
   }
 
   getOne(id: string): Promise<DbLocation | null> {
-    Logger.log('getAll', this.TAG);
+    Logger.log('getOne', this.TAG);
     var objectId = new ObjectId(id);
     return this.LocationModel.findOne({ _id: objectId }).exec();
+  }
+
+  async getFavoriteAbonnement(
+    locationId: string,
+    abonnementIds: string[]
+  ): Promise<DbAbonnement | null> {
+    let favorite: string | null = null;
+    let favoriteCount: number = 0;
+
+    //loop over all abonnements and check wich has the most registrations
+    for (const index in abonnementIds) {
+      //get amount
+      const query = `MATCH(location: Location)-[:hasRegistration]->(registration:Registration)<-[:hasRegistration]-(abonnement:Abonnement) WHERE location._id = '${locationId}' AND abonnement._id='${abonnementIds[index]}' return count(registration)`;
+      const res = await this.neo4jService.read(query);
+      let amount = res.records[0].get('count(registration)') as number;
+
+      console.log(`In arr ${amount}`);
+      if (amount > favoriteCount || favoriteCount == 0) {
+        favoriteCount = amount;
+        favorite = abonnementIds[index];
+      }
+    }
+
+    //get abonnement of the gatherd id
+    if (favorite == null) {
+      return null;
+    }
+
+    let favoriteAbonnement = await this.abonnementService.getOne(favorite);
+
+    if (favoriteAbonnement == null) {
+      return null;
+    }
+
+    return favoriteAbonnement;
   }
 
   create(location: CreateLocationDto): Promise<DbLocation> {
