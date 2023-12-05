@@ -7,8 +7,9 @@ import {
   AbonnementListComponent,
   AbonnementCreateComponent,
   RegistrationListComponent,
+  UserCreateComponent,
+  UserDetailComponent,
 } from '@client-side/frontend/features';
-import { UserCreateComponent } from 'libs/frontend/features/src/lib/user/user-create/user-create.component';
 
 export const appRoutes: Route[] = [
   {
@@ -80,5 +81,10 @@ export const appRoutes: Route[] = [
     path: 'user/:id/update',
     pathMatch: 'full',
     component: UserCreateComponent,
+  },
+  {
+    path: 'user/:id',
+    pathMatch: 'full',
+    component: UserDetailComponent,
   },
 ];

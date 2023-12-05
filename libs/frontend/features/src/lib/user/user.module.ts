@@ -7,10 +7,11 @@ import { UserCreateComponent } from './user-create/user-create.component';
 import { FormsModule } from '@angular/forms';
 import { UiModule } from '@client-side/ui';
 import { SharedModule } from '../shared.module';
+import { UserDetailComponent } from './user-detail/user-detail.component';
 
 @NgModule({
   imports: [SharedModule],
-  declarations: [UserListComponent, UserCreateComponent],
+  declarations: [UserListComponent, UserCreateComponent, UserDetailComponent],
   providers: [UserService],
   exports: [UserListComponent],
 })
