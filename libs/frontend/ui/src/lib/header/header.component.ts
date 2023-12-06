@@ -17,8 +17,6 @@ export class HeaderComponent {
   userName: string | null = null;
   userId: string | null = null;
   loginInfo: IUserCredentials = { eMail: '', password: '' };
-  roleSubscription: Subscription | undefined = undefined;
-  userRole: string = '';
 
   constructor(
     private uiService: UiService,
@@ -30,16 +28,6 @@ export class HeaderComponent {
       this.userName = localStorage.getItem('name');
       this.userId = localStorage.getItem('id');
     }
-
-    this.roleSubscription = this.storageService
-      .getRole()
-      .subscribe((result) => {
-        if (result == ROLE.EMPLOYEE) {
-          this.userRole = 'employee';
-        } else {
-          this.userRole = 'user';
-        }
-      });
   }
 
   onSubmit() {

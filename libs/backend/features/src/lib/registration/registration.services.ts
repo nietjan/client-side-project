@@ -91,8 +91,7 @@ export class RegistrationService {
     await this.neo4jService.write(query);
     //creating relation registration - location
 
-    query += `MATCH(location:Location) WHERE location._id = '${registration.locationId}' CREATE (location)-[:hasRegistration]->(registration) return location, abonnement, registration`;
-
+    query = `MATCH(location:Location) WHERE location._id = '${registration.locationId}' CREATE (location)-[:hasRegistration]->(registration) return location, abonnement, registration`;
     await this.neo4jService.write(query);
 
     return result;

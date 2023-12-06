@@ -93,8 +93,14 @@ export class LocationService {
     const result = await createdLocation.save();
 
     //neo4j
-    const query = `CREATE(:Location{_id: '${result._id}'})`;
+    let query = `CREATE(:Location{_id: '${result._id}'})`;
     await this.neo4jService.write(query);
+
+    for (let index in location.abonnements) {
+      query = `MATCH(location:Location) WHERE location._id = '${result._id}' MATCH (abonnement:Abonnement) WHERE abonnement._id = '${location.abonnements[index]}' CREATE (location)-[:hasAbonnement]->(abonnement)`;
+      console.log(query);
+      await this.neo4jService.write(query);
+    }
 
     return result;
   }
