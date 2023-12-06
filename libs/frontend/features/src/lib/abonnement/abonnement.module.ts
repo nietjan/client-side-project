@@ -28,9 +28,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AbonnementCreateComponent, AbonnementListComponent],
-  providers: [],
-  exports: [AbonnementListComponent, AbonnementCreateComponent],
+  declarations: [AbonnementCreateComponent],
+  providers: [AbonnementService],
+  exports: [],
   imports: [SharedModule, RouterModule.forChild(routes)],
 })
 export class AbonnementModule {}

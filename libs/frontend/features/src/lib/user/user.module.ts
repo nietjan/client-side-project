@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { UiModule } from '@client-side/ui';
 import { SharedModule } from '../shared.module';
 import { UserDetailComponent } from './user-detail/user-detail.component';
-import { Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
@@ -29,7 +29,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [SharedModule],
+  imports: [SharedModule, RouterModule.forChild(routes)],
   declarations: [UserListComponent, UserCreateComponent, UserDetailComponent],
   providers: [UserService],
   exports: [UserListComponent],

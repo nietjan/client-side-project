@@ -47,7 +47,6 @@ const routes: Routes = [
   imports: [
     SharedModule,
     UiModule,
-    AbonnementModule,
     NgMultiSelectDropDownModule,
     RouterModule.forChild(routes),
   ],
