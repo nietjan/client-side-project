@@ -77,22 +77,23 @@ export class RegistrationService {
 
     //add to db
     const createdRegistration = new this.RegistrationModel({
-      ...registration,
+      locationId: new ObjectId(registration.locationId),
+      abonnementId: new ObjectId(registration.abonnementId),
       registrationDate: new Date(),
-      userId: userId,
+      userId: new ObjectId(userId),
     });
     const result = await createdRegistration.save();
 
     //Neo4J - creating registration
-    let query = `Create(registration:Registration{userId: '${userId}', locationId: '${registration.locationId}', abonnementId: '${registration.abonnementId}'}) `;
+    let query = `Create(registration:Registration{userId: '${userId}', locationId: '${registration.locationId}', abonnementId: '${registration.abonnementId}'})`;
     await this.neo4jService.write(query);
-    //creating relation registration - abonnement
-    query = `MATCH(abonnement:Abonnement) WHERE abonnement._id = '${registration.abonnementId}}' CREATE (abonnement)-[:hasRegistration]->(registration)`;
-    await this.neo4jService.write(query);
-    //creating relation registration - location
+    // //creating relation registration - abonnement
+    let query2 = `MATCH(registration:Registration{userId: '${userId}', locationId: '${registration.locationId}', abonnementId: '${registration.abonnementId}'}) MATCH(abonnement:Abonnement) WHERE abonnement._id = '${registration.abonnementId}' CREATE (abonnement)-[:hasRegistration]->(registration)`;
+    await this.neo4jService.write(query2);
 
-    query = `MATCH(location:Location) WHERE location._id = '${registration.locationId}' CREATE (location)-[:hasRegistration]->(registration) return location, abonnement, registration`;
-    await this.neo4jService.write(query);
+    //creating relation registration - location
+    let query3 = `MATCH(registration:Registration{userId: '${userId}', locationId: '${registration.locationId}', abonnementId: '${registration.abonnementId}'}) MATCH(location:Location) WHERE location._id = '${registration.locationId}' CREATE (location)-[:hasRegistration]->(registration)`;
+    await this.neo4jService.write(query3);
 
     return result;
   }

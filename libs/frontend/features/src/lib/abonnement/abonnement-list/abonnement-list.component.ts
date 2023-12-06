@@ -9,6 +9,7 @@ import { Subscription, of } from 'rxjs';
 import { AbonnementService } from '../abonnement.services';
 import { StorageService } from 'libs/frontend/ui/src/lib/storage.services';
 import { RegistrationService } from '../../registration/registration.services';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'client-side-project-abonnement-list',
@@ -16,10 +17,7 @@ import { RegistrationService } from '../../registration/registration.services';
   styleUrls: ['./abonnement-list.component.css'],
 })
 export class AbonnementListComponent implements OnInit, OnDestroy {
-  //Input is only needed if the list is only for 1 location, instead of all
-
-  //TODO: vrewijer string[] want dat is stranks niet nodig, want er moet met het id een api call gedaan worden
-  @Input() locationId: string | undefined | null;
+  locationId: string | null = null;
   abonnoments: IAbonnement[] | null = null;
   abonnementSubscription: Subscription | undefined = undefined;
   roleSubscription: Subscription | undefined = undefined;
@@ -32,19 +30,29 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
   constructor(
     private abonnementService: AbonnementService,
     private storageService: StorageService,
-    private registrationService: RegistrationService
+    private registrationService: RegistrationService,
+    private route: ActivatedRoute
   ) {
-    //check if only abonnement from 1 location of all
-    if (this.locationId != undefined && this.locationId != null) {
+    //get locationId and if null return to /location
+    this.route.paramMap.subscribe((params) => {
+      this.locationId = params.get('id');
+    });
+
+    //if locationId than it is abonnements of location else is all abonnements
+    if (this.locationId) {
+      //get locationId
+
+      //get abonnements
       this.abonnementSubscription = this.abonnementService
-        .allAbonnementsFromLocation(this.locationId)
+        .allAbonnementsFromLocation(this.locationId!)
         .subscribe((results) => {
           this.abonnoments = results;
           this.checkIfAbonnementsAreRegisterd();
         });
 
+      //get favorite abonnement
       this.abonnementService
-        .favoriteAbonnementFromLocation(this.locationId)
+        .favoriteAbonnementFromLocation(this.locationId!)
         .subscribe((value) => {
           this.favoriteId = value?._id;
         });
@@ -62,7 +70,6 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
     this.roleSubscription = this.storageService
       .getRole()
       .subscribe((result) => {
-        console.log(result);
         if (result == ROLE.EMPLOYEE) {
           this.isEmployee = true;
         } else {
@@ -78,21 +85,21 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
     this.userIdSubscription = this.storageService
       .getUserId()
       .subscribe((value) => {
+        console.log(value, 'test');
         if (value == null) return;
 
         //check if for each abonnement if user has a registration
-        this.abonnoments?.forEach((abonnement) => {
-          this.registrationService
-            .getRegistrations(value, this.locationId!, abonnement._id)
-            .subscribe((registration) => {
-              if (registration != null && registration.length != 0) {
-                this.abonnementRegistration.set(
-                  registration[0].abonnementId,
-                  true
-                );
-              }
-            });
-        });
+
+        this.registrationService
+          .getRegistrations(value, this.locationId!, null)
+          .subscribe((registration) => {
+            console.log(registration);
+            if (registration != null && registration.length != 0) {
+              registration.forEach((value) => {
+                this.abonnementRegistration.set(value.abonnementId, true);
+              });
+            }
+          });
       });
   }
 

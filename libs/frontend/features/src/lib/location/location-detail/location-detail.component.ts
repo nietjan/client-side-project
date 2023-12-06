@@ -33,7 +33,6 @@ export class LocationDetailComponent implements OnInit, OnDestroy {
     this.roleSubscription = this.storageService
       .getRole()
       .subscribe((result) => {
-        console.log(result);
         if (result == ROLE.EMPLOYEE) {
           this.isEmployee = true;
         } else {
