@@ -24,67 +24,32 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'location',
-    pathMatch: 'full',
-    component: LocationListComponent,
-  },
-  {
-    path: 'location/create',
-    pathMatch: 'full',
-    component: LocationCreateComponent,
-  },
-  {
-    path: 'location/:id/update',
-    pathMatch: 'full',
-    component: LocationCreateComponent,
-  },
-  {
-    path: 'location/:id/registration',
-    pathMatch: 'full',
-    component: RegistrationListComponent,
-  },
-  {
-    path: 'location/:id',
-    pathMatch: 'full',
-    component: LocationDetailComponent,
+    loadChildren: () =>
+      import(
+        '../../../../libs/frontend/features/src/lib/location/location.module'
+      ).then((m) => m.LocationModule),
   },
   {
     path: 'abonnement',
     pathMatch: 'full',
-    component: AbonnementListComponent,
+    loadChildren: () =>
+      import(
+        '../../../../libs/frontend/features/src/lib/abonnement/abonnement.module'
+      ).then((m) => m.AbonnementModule),
   },
   {
-    path: 'abonnement/create',
+    path: 'user',
     pathMatch: 'full',
-    component: AbonnementCreateComponent,
+    loadChildren: () =>
+      import(
+        '../../../../libs/frontend/features/src/lib/user/user.module'
+      ).then((m) => m.UserModule),
   },
   {
-    path: 'abonnement/:id/update',
-    pathMatch: 'full',
-    component: AbonnementCreateComponent,
-  },
-  {
-    path: 'abonnement/:id/registration',
-    pathMatch: 'full',
-    component: RegistrationListComponent,
-  },
-  {
-    path: 'user/create',
-    pathMatch: 'full',
-    component: UserCreateComponent,
-  },
-  {
-    path: 'user/:id/registration',
-    pathMatch: 'full',
-    component: RegistrationListComponent,
-  },
-  {
-    path: 'user/:id/update',
-    pathMatch: 'full',
-    component: UserCreateComponent,
-  },
-  {
-    path: 'user/:id',
-    pathMatch: 'full',
-    component: UserDetailComponent,
+    path: 'registration',
+    loadChildren: () =>
+      import(
+        '../../../../libs/frontend/features/src/lib/registration/registration.modules'
+      ).then((m) => m.RegistrationModule),
   },
 ];
