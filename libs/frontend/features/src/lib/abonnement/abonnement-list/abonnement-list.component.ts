@@ -24,6 +24,7 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
   abonnementSubscription: Subscription | undefined = undefined;
   roleSubscription: Subscription | undefined = undefined;
   userIdSubscription: Subscription | undefined = undefined;
+  favoriteId: string | undefined = undefined;
 
   isEmployee: boolean = false;
   abonnementRegistration: Map<string, boolean> = new Map<string, boolean>();
@@ -42,6 +43,12 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
         .subscribe((results) => {
           this.abonnoments = results;
           this.checkIfAbonnementsAreRegisterd();
+        });
+
+      this.abonnementService
+        .favoriteAbonnementFromLocation(this.locationId)
+        .subscribe((value) => {
+          this.favoriteId = value?._id;
         });
     } else {
       this.abonnementSubscription = this.abonnementService

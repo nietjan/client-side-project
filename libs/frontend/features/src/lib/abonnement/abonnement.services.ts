@@ -32,7 +32,6 @@ export class AbonnementService {
     );
   }
 
-  //TODO: string array veranderen weer naar any bij options
   public allAbonnementsFromLocation(
     locationId?: string
   ): Observable<IAbonnement[] | null> {
@@ -42,6 +41,20 @@ export class AbonnementService {
       )
       .pipe(
         map((response: any) => response.results as IAbonnement[]),
+        tap(console.log),
+        catchError(this.handleError)
+      );
+  }
+
+  public favoriteAbonnementFromLocation(
+    locationId: string
+  ): Observable<IAbonnement | null> {
+    return this.http
+      .get<ApiResponse<IAbonnement>>(
+        `${url}location/${locationId}/abonnement/favorite`
+      )
+      .pipe(
+        map((response: any) => response.results as IAbonnement),
         tap(console.log),
         catchError(this.handleError)
       );
