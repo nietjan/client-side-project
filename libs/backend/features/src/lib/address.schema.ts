@@ -5,7 +5,7 @@ import { ICreateAddress } from '../../../../shared/api/src/lib/models/address.in
 export class DbAddress implements ICreateAddress {
   @Prop({ required: true })
   street!: string;
-  @Prop({ required: true })
+  @Prop({ required: false })
   homeNumber!: string;
   @Prop({ required: true })
   city!: string;

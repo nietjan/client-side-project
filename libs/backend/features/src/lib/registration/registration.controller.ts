@@ -63,29 +63,14 @@ export class RegistrationController {
     @Query('userId') userId?: string,
     @Query('locationId') locationId?: string,
     @Query('abonnementId') abonnementId?: string
-  ): Promise<DbRegistration[] | DbRegistration> {
+  ): Promise<DbRegistration[]> {
     try {
       //if result is array of 1 return it as a object else return as array
-      const result = await this.registrationService.get();
-
-      //if al three query's have values than only 1 value is possible, so return a object instead of a array
-      if (
-        userId != undefined &&
-        locationId != undefined &&
-        abonnementId != undefined
-      ) {
-        if (result.length == 1) {
-          return result[0];
-        } else {
-          throw new HttpException(
-            'Registration cannot be found',
-            HttpStatus.NOT_FOUND
-          );
-        }
-      } else {
-        return result;
-      }
+      return await this.registrationService.get();
     } catch (error) {
+      if (error instanceof Error) {
+        throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+      }
       throw new HttpException('Server error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }

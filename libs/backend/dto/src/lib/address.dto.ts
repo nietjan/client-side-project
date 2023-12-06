@@ -26,8 +26,8 @@ export class CreateAddressDto implements ICreateAddress {
   street!: string;
 
   @ApiProperty({ type: String })
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
   homeNumber!: string;
 
   @ApiProperty({ type: String })

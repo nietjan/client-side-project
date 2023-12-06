@@ -87,20 +87,18 @@ export class LocationController {
     @Param('id') id: string
   ): Promise<DbAbonnement> {
     try {
-      // let location = await this.locationService.getOne(id);
-      // if (location == null) {
-      //   throw new HttpException(
-      //     `Location with id: ${id} not found`,
-      //     HttpStatus.NOT_FOUND
-      //   );
-      // }
-      // //create string array of abonnement ids
-      // let idArr: string[] = [];
-      // location.abonnements.forEach((value) => {
-      //   idArr.push(value.toString());
-      // });
-
-      let idArr = ['1', '2'];
+      let location = await this.locationService.getOne(id);
+      if (location == null) {
+        throw new HttpException(
+          `Location with id: ${id} not found`,
+          HttpStatus.NOT_FOUND
+        );
+      }
+      //create string array of abonnement ids
+      let idArr: string[] = [];
+      location.abonnements.forEach((value) => {
+        idArr.push(value.toString());
+      });
 
       //get favorite
       let result = await this.locationService.getFavoriteAbonnement(id, idArr);

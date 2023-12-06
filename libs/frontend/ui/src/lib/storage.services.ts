@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ROLE } from '@client-side/shared/api';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class StorageService {
   private role$ = new BehaviorSubject<ROLE>(ROLE.USER);
   private userId$ = new BehaviorSubject<string | null>(null);

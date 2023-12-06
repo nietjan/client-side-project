@@ -28,13 +28,14 @@
         <a class="nav-link" routerLink="abonnement">Abonnements</a>
       </li>
       <li *ngIf="signedIn" class="nav-item">
-        <a class="nav-link" routerLink="user/{{ userId }}/registration"
+        <a class="nav-link" routerLink="registration/user/{{ userId }}"
           >Registrations</a
         >
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="about">About</a>
       </li>
+      <li>{{ userRole }}</li>
     </ul>
 
     <!-- Account tab -->

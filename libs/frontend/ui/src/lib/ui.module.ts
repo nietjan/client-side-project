@@ -16,7 +16,6 @@ import { HeadersInterceptor } from '@client-side/frontend/common';
   declarations: [AboutComponent, HeaderComponent, SpinnerComponent],
   providers: [
     UiService,
-    StorageService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HeadersInterceptor,

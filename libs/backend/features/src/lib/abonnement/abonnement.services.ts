@@ -110,10 +110,10 @@ export class AbonnementService {
 
   async areAbonnements(abonnementIds: string[]): Promise<boolean> {
     abonnementIds.forEach(async (abonnementId) => {
-      let count: number = await this.AbonnementModel.countDocuments({
-        $group: { _id: new ObjectId(abonnementId) },
+      let abonnement = await this.AbonnementModel.findOne({
+        _id: new ObjectId(abonnementId),
       }).exec();
-      if (count == 0) {
+      if (abonnement == null) {
         return false;
       }
     });

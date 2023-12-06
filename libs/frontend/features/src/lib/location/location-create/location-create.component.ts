@@ -57,19 +57,14 @@ export class LocationCreateComponent implements OnInit {
       let id = params.get('id');
       if (id != null) {
         this.isUpdating = true;
-        this.locationService
-          .singleLocation(id)
-          .subscribe(
-            (value) => (this.location = { ...this.location, ...value })
-          );
+        this.locationService.singleLocation(id).subscribe((value) => {
+          console.log(value);
+          this.location = { ...this.location, ...value };
+        });
       }
-    });
 
-    abonnementService.allAbonnements().subscribe((value) => {
-      if (value != null) {
-        this.allAbonnements = value;
-        console.log(value);
-      }
+      //fill list only after it is sure that it is updating or creating
+      this.fillAbonnementList();
     });
 
     //set if user can create new
@@ -84,23 +79,33 @@ export class LocationCreateComponent implements OnInit {
       });
   }
 
-  ngOnInit() {
-    this.allAbonnements.forEach((element) => {
-      this.dropdownList.push({
-        id: element._id,
-        text: this.formatAbonnementString(element),
-      });
-    });
+  fillAbonnementList() {
+    this.abonnementService.allAbonnements().subscribe((value) => {
+      if (value != null) {
+        this.allAbonnements = value;
+        let list: any[] = [];
+        let selected: any[] = [];
+        this.allAbonnements.forEach((element) => {
+          list.push({
+            id: element._id,
+            text: this.formatAbonnementString(element),
+          });
 
-    this.allAbonnements.forEach((element) => {
-      if (this.location.abonnements.find((id) => id === element._id)) {
-        this.dropDownValues.push({
-          id: element._id,
-          text: this.formatAbonnementString(element),
+          if (this.location.abonnements.find((id) => id === element._id)) {
+            selected.push({
+              id: element._id,
+              text: this.formatAbonnementString(element),
+            });
+          }
         });
+
+        this.dropdownList = list;
+        this.dropDownValues = selected;
       }
     });
+  }
 
+  ngOnInit() {
     this.dropdownSettings = {
       singleSelection: false,
       noDataAvailablePlaceholderText: 'No abonnements available',
@@ -110,10 +115,6 @@ export class LocationCreateComponent implements OnInit {
     };
   }
 
-  addAbonnementToLocation(abonnement: IAbonnement) {
-    this.location.abonnements.push(abonnement._id);
-  }
-
   public onSubmit(): void {
     //if not allowed redirect
     if (!this.canCreateNew) {
@@ -121,16 +122,14 @@ export class LocationCreateComponent implements OnInit {
     }
 
     if (this.isUpdating) {
-      var locationId = this.locationService.updateLocation(this.location);
+      this.locationService.updateLocation(this.location).subscribe((value) => {
+        this.router.navigateByUrl(`/location/${this.location._id}`);
+      });
     } else {
-      var locationId = this.locationService.createLocation(this.location);
+      this.locationService.createLocation(this.location).subscribe((value) => {
+        this.router.navigateByUrl(`/location/${value._id}`);
+      });
     }
-
-    //redirect back to list
-    if (locationId != null)
-      this.router.navigateByUrl(`/location/${locationId}`);
-
-    //TODO: Add functie for id id is not null - when form is not correct
   }
 
   //multiselect

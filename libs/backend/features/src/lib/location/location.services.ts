@@ -56,7 +56,6 @@ export class LocationService {
       const res = await this.neo4jService.read(query);
       let amount = res.records[0].get('count(registration)') as number;
 
-      console.log(`In arr ${amount}`);
       if (amount > favoriteCount || favoriteCount == 0) {
         favoriteCount = amount;
         favorite = abonnementIds[index];
@@ -78,7 +77,6 @@ export class LocationService {
   }
 
   async create(location: CreateLocationDto): Promise<DbLocation> {
-    //TODO: Check if abonementId are correct
     Logger.log('create', this.TAG);
 
     //check if there are abonnements

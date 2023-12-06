@@ -33,9 +33,7 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
     private abonnementService: AbonnementService,
     private storageService: StorageService,
     private registrationService: RegistrationService
-  ) {}
-
-  ngOnInit(): void {
+  ) {
     //check if only abonnement from 1 location of all
     if (this.locationId != undefined && this.locationId != null) {
       this.abonnementSubscription = this.abonnementService
@@ -56,18 +54,21 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
         .subscribe((results) => {
           this.abonnoments = results;
         });
-
-      //set if user can create new
-      this.roleSubscription = this.storageService
-        .getRole()
-        .subscribe((result) => {
-          if (result == ROLE.EMPLOYEE) {
-            this.isEmployee = true;
-          }
-        });
     }
+  }
 
-    console.log(this.abonnoments);
+  ngOnInit(): void {
+    //set if user can create new
+    this.roleSubscription = this.storageService
+      .getRole()
+      .subscribe((result) => {
+        console.log(result);
+        if (result == ROLE.EMPLOYEE) {
+          this.isEmployee = true;
+        } else {
+          this.isEmployee = false;
+        }
+      });
   }
 
   checkIfAbonnementsAreRegisterd() {
@@ -84,9 +85,9 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
           this.registrationService
             .getRegistrations(value, this.locationId!, abonnement._id)
             .subscribe((registration) => {
-              if (registration != null) {
+              if (registration != null && registration.length != 0) {
                 this.abonnementRegistration.set(
-                  (registration as IRegistration).abonnementId,
+                  registration[0].abonnementId,
                   true
                 );
               }

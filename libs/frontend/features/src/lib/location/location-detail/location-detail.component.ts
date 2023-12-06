@@ -28,6 +28,18 @@ export class LocationDetailComponent implements OnInit, OnDestroy {
       this.locationId = params.get('id');
     });
     if (this.locationId == null) this.router.navigateByUrl('/location');
+
+    //set if user can create new
+    this.roleSubscription = this.storageService
+      .getRole()
+      .subscribe((result) => {
+        console.log(result);
+        if (result == ROLE.EMPLOYEE) {
+          this.isEmployee = true;
+        } else {
+          this.isEmployee = false;
+        }
+      });
   }
 
   ngOnInit(): void {
@@ -37,15 +49,6 @@ export class LocationDetailComponent implements OnInit, OnDestroy {
         console.log(`results: ${results}`);
         if (results == null) this.router.navigateByUrl('/location');
         this.location = results;
-      });
-
-    //set if user can create new
-    this.roleSubscription = this.storageService
-      .getRole()
-      .subscribe((result) => {
-        if (result == ROLE.EMPLOYEE) {
-          this.isEmployee = true;
-        }
       });
   }
 
@@ -57,5 +60,6 @@ export class LocationDetailComponent implements OnInit, OnDestroy {
   public removeLocation(id: string | null | undefined): void {
     if (id == null || id == undefined) return;
     this.locationService.removeLocation(id);
+    this.router.navigateByUrl('/location');
   }
 }

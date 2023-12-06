@@ -20,7 +20,7 @@
     ></client-side-project-abonnement-list>
   </div>
 
-  <div *ngIf="isEmployee">
+  <div *ngIf="isEmployee" class="mb-2 mt-2">
     <a routerLink="update" class="mr-2">
       <button class="btn btn-primary">Update</button>
     </a>
@@ -29,7 +29,7 @@
       delete
     </button>
 
-    <a routerLink="/registration/location/{{ location._id }}" class="mr-2">
+    <a routerLink="/registration/location/{{ location._id }}" class="ml-2">
       <button class="btn btn-primary">Check registrations</button>
     </a>
   </div>

@@ -31,7 +31,6 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'abonnement',
-    pathMatch: 'full',
     loadChildren: () =>
       import(
         '../../../../libs/frontend/features/src/lib/abonnement/abonnement.module'
@@ -39,7 +38,6 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'user',
-    pathMatch: 'full',
     loadChildren: () =>
       import(
         '../../../../libs/frontend/features/src/lib/user/user.module'

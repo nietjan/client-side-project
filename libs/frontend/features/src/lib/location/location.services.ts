@@ -54,11 +54,11 @@ export class LocationService {
     );
   }
 
-  public updateLocation(location: ILocation): Observable<ILocation> {
+  public updateLocation(location: ILocation): Observable<any> {
     return this.http
-      .put<ApiResponse<ILocation>>(`${this.endpoint}/${location._id}`, location)
+      .put<ApiResponse<any>>(`${this.endpoint}/${location._id}`, location)
       .pipe(
-        map((response: any) => response.results as ILocation),
+        map((response: any) => response.results as any),
         tap(console.log),
         catchError(this.handleError)
       );

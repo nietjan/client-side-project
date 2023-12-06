@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, UpdateWriteOpResult } from 'mongoose';
@@ -53,6 +57,18 @@ export class RegistrationService {
   ): Promise<DbRegistration> {
     Logger.log('create', this.TAG);
 
+    const alreadyExists = await this.RegistrationModel.findOne({
+      userId: userId,
+      locationId: registration.locationId,
+      abonnementId: registration.abonnementId,
+    });
+
+    if (alreadyExists != null) {
+      throw new ConflictException(
+        'User has already a registration with this location and abonnement'
+      );
+    }
+
     //check if ids are correct, if is null than correct
     const isValid = await this.checkIds(registration);
     if (isValid != null) {
@@ -69,9 +85,12 @@ export class RegistrationService {
 
     //Neo4J - creating registration
     let query = `Create(registration:Registration{userId: '${userId}', locationId: '${registration.locationId}', abonnementId: '${registration.abonnementId}'}) `;
+    await this.neo4jService.write(query);
     //creating relation registration - abonnement
-    query += `MATCH(abonnement:Abonnement) WHERE abonnement._id = '${registration.abonnementId}}' CREATE (abonnement)-[:hasRegistration]->(registration)`;
+    query = `MATCH(abonnement:Abonnement) WHERE abonnement._id = '${registration.abonnementId}}' CREATE (abonnement)-[:hasRegistration]->(registration)`;
+    await this.neo4jService.write(query);
     //creating relation registration - location
+
     query += `MATCH(location:Location) WHERE location._id = '${registration.locationId}' CREATE (location)-[:hasRegistration]->(registration) return location, abonnement, registration`;
 
     await this.neo4jService.write(query);
