@@ -7,13 +7,17 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { UiService } from './ui.services';
-import { StorageService } from './storage.services';
-import { UserModule } from '@client-side/frontend/features';
+import { FooterComponent } from './footer/footer.component';
 import { HeadersInterceptor } from '@client-side/frontend/common';
 
 @NgModule({
   imports: [CommonModule, RouterModule, FormsModule, HttpClientModule],
-  declarations: [AboutComponent, HeaderComponent, SpinnerComponent],
+  declarations: [
+    AboutComponent,
+    HeaderComponent,
+    SpinnerComponent,
+    FooterComponent,
+  ],
   providers: [
     UiService,
     {
@@ -22,6 +26,6 @@ import { HeadersInterceptor } from '@client-side/frontend/common';
       multi: true,
     },
   ],
-  exports: [SpinnerComponent, HeaderComponent],
+  exports: [SpinnerComponent, HeaderComponent, FooterComponent],
 })
 export class UiModule {}
