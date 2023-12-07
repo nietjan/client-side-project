@@ -21,7 +21,7 @@ export class UiService {
     return this.http
       .post<ApiResponse<ILoginReturnInfo>>(`${url}auth/login`, body)
       .pipe(
-        map((response: any) => response.results as ILoginReturnInfo[]),
+        map((response: any) => response.results as ILoginReturnInfo),
         tap(console.log),
         catchError(this.handleError)
       );
@@ -42,16 +42,3 @@ export class UiService {
     return throwError(() => new Error(error.message));
   }
 }
-
-// const body = {};
-// const headers = {
-//   Authorization: 'Bearer my-token',
-//   'My-Custom-Header': 'foobar',
-// };
-// return this.http
-//   .post<ApiResponse<ILoginReturnInfo>>('url', body, { headers: headers })
-//   .pipe(
-//     map((response: any) => response.results as ILoginReturnInfo[]),
-//     tap(console.log),
-//     catchError(this.handleError)
-//   );

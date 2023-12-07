@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
 import { UiService } from '../ui.services';
-import { IUserCredentials, ROLE } from '@client-side/shared/api';
+import {
+  ILoginReturnInfo,
+  IUserCredentials,
+  ROLE,
+} from '@client-side/shared/api';
 import { StorageService } from '../storage.services';
 import { UserService } from '@client-side/frontend/features';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, catchError, throwError } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'client-side-project-header',
@@ -17,6 +22,7 @@ export class HeaderComponent {
   userName: string | null = null;
   userId: string | null = null;
   loginInfo: IUserCredentials = { eMail: '', password: '' };
+  loginError: string | null = null;
 
   constructor(
     private uiService: UiService,
@@ -31,18 +37,28 @@ export class HeaderComponent {
   }
 
   onSubmit() {
-    this.uiService.login(this.loginInfo).subscribe((value) => {
-      console.log(value);
-      this.userName = value.name;
-      this.loginInfo = { eMail: '', password: '' };
-      this.signedIn = true;
-      this.userId = value._id;
-      localStorage.setItem('role', value.role);
-      localStorage.setItem('name', value.name);
-      this.storageService.setRole(value.role);
-      this.storageService.setUserId(value._id);
-      localStorage.setItem('token', value.token);
+    this.uiService.login(this.loginInfo).subscribe({
+      next: (value) => {
+        this.setLoginInfo(value);
+      },
+      error: (error) => {
+        this.handleLoginError(error);
+      },
     });
+  }
+
+  private setLoginInfo(info: ILoginReturnInfo) {
+    this.userName = info.name;
+    this.loginInfo = { eMail: '', password: '' };
+    this.signedIn = true;
+    this.userId = info._id;
+    localStorage.setItem('role', info.role);
+    localStorage.setItem('name', info.name);
+    this.storageService.setRole(info.role);
+    this.storageService.setUserId(info._id);
+    localStorage.setItem('token', info.token);
+
+    this.loginError = null;
   }
 
   logOut() {
@@ -58,5 +74,13 @@ export class HeaderComponent {
   public deleteAccount(): void {
     this.uiService.deleteUser();
     this.logOut();
+  }
+
+  private handleLoginError(error: HttpErrorResponse) {
+    if (error.status == 401) {
+      this.loginError = 'E-mail or password is incorrect';
+    } else {
+      this.loginError = 'Server error, please try again';
+    }
   }
 }
