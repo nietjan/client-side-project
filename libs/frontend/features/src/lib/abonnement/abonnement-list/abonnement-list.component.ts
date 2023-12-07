@@ -23,8 +23,9 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
   roleSubscription: Subscription | undefined = undefined;
   userIdSubscription: Subscription | undefined = undefined;
   favoriteId: string | undefined = undefined;
-
   isEmployee: boolean = false;
+  isLoggedIn: boolean = false;
+
   abonnementRegistration: Map<string, boolean> = new Map<string, boolean>();
 
   constructor(
@@ -85,8 +86,11 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
     this.userIdSubscription = this.storageService
       .getUserId()
       .subscribe((value) => {
-        console.log(value, 'test');
-        if (value == null) return;
+        if (value == null) {
+          this.isLoggedIn = false;
+          return;
+        }
+        this.isLoggedIn = true;
 
         //check if for each abonnement if user has a registration
 

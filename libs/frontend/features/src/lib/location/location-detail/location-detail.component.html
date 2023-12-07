@@ -1,5 +1,6 @@
 <div *ngIf="location != null && location != undefined">
   <h2>{{ location.address.city }}</h2>
+  <img src="{{ location.imgUrl }}" class="img-fluid" alt="location" />
   <p>
     {{ location.address.street }} {{ location.address.homeNumber }},
     {{ location.address.postalCode }} {{ location.address.city }},

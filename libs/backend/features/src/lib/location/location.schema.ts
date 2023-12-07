@@ -29,6 +29,11 @@ export class DbLocation {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'DbAbonnement' }],
   })
   abonnements!: mongoose.Schema.Types.ObjectId[];
+
+  @Prop({
+    required: true,
+  })
+  imgUrl!: string;
 }
 
 export const LocationSchema = SchemaFactory.createForClass(DbLocation);

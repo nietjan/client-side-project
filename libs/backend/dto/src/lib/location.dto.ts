@@ -83,6 +83,10 @@ export class CreateLocationDto implements ICreateLocation {
   @IsArray()
   @IsNotEmpty()
   abonnements!: string[];
+
+  @IsString()
+  @IsNotEmpty()
+  imgUrl!: string;
 }
 
 export class UpsertLocationDto implements IUpsertLocation {
@@ -147,6 +151,10 @@ export class UpsertLocationDto implements IUpsertLocation {
   @IsArray()
   @IsNotEmpty()
   abonnements!: string[];
+
+  @IsString()
+  @IsNotEmpty()
+  imgUrl!: string;
 }
 
 export class UpdateLocationDto implements IUpdateLocation {
@@ -206,4 +214,8 @@ export class UpdateLocationDto implements IUpdateLocation {
   @IsArray()
   @IsNotEmpty()
   abonnements!: string[];
+
+  @IsString()
+  @IsNotEmpty()
+  imgUrl!: string;
 }

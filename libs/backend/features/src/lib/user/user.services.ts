@@ -61,7 +61,6 @@ export class UserService {
           sex: createdUser.sex,
           phoneNumber: createdUser.phoneNumber,
           eMail: createdUser.eMail,
-          iban: createdUser.iban,
           role: createdUser.role,
           address: {
             street: createdUser.address.street,

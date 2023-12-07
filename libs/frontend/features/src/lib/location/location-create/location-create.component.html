@@ -139,6 +139,28 @@
       </small>
     </div>
 
+    <!--location.imgUrl -->
+    <div class="form-group col-12">
+      <label for="locationImageUrl">image url</label>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="location.imgUrl"
+        name="locationImageUrl"
+        #locationImageUrl="ngModel"
+        [ngClass]="{ 'is-invalid': locationImageUrl.invalid }"
+        required
+      />
+      <div
+        class="invalid-feedback"
+        *ngIf="locationImageUrl.invalid && locationImageUrl.touched"
+      >
+        <div *ngIf="locationImageUrl.errors?.['required']">
+          Image url is required.
+        </div>
+      </div>
+    </div>
+
     <!--location.hasTrainers -->
     <div class="form-group col-6 col-lg-2 mt-4">
       <div class="form-check form-switch">

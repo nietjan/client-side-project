@@ -8,22 +8,18 @@
   <div class="row">
     <div class="col-6 col-md-4 col-lg-3" *ngFor="let location of locations">
       <div class="card">
-        <img
-          src="./assets/img/placeholder.jpg"
-          class="card-img-top"
-          alt="location"
-        />
+        <img src="{{ location.imgUrl }}" class="card-img-top" alt="location" />
         <div class="card-body">
-          <h5 class="card-title">{{ location?.address?.city }}</h5>
+          <h5 class="card-title">{{ location.address.city }}</h5>
           <p class="card-text">
-            {{ location?.address?.street }} {{ location?.address?.homeNumber }},
-            {{ location?.address?.postalCode }}
+            {{ location.address.street }} {{ location.address.homeNumber }},
+            {{ location.address.postalCode }}
           </p>
-          <p *ngIf="location?.hasTrainers == true">Trainers available</p>
-          <p *ngIf="!location?.hasTrainers == true">No trainers available</p>
+          <p *ngIf="location.hasTrainers == true">Trainers available</p>
+          <p *ngIf="!location.hasTrainers == true">No trainers available</p>
           <p>
-            Open from {{ location?.openingsTime }} till
-            {{ location?.closingTime }}
+            Open from {{ location.openingsTime }} till
+            {{ location.closingTime }}
           </p>
           <a routerLink="{{ location._id }}">
             <button class="btn btn-primary">Check</button>

@@ -31,6 +31,7 @@
               *ngIf="locationId && !isRegisterd(abonnement._id)"
               (click)="register(abonnement._id)"
               class="btn btn-primary"
+              [disabled]="isLoggedIn == false"
             >
               Register for abonnoment
             </button>
@@ -38,6 +39,7 @@
               class="btn btn-success"
               *ngIf="locationId && isRegisterd(abonnement._id)"
               (click)="deregister(abonnement._id)"
+              [disabled]="isLoggedIn == false"
             >
               Deregiser for abonnement
             </button>

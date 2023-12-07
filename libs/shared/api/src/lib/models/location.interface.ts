@@ -11,6 +11,7 @@ export interface ILocation {
   hasTrainers: boolean;
   address: IAddress;
   abonnements: string[];
+  imgUrl: string;
 }
 
 //must have types
@@ -23,6 +24,7 @@ export type ICreateLocation = Pick<
   | 'openingsTime'
   | 'closingTime'
   | 'abonnements'
+  | 'imgUrl'
 >;
 
 export type IUpdateLocation = Pick<
@@ -34,6 +36,7 @@ export type IUpdateLocation = Pick<
   | 'openingsTime'
   | 'closingTime'
   | 'abonnements'
+  | 'imgUrl'
 >;
 
 //export type IUpdateLocation = Partial<Omit<ILocation, 'id'>>;
