@@ -118,7 +118,7 @@ export class LocationCreateComponent implements OnInit {
   public onSubmit(): void {
     //if not allowed redirect
     if (!this.canCreateNew) {
-      this.router.navigateByUrl('/abonnement');
+      this.router.navigateByUrl('/location');
     }
 
     if (this.isUpdating) {

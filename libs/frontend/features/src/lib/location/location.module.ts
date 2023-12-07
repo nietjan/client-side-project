@@ -4,9 +4,9 @@ import { LocationListComponent } from './location-list/location-list.component';
 import { LocationDetailComponent } from './location-detail/location-detail.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { LocationService } from './location.services';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, mapToCanActivate } from '@angular/router';
 import { LocationCreateComponent } from './location-create/location-create.component';
-import { UiModule } from '@client-side/ui';
+import { EmployeeGuard, UiModule } from '@client-side/ui';
 import { FormsModule } from '@angular/forms';
 import { AbonnementModule } from '../abonnement/abonnement.module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
@@ -23,11 +23,13 @@ const routes: Routes = [
     path: 'create',
     pathMatch: 'full',
     component: LocationCreateComponent,
+    canActivate: mapToCanActivate([EmployeeGuard]),
   },
   {
     path: ':id/update',
     pathMatch: 'full',
     component: LocationCreateComponent,
+    canActivate: mapToCanActivate([EmployeeGuard]),
   },
   {
     path: ':id',

@@ -4,6 +4,10 @@
   <p>Sex: {{ user.sex }}</p>
   <p>PhoneNumber: {{ user.phoneNumber }}</p>
   <p>E-mail: {{ user.eMail }}</p>
+
+  <a routerLink="/registration/user/{{ user._id }}">
+    <button class="btn btn-primary mt-2 mb-2">Check registrations</button>
+  </a>
 </div>
 
 <a routerLink="/location" class="mt-2">

@@ -28,6 +28,9 @@
         <a class="nav-link" routerLink="abonnement">Abonnements</a>
       </li>
       <li *ngIf="signedIn" class="nav-item">
+        <a class="nav-link" routerLink="user">users</a>
+      </li>
+      <li *ngIf="signedIn" class="nav-item">
         <a class="nav-link" routerLink="registration/user/{{ userId }}"
           >Registrations</a
         >

@@ -4,9 +4,9 @@ import { AbonnementListComponent } from './abonnement-list/abonnement-list.compo
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { UiModule } from '@client-side/ui';
+import { EmployeeGuard, UiModule } from '@client-side/ui';
 import { AbonnementService } from './abonnement.services';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, mapToCanActivate } from '@angular/router';
 import { HeadersInterceptor } from '@client-side/frontend/common';
 import { SharedModule } from '../shared.module';
 
@@ -19,11 +19,13 @@ const routes: Routes = [
     path: 'create',
     pathMatch: 'full',
     component: AbonnementCreateComponent,
+    canActivate: mapToCanActivate([EmployeeGuard]),
   },
   {
     path: ':id/update',
     pathMatch: 'full',
     component: AbonnementCreateComponent,
+    canActivate: mapToCanActivate([EmployeeGuard]),
   },
 ];
 

@@ -5,12 +5,18 @@ import { HttpClientModule } from '@angular/common/http';
 import { UserService } from './user.services';
 import { UserCreateComponent } from './user-create/user-create.component';
 import { FormsModule } from '@angular/forms';
-import { UiModule } from '@client-side/ui';
+import { EmployeeGuard, UiModule } from '@client-side/ui';
 import { SharedModule } from '../shared.module';
 import { UserDetailComponent } from './user-detail/user-detail.component';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, mapToCanActivate } from '@angular/router';
 
 const routes: Routes = [
+  {
+    path: '',
+    pathMatch: 'full',
+    component: UserListComponent,
+    canActivate: mapToCanActivate([EmployeeGuard]),
+  },
   {
     path: 'create',
     pathMatch: 'full',

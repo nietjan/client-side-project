@@ -1,15 +1,5 @@
-import { Route } from '@angular/router';
-import { AboutComponent } from '@client-side/ui';
-import {
-  LocationListComponent,
-  LocationDetailComponent,
-  LocationCreateComponent,
-  AbonnementListComponent,
-  AbonnementCreateComponent,
-  RegistrationListComponent,
-  UserCreateComponent,
-  UserDetailComponent,
-} from '@client-side/frontend/features';
+import { Route, mapToCanActivate } from '@angular/router';
+import { AboutComponent, EmployeeGuard } from '@client-side/ui';
 
 export const appRoutes: Route[] = [
   {
