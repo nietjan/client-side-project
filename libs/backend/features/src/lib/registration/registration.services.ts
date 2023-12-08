@@ -37,16 +37,18 @@ export class RegistrationService {
     var query: any = {};
 
     if (userId != null && userId != undefined) {
-      query.userId = userId;
+      query.userId = new ObjectId(userId);
     }
 
-    if (locationId != null && userId != undefined) {
-      query.locationId = locationId;
+    if (locationId != null && locationId != undefined) {
+      query.locationId = new ObjectId(locationId);
     }
 
-    if (abonnementId != null && userId != undefined) {
-      query.abonnementId = abonnementId;
+    if (abonnementId != null && abonnementId != undefined) {
+      query.abonnementId = new ObjectId(abonnementId);
     }
+
+    console.log(query);
 
     return this.RegistrationModel.find(query).exec();
   }

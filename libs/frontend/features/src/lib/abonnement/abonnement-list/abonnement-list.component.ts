@@ -80,12 +80,14 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
   }
 
   checkIfAbonnementsAreRegisterd() {
+    this.abonnementRegistration = new Map<string, boolean>();
     //check only when in list of locations
     if (this.locationId == null || this.locationId == undefined) return;
 
     this.userIdSubscription = this.storageService
       .getUserId()
       .subscribe((value) => {
+        this.abonnementRegistration = new Map<string, boolean>();
         if (value == null) {
           this.isLoggedIn = false;
           return;
@@ -93,7 +95,6 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
         this.isLoggedIn = true;
 
         //check if for each abonnement if user has a registration
-
         this.registrationService
           .getRegistrations(value, this.locationId!, null)
           .subscribe((registration) => {

@@ -30,7 +30,7 @@ export class RegistrationService {
     locationId: string | null,
     abonnementId: string | null
   ): Observable<IRegistration[] | null> {
-    console.log(`list ${this.endpoint}`);
+    console.log(locationId);
 
     //setup query
     let query: string = '';
