@@ -1,17 +1,22 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-2">
   <a class="navbar-brand ms-3" routerLink="/">NonBasic-Fit</a>
   <button
+    (click)="isCollapsed = !isCollapsed"
     class="navbar-toggler"
     type="button"
-    data-toggle="collapse"
-    data-target="#navbarNav"
+    data-bs-toggle="collapse"
+    data-bs-target="#navbarNav"
     aria-controls="navbarNav"
     aria-expanded="false"
     aria-label="Toggle navigation"
   >
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
+  <div
+    [class.collapse]="isCollapsed"
+    class="collapse navbar-collapse justify-content-between"
+    id="navbarNav"
+  >
     <ul class="navbar-nav">
       <li class="nav-item active">
         <a class="nav-link" routerLink="">Home </a>
@@ -22,9 +27,112 @@
       <li class="nav-item">
         <a class="nav-link" routerLink="abonnement">Abonnements</a>
       </li>
+      <li *ngIf="signedIn" class="nav-item">
+        <a class="nav-link" routerLink="user">users</a>
+      </li>
+      <li *ngIf="signedIn" class="nav-item">
+        <a class="nav-link" routerLink="registration/user/{{ userId }}"
+          >Registrations</a
+        >
+      </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="about">About</a>
       </li>
     </ul>
+
+    <!-- Account tab -->
+    <div class="btn-group float-right">
+      <button
+        type="button"
+        class="btn btn-danger dropdown-toggle"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        <span *ngIf="!signedIn">Sign in</span>
+        <span *ngIf="signedIn">{{ userName }}</span>
+      </button>
+      <div class="dropdown-menu dropdown-menu-right">
+        <!-- If not logged in -->
+        <div *ngIf="!signedIn">
+          <!-- Login form -->
+          <form
+            class="px-4 py-3"
+            #LoginForm="ngForm"
+            name="LoginForm"
+            (ngSubmit)="LoginForm.form.valid && onSubmit()"
+            novalidate
+          >
+            <div class="form-group">
+              <label for="LoginEmail">E-mail</label>
+              <input
+                type="email"
+                class="form-control"
+                placeholder="email@example.com"
+                [(ngModel)]="loginInfo.eMail"
+                name="LoginEmail"
+                #LoginEmail="ngModel"
+                [ngClass]="{ 'is-invalid': LoginEmail.invalid }"
+                required
+                email
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="LoginEmail.invalid && LoginEmail.touched"
+              >
+                <div *ngIf="LoginEmail.errors?.['required']">
+                  E-mail is required.
+                </div>
+                <div *ngIf="LoginEmail.errors?.['email']">
+                  Not a valid E-mail
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="LoginPassword">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                placeholder="Password"
+                [(ngModel)]="loginInfo.password"
+                name="LoginPassword"
+                #LoginPassword="ngModel"
+                [ngClass]="{ 'is-invalid': LoginPassword.invalid }"
+                required
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="LoginPassword.invalid && LoginPassword.touched"
+              >
+                <div *ngIf="LoginPassword.errors?.['required']">
+                  Password is required.
+                </div>
+              </div>
+            </div>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="LoginForm.invalid"
+            >
+              Sign in
+            </button>
+            <p style="color: red">{{ loginError }}</p>
+          </form>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" routerLink="/user/create"
+            >New around here? Sign up</a
+          >
+        </div>
+
+        <!-- If logged in -->
+        <div *ngIf="signedIn">
+          <a class="dropdown-item" routerLink="/user/{{ userId }}/update"
+            >Check account</a
+          >
+          <a class="dropdown-item" (click)="logOut()">Log out</a>
+          <a class="dropdown-item" (click)="deleteAccount()">Delete account</a>
+        </div>
+      </div>
+    </div>
   </div>
 </nav>

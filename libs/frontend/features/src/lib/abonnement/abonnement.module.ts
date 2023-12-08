@@ -3,20 +3,36 @@ import { AbonnementCreateComponent } from './abonnement-create/abonnement-create
 import { AbonnementListComponent } from './abonnement-list/abonnement-list.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { UiModule } from '@client-side/ui';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { EmployeeGuard, UiModule } from '@client-side/ui';
 import { AbonnementService } from './abonnement.services';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes, mapToCanActivate } from '@angular/router';
+import { HeadersInterceptor } from '@client-side/frontend/common';
+import { SharedModule } from '../shared.module';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: AbonnementListComponent,
+  },
+  {
+    path: 'create',
+    pathMatch: 'full',
+    component: AbonnementCreateComponent,
+    canActivate: mapToCanActivate([EmployeeGuard]),
+  },
+  {
+    path: ':id/update',
+    pathMatch: 'full',
+    component: AbonnementCreateComponent,
+    canActivate: mapToCanActivate([EmployeeGuard]),
+  },
+];
+
 @NgModule({
-  declarations: [AbonnementCreateComponent, AbonnementListComponent],
+  declarations: [AbonnementCreateComponent],
   providers: [AbonnementService],
-  exports: [AbonnementListComponent, AbonnementCreateComponent],
-  imports: [
-    FormsModule,
-    CommonModule,
-    HttpClientModule,
-    UiModule,
-    RouterModule,
-  ],
+  exports: [],
+  imports: [SharedModule, RouterModule.forChild(routes)],
 })
 export class AbonnementModule {}

@@ -4,3 +4,6 @@ export * from './lib/models/location.interface';
 export * from './lib/models/address.interface';
 export * from './lib/models/user.interface';
 export * from './lib/models/abonnement.interface';
+export * from './lib/models/registration.interface';
+export * from './lib/models/auth.interface';
+export * from './lib/models/role.interface';

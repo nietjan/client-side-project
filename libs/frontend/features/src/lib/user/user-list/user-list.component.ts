@@ -7,7 +7,6 @@ import { UserService } from '../user.services';
   selector: 'client-side-project-user-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.css'],
-  providers: [UserService],
 })
 export class UserListComponent implements OnInit, OnDestroy {
   users: IUser[] | null = null;

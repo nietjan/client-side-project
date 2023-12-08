@@ -27,9 +27,12 @@ async function bootstrap() {
     .setTitle('Title')
     .setDescription('Discription')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(globalPrefix, app, document);
+
+  console.log(`NEO4J_PASSWORD: ${process.env.NEO4J_PASSWORD}`);
 
   const port = process.env.PORT || 3000;
   await app.listen(port);

@@ -1,12 +1,5 @@
-import { Route } from '@angular/router';
-import { AboutComponent } from '@client-side/ui';
-import {
-  LocationListComponent,
-  LocationDetailComponent,
-  LocationCreateComponent,
-  AbonnementListComponent,
-  AbonnementCreateComponent,
-} from '@client-side/frontend/features';
+import { Route, mapToCanActivate } from '@angular/router';
+import { AboutComponent, EmployeeGuard } from '@client-side/ui';
 
 export const appRoutes: Route[] = [
   {
@@ -21,37 +14,30 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'location',
-    pathMatch: 'full',
-    component: LocationListComponent,
-  },
-  {
-    path: 'location/create',
-    pathMatch: 'full',
-    component: LocationCreateComponent,
-  },
-  {
-    path: 'location/:id/update',
-    pathMatch: 'full',
-    component: LocationCreateComponent,
-  },
-  {
-    path: 'location/:id',
-    pathMatch: 'full',
-    component: LocationDetailComponent,
+    loadChildren: () =>
+      import(
+        '../../../../libs/frontend/features/src/lib/location/location.module'
+      ).then((m) => m.LocationModule),
   },
   {
     path: 'abonnement',
-    pathMatch: 'full',
-    component: AbonnementListComponent,
+    loadChildren: () =>
+      import(
+        '../../../../libs/frontend/features/src/lib/abonnement/abonnement.module'
+      ).then((m) => m.AbonnementModule),
   },
   {
-    path: 'abonnement/create',
-    pathMatch: 'full',
-    component: AbonnementCreateComponent,
+    path: 'user',
+    loadChildren: () =>
+      import(
+        '../../../../libs/frontend/features/src/lib/user/user.module'
+      ).then((m) => m.UserModule),
   },
   {
-    path: 'abonnement/:id/update',
-    pathMatch: 'full',
-    component: AbonnementCreateComponent,
+    path: 'registration',
+    loadChildren: () =>
+      import(
+        '../../../../libs/frontend/features/src/lib/registration/registration.modules'
+      ).then((m) => m.RegistrationModule),
   },
 ];

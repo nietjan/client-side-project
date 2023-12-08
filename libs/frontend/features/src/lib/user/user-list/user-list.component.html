@@ -1,16 +1,31 @@
-<div *ngFor="let user of users">
-  <h2>{{ user?.name }}</h2>
-  <p>dateOfBirith {{ user?.dateOfBirith }}</p>
-  <p>sex: {{ user?.sex }}</p>
-  <p>phoneNumber: {{ user?.phoneNumber }}</p>
-  <p>eMail: {{ user?.eMail }}</p>
-  <p>password: {{ user?.password }}</p>
-  <p>iban: {{ user?.iban }}</p>
-  <p>address: {{ user?.address?.toString() }}</p>
-  <br />
-  <p>street: {{ user?.address?.street }}</p>
-  <p>homeNumber: {{ user?.address?.homeNumber }}</p>
-  <p>postalCode: {{ user?.address?.postalCode }}</p>
-  <p>city: {{ user?.address?.city }}</p>
-  <p>country: {{ user?.address?.country }}</p>
+<div *ngIf="users != null && users?.length != 0">
+  <div class="row">
+    <div class="col-6 col-md-4 col-lg-3" *ngFor="let user of users">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ user.name }}</h5>
+          <p class="card-text">dateOfBirith {{ user?.dateOfBirith }}</p>
+          <p class="card-text">sex: {{ user?.sex }}</p>
+          <p class="card-text">phoneNumber: {{ user?.phoneNumber }}</p>
+          <p class="card-text">E-mail: {{ user?.eMail }}</p>
+          <p class="card-text">
+            Address: {{ user.address.street }} {{ user.address.homeNumber }},
+            {{ user.address.postalCode }}
+          </p>
+          <a routerLink="{{ user._id }}">
+            <button class="btn btn-primary">Check</button>
+          </a>
+          <a routerLink="/registration/user/{{ user._id }}">
+            <button class="btn btn-primary mt-2">Check registrations</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="users?.length == 0">No locations found</div>
+
+<div *ngIf="users == null">
+  <app-spinner></app-spinner>
 </div>

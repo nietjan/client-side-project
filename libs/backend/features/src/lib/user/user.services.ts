@@ -1,43 +1,104 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { IUser } from '@client-side/shared/api';
-import { BehaviorSubject } from 'rxjs';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { Logger } from '@nestjs/common';
-import { CreateUserDto } from '@client-side/backend/dto';
+import { CreateUserDto, UpdateUserDto } from '@client-side/backend/dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, UpdateWriteOpResult } from 'mongoose';
+import { DbUser } from './user.schema';
+import { DeleteResult, ObjectId } from 'mongodb';
+import { IUser, IUpdateUser } from '@client-side/shared/api';
+import { RegistrationService } from '../registration/registration.services';
+import { DbRegistration } from '../registration/registration.schema';
 
 @Injectable()
 export class UserService {
   TAG = 'UserService';
 
-  private users$ = new BehaviorSubject<IUser[]>([]);
+  constructor(
+    @InjectModel(DbUser.name) private UserModel: Model<DbUser>,
+    @InjectModel(DbRegistration.name)
+    private RegistrationModel: Model<DbRegistration>
+  ) {}
 
-  getAll(): IUser[] {
+  getAll(): Promise<Object[]> {
     Logger.log('getAll', this.TAG);
-    return this.users$.value;
+    return this.UserModel.find({}, { password: false }).exec();
   }
 
-  getOne(id: string): IUser {
-    Logger.log(`getOne(${id})`, this.TAG);
-    const user = this.users$.value.find((td) => td.id === id);
-    if (!user) {
-      throw new NotFoundException(`User could not be found!`);
-    }
-    return user;
+  getOne(id: string): Promise<Object | null> {
+    Logger.log('getAll', this.TAG);
+    var objectId = new ObjectId(id);
+    return this.UserModel.findOne(
+      { _id: objectId },
+      { password: false }
+    ).exec();
   }
 
-  /**
-   * Update the arg signature to match the DTO, but keep the
-   * return signature - we still want to respond with the complete
-   * object
-   */
-  create(user: CreateUserDto) {
+  async create(user: CreateUserDto): Promise<Object> {
     Logger.log('create', this.TAG);
-    const current = this.users$.value;
-    // Use the incoming data, a randomized ID, and a default value of `false` to create the new to-do
-    const newUser: IUser = {
-      ...user,
-      id: '',
+
+    //check if user already exists
+    const alreadyExists = await this.UserModel.findOne({
+      eMail: user.eMail,
+    }).exec();
+    if (alreadyExists != null) {
+      throw new ConflictException('User already exist');
+    }
+
+    const createdUser = new this.UserModel(user);
+
+    return createdUser
+      .save()
+      .then((data) => {
+        return {
+          _id: createdUser.id,
+          name: createdUser.name,
+          dateOfBirith: createdUser.dateOfBirith,
+          sex: createdUser.sex,
+          phoneNumber: createdUser.phoneNumber,
+          eMail: createdUser.eMail,
+          role: createdUser.role,
+          address: {
+            street: createdUser.address.street,
+            homeNumber: createdUser.address.homeNumber,
+            city: createdUser.address.city,
+            country: createdUser.address.country,
+            postalCode: createdUser.address.postalCode,
+          },
+        };
+      })
+      .catch((error) => {
+        throw new InternalServerErrorException();
+      });
+  }
+
+  async delete(id: string): Promise<DeleteResult> {
+    Logger.log('delete', this.TAG);
+    const result = await this.UserModel.deleteOne({
+      _id: new ObjectId(id),
+    }).exec();
+
+    //also delete registrations if user is deleted
+    if (result.deletedCount > 0) {
+      this.RegistrationModel.deleteMany({
+        userId: new ObjectId(id),
+      }).exec();
+    }
+    return {
+      acknowledged: result.acknowledged,
+      deletedCount: result.deletedCount,
     };
-    this.users$.next([...current, newUser]);
-    return newUser;
+  }
+
+  update(User: UpdateUserDto, id: string): Promise<UpdateWriteOpResult> {
+    Logger.log('update', this.TAG);
+    return this.UserModel.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: User }
+    ).exec();
   }
 }

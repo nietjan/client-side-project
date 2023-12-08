@@ -4,8 +4,10 @@ import {
   AbonnementModule,
   LocationModule,
   UserModule,
+  RegistrationModule,
 } from '@client-side/frontend/features';
-import { UiModule } from '@client-side/ui';
+import { EmployeeGuard, UiModule } from '@client-side/ui';
+import { StorageService } from 'libs/frontend/ui/src/lib/storage.services';
 
 @Component({
   standalone: true,
@@ -15,7 +17,9 @@ import { UiModule } from '@client-side/ui';
     UserModule,
     UiModule,
     AbonnementModule,
+    RegistrationModule,
   ],
+  providers: [StorageService, EmployeeGuard],
   selector: 'client-side-project-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],

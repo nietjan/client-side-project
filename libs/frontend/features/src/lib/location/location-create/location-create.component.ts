@@ -5,9 +5,12 @@ import {
   ILocation,
   ICreateLocation,
   IAbonnement,
+  ROLE,
 } from '@client-side/shared/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { StorageService } from 'libs/frontend/ui/src/lib/storage.services';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'client-side-project-location-create',
@@ -16,8 +19,11 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 })
 export class LocationCreateComponent implements OnInit {
   isUpdating: boolean = false;
+  roleSubscription: Subscription | undefined = undefined;
+  canCreateNew: boolean = false;
 
-  location: ICreateLocation = {
+  location: ILocation = {
+    _id: '',
     eMail: '',
     phoneNumber: '',
     hasTrainers: true,
@@ -31,6 +37,8 @@ export class LocationCreateComponent implements OnInit {
       country: '',
     },
     abonnements: [],
+    imgUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/330px-No-Image-Placeholder.svg.png?20200912122019',
   };
 
   //multiselect drop down
@@ -43,46 +51,63 @@ export class LocationCreateComponent implements OnInit {
     private locationService: LocationService,
     private abonnementService: AbonnementService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private storageService: StorageService
   ) {
     //if in param there is id, than it is a update
-    this.route.paramMap.subscribe((params) => {
+    this.route.paramMap?.subscribe((params) => {
       let id = params.get('id');
       if (id != null) {
         this.isUpdating = true;
-        this.locationService
-          .singleLocation(id)
-          .subscribe(
-            (value) => (this.location = { ...this.location, ...value })
-          );
+        this.locationService.singleLocation(id).subscribe((value) => {
+          console.log(value);
+          this.location = { ...this.location, ...value };
+        });
       }
+
+      //fill list only after it is sure that it is updating or creating
+      this.fillAbonnementList();
     });
 
-    abonnementService.allAbonnements().subscribe((value) => {
+    //set if user can create new
+    this.roleSubscription = this.storageService
+      .getRole()
+      .subscribe((result) => {
+        if (result == ROLE.EMPLOYEE) {
+          this.canCreateNew = true;
+        } else {
+          this.canCreateNew = false;
+        }
+      });
+  }
+
+  fillAbonnementList() {
+    this.abonnementService.allAbonnements().subscribe((value) => {
       if (value != null) {
         this.allAbonnements = value;
-        console.log(value);
+        let list: any[] = [];
+        let selected: any[] = [];
+        this.allAbonnements.forEach((element) => {
+          list.push({
+            id: element._id,
+            text: this.formatAbonnementString(element),
+          });
+
+          if (this.location.abonnements.find((id) => id === element._id)) {
+            selected.push({
+              id: element._id,
+              text: this.formatAbonnementString(element),
+            });
+          }
+        });
+
+        this.dropdownList = list;
+        this.dropDownValues = selected;
       }
     });
   }
 
   ngOnInit() {
-    this.allAbonnements.forEach((element) => {
-      this.dropdownList.push({
-        id: element.id,
-        text: this.formatAbonnementString(element),
-      });
-    });
-
-    this.allAbonnements.forEach((element) => {
-      if (this.location.abonnements.find((id) => id === element.id)) {
-        this.dropDownValues.push({
-          id: element.id,
-          text: this.formatAbonnementString(element),
-        });
-      }
-    });
-
     this.dropdownSettings = {
       singleSelection: false,
       noDataAvailablePlaceholderText: 'No abonnements available',
@@ -92,26 +117,21 @@ export class LocationCreateComponent implements OnInit {
     };
   }
 
-  addAbonnementToLocation(abonnement: IAbonnement) {
-    this.location.abonnements.push(abonnement.id);
-  }
-
   public onSubmit(): void {
-    if (this.isUpdating) {
-      var locationId = this.locationService.updateLocation(
-        this.location as ILocation
-      );
-    } else {
-      var locationId = this.locationService.createLocation(
-        this.location as ILocation
-      );
+    //if not allowed redirect
+    if (!this.canCreateNew) {
+      this.router.navigateByUrl('/location');
     }
 
-    //redirect back to list
-    if (locationId != null)
-      this.router.navigateByUrl(`/location/${locationId}`);
-
-    //TODO: Add functie for id id is not null - when form is not correct
+    if (this.isUpdating) {
+      this.locationService.updateLocation(this.location).subscribe((value) => {
+        this.router.navigateByUrl(`/location/${this.location._id}`);
+      });
+    } else {
+      this.locationService.createLocation(this.location).subscribe((value) => {
+        this.router.navigateByUrl(`/location/${value._id}`);
+      });
+    }
   }
 
   //multiselect
