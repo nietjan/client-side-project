@@ -1,0 +1,104 @@
+name: deploy frontend and backend
+
+env:
+  AZURE_BACKEND_NAME: Client-side2-2Api # set this to the name of your Azure Web App
+  NEO4J-SCHEME: bolt+s
+  NEO4J_URI: 09d0f933.databases.neo4j.io:7687
+  NEO4J_USERNAME: neo4j
+  NEO4J_PASSWORD: KMDK37mQbCwK-9ja_RKJTDyWOciOaeAn5alaV0QFlTU
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js version
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+
+      - name: npm install, build, and test
+        run: |
+          npm ci
+          npx nx run-many -t build --configuration production
+          npm run test --if-present
+
+      - name: Zip artifacts for deployment
+        run: |
+          echo ${GITHUB_WORKSPACE}
+          cd ${GITHUB_WORKSPACE}/dist/apps/data-api && zip ${GITHUB_WORKSPACE}/data-api-release.zip ./* -r
+          cd ${GITHUB_WORKSPACE}/dist/apps/frontend && zip ${GITHUB_WORKSPACE}/frontend-release.zip ./* -r
+
+      - name: Upload frontend-app artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend
+          path: frontend-release.zip
+
+      - name: Upload backend-api artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: data-api
+          path: data-api-release.zip
+
+  deploy-frontend-app:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Production'
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: frontend
+
+      - name: Unzip artifact for deployment
+        run: unzip frontend-release.zip
+
+      - name: Deploy to static azure web app
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.ANGULAR_PUBLISHTOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          action: 'upload'
+          app_location: '/' # App source code path
+          api_location: '' # Api source code path - optional
+          output_location: '' # Built app content directory - optional
+
+  deploy-backend-api:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: data-api
+
+      - name: Unzip artifact for deployment
+        run: unzip data-api-release.zip
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: 'Deploy to Azure Web App'
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_BACKEND_NAME }}
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.NEXTJS_PUBLISHPROFILE }}
+          package: .
