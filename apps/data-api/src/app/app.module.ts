@@ -25,6 +25,7 @@ let neoScheme: any = process.env.NEO4J_SCHEME || 'bolt+s';
       scheme: neoScheme,
       host: process.env.NEO4J_URI || '09d0f933.databases.neo4j.io:7687',
       username: process.env.NEO4J_USERNAME || 'neo4j',
+      port: '7687',
       password:
         process.env.NEO4J_PASSWORD ||
         'KMDK37mQbCwK-9ja_RKJTDyWOciOaeAn5alaV0QFlTU',
