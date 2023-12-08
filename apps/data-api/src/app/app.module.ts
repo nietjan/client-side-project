@@ -20,7 +20,7 @@ import { Neo4jModule } from 'nest-neo4j/dist';
       process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/clientSide'
     ),
     Neo4jModule.forRoot({
-      scheme: process.env.NEO4J_SCHEME || 'neo4j',
+      scheme: 'neo4j',
       host: process.env.NEO4J_URI || 'localhost',
       port: process.env.NEO4J_PORT || 7687,
       username: process.env.NEO4J_USERNAME || 'neo4j',
