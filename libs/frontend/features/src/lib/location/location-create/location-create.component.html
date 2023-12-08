@@ -140,23 +140,32 @@
     </div>
 
     <!--location.imgUrl -->
-    <div class="form-group col-12">
-      <label for="locationImageUrl">image url</label>
-      <input
-        type="text"
-        class="form-control"
-        [(ngModel)]="location.imgUrl"
-        name="locationImageUrl"
-        #locationImageUrl="ngModel"
-        [ngClass]="{ 'is-invalid': locationImageUrl.invalid }"
-        required
-      />
-      <div
-        class="invalid-feedback"
-        *ngIf="locationImageUrl.invalid && locationImageUrl.touched"
-      >
-        <div *ngIf="locationImageUrl.errors?.['required']">
-          Image url is required.
+    <div class="col-12 p-0">
+      <div class="row">
+        <div class="col-12 col-lg-6">
+          <div class="form-group col-12">
+            <label for="locationImageUrl">image url</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="location.imgUrl"
+              name="locationImageUrl"
+              #locationImageUrl="ngModel"
+              [ngClass]="{ 'is-invalid': locationImageUrl.invalid }"
+              required
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="locationImageUrl.invalid && locationImageUrl.touched"
+            >
+              <div *ngIf="locationImageUrl.errors?.['required']">
+                Image url is required.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <img src="{{ location.imgUrl }}" class="img-fluid pl-3" />
         </div>
       </div>
     </div>
@@ -311,10 +320,4 @@
       <button class="btn btn-primary" routerLink="/location">return</button>
     </div>
   </form>
-
-  <div>
-    <code>
-      <pre>{{ location | json }}</pre>
-    </code>
-  </div>
 </div>
