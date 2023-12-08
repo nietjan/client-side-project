@@ -73,12 +73,14 @@ export class UserCreateComponent implements OnInit, OnDestroy {
 
   public onSubmit(): void {
     if (this.isUpdating) {
-      var locationId = this.userService.updateUser(this.user);
+      this.userService.updateUser(this.user).subscribe((value) => {
+        this.router.navigateByUrl(`/location`);
+      });
     } else {
-      var locationId = this.userService.createUser(this.user);
+      this.userService.createUser(this.user).subscribe((value) => {
+        console.log(value);
+        this.router.navigateByUrl(`/location`);
+      });
     }
-
-    //redirect back to list
-    if (locationId != null) this.router.navigateByUrl(`/location`);
   }
 }

@@ -9,7 +9,7 @@ import {
 import { MongooseModule } from '@nestjs/mongoose';
 import { Neo4jModule, Neo4jScheme } from 'nest-neo4j/dist';
 
-let neoScheme: any = process.env.NEO4J_SCHEME || 'bolt+s';
+let neoScheme: any = process.env.NEO4J_SCHEME || 'neo4j';
 
 @Module({
   imports: [

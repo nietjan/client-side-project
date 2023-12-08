@@ -23,6 +23,7 @@ export class HeaderComponent {
   userId: string | null = null;
   loginInfo: IUserCredentials = { eMail: '', password: '' };
   loginError: string | null = null;
+  isEmployee: boolean = false;
 
   constructor(
     private uiService: UiService,
@@ -52,6 +53,13 @@ export class HeaderComponent {
     this.loginInfo = { eMail: '', password: '' };
     this.signedIn = true;
     this.userId = info._id;
+
+    if (info.role == ROLE.EMPLOYEE) {
+      this.isEmployee = true;
+    } else {
+      this.isEmployee = false;
+    }
+
     localStorage.setItem('role', info.role);
     localStorage.setItem('name', info.name);
     this.storageService.setRole(info.role);
@@ -69,6 +77,7 @@ export class HeaderComponent {
     this.storageService.setRole(ROLE.USER);
     this.storageService.setUserId(null);
     localStorage.removeItem('token');
+    this.isEmployee = false;
   }
 
   public deleteAccount(): void {

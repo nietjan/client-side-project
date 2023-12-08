@@ -8,7 +8,7 @@ import {
   IUser,
   ROLE,
 } from '@client-side/shared/api';
-import { Subscription } from 'rxjs';
+import { Subscription, lastValueFrom } from 'rxjs';
 import { LocationService } from '../../location/location.services';
 import { AbonnementService } from '../../abonnement/abonnement.services';
 import { StorageService } from 'libs/frontend/ui/src/lib/storage.services';
@@ -136,48 +136,43 @@ export class RegistrationListComponent implements OnInit, OnDestroy {
 
     //fill user info if needed
     if (this.showUserRegistrationInfo) {
-      this.userService.singleUser(registration.userId).subscribe((value) => {
-        if (value == null) user = value;
-        else {
-          user = {
-            _id: value._id,
-            name: value.name,
-          };
-        }
-      });
+      let userMethod = await this.getUser(registration.userId);
+      if (userMethod == null) user = null;
+      else {
+        user = {
+          _id: userMethod._id,
+          name: userMethod.name,
+        };
+      }
     }
 
     //fill location info if needed
     if (this.showLocationRegistrationInfo) {
-      this.locationService
-        .singleLocation(registration.locationId)
-        .subscribe((value) => {
-          if (value == null) location = value;
-          else {
-            location = {
-              _id: value._id,
-              street: value.address.street,
-              homeNumber: value.address.homeNumber,
-              postalCode: value.address.postalCode,
-              city: value.address.city,
-            };
-          }
-        });
+      let locationMethod = await this.getLocation(registration.locationId);
+      if (locationMethod == null) user = null;
+      else {
+        location = {
+          _id: locationMethod._id,
+          street: locationMethod.address.street,
+          homeNumber: locationMethod.address.homeNumber,
+          postalCode: locationMethod.address.postalCode,
+          city: locationMethod.address.city,
+        };
+      }
     }
 
     //fill abonnement info if needed
     if (this.showAbonnementRegistrationInfo) {
-      this.abonnementSerice
-        .singleAbonnoment(registration.abonnementId)
-        .subscribe((value) => {
-          if (value == null) abonnement = value;
-          else {
-            abonnement = {
-              _id: value._id,
-              name: value.name,
-            };
-          }
-        });
+      let abonnementMethod = await this.getAbonnement(
+        registration.abonnementId
+      );
+      if (abonnementMethod == null) user = null;
+      else {
+        abonnement = {
+          _id: abonnementMethod._id,
+          name: abonnementMethod.name,
+        };
+      }
     }
 
     return {
@@ -188,18 +183,20 @@ export class RegistrationListComponent implements OnInit, OnDestroy {
     };
   }
 
+  private async getUser(id: string): Promise<IUser | null> {
+    return await lastValueFrom(this.userService.singleUser(id));
+  }
+
+  private async getLocation(id: string): Promise<ILocation | null> {
+    return await lastValueFrom(this.locationService.singleLocation(id));
+  }
+
+  private async getAbonnement(id: string): Promise<IAbonnement | null> {
+    return await lastValueFrom(this.abonnementSerice.singleAbonnoment(id));
+  }
+
   ngOnDestroy(): void {
     if (this.registrationSubscription)
       this.registrationSubscription.unsubscribe();
-  }
-
-  unRegister(
-    locationId: string | null | undefined,
-    abonnementId: string | null | undefined
-  ) {
-    if (locationId == undefined) locationId = null;
-    if (abonnementId == undefined) abonnementId = null;
-
-    this.registrationService.removeRegistration(locationId, abonnementId);
   }
 }
