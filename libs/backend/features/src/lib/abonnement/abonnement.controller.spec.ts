@@ -14,6 +14,11 @@ import {
 } from '@client-side/backend/dto';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from '../auth/auth.module';
+import {
+  DbRegistration,
+  RegistrationSchema,
+} from '../registration/registration.schema';
+import { Neo4jModule } from 'nest-neo4j/dist';
 
 describe('AbonnementController', () => {
   let controller: AbonnementController;
@@ -30,10 +35,18 @@ describe('AbonnementController', () => {
       imports: [
         MongooseModule.forFeature([
           { name: DbAbonnement.name, schema: AbonnementSchema },
+          { name: DbRegistration.name, schema: RegistrationSchema },
         ]),
         MongooseModule.forRoot(uri),
         JwtModule,
         AuthModule,
+        Neo4jModule.forRoot({
+          scheme: 'neo4j',
+          host: 'localhost',
+          port: 7687,
+          username: 'neo4j',
+          password: process.env.NEO4J_PASSWORD || 'neo4',
+        }),
       ],
     }).compile();
 

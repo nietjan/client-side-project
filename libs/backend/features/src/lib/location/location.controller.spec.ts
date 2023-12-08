@@ -13,6 +13,11 @@ import { AbonnementModule } from './../abonnement/abonnement.modules';
 import { AbonnementService } from '../abonnement/abonnement.services';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from '../auth/auth.module';
+import { Neo4jModule } from 'nest-neo4j/dist';
+import {
+  DbRegistration,
+  RegistrationSchema,
+} from '../registration/registration.schema';
 
 describe('LocationController', () => {
   let controller: LocationController;
@@ -33,11 +38,19 @@ describe('LocationController', () => {
       imports: [
         MongooseModule.forFeature([
           { name: DbLocation.name, schema: LocationSchema },
+          { name: DbRegistration.name, schema: RegistrationSchema },
         ]),
         MongooseModule.forRoot(uri),
         AbonnementModule,
         JwtModule,
         AuthModule,
+        Neo4jModule.forRoot({
+          scheme: 'neo4j',
+          host: 'localhost',
+          port: 7687,
+          username: 'neo4j',
+          password: process.env.NEO4J_PASSWORD || 'neo4',
+        }),
       ],
     }).compile();
 
@@ -63,6 +76,7 @@ describe('LocationController', () => {
             country: '',
             postalCode: '',
           },
+          imgUrl: '',
         },
       ];
       const promiseResult: Promise<DbLocation[]> = Promise.resolve(result);
@@ -104,6 +118,7 @@ describe('LocationController', () => {
           country: '',
           postalCode: '',
         },
+        imgUrl: '',
       };
       const promiseResult: Promise<DbLocation> = Promise.resolve(result);
 
@@ -142,6 +157,7 @@ describe('LocationController', () => {
           country: '',
           postalCode: '',
         },
+        imgUrl: '',
       };
 
       const output: DbLocation = {
@@ -158,6 +174,7 @@ describe('LocationController', () => {
           country: '',
           postalCode: '',
         },
+        imgUrl: '',
       };
       const promiseResult: Promise<DbLocation> = Promise.resolve(output);
       const promiseAbonnementResult: Promise<boolean> = Promise.resolve(true);
@@ -186,6 +203,7 @@ describe('LocationController', () => {
           country: '',
           postalCode: '',
         },
+        imgUrl: '',
       };
 
       const output: DbLocation = {
@@ -202,6 +220,7 @@ describe('LocationController', () => {
           country: '',
           postalCode: '',
         },
+        imgUrl: '',
       };
       const promiseResult: Promise<DbLocation> = Promise.resolve(output);
       const promiseAbonnementResult: Promise<boolean> = Promise.resolve(false);
@@ -238,6 +257,7 @@ describe('LocationController', () => {
           country: '',
           postalCode: '',
         },
+        imgUrl: '',
       };
 
       const output: DbLocation = {
@@ -254,6 +274,7 @@ describe('LocationController', () => {
           country: '',
           postalCode: '',
         },
+        imgUrl: '',
       };
       const promiseAbonnementResult: Promise<boolean> = Promise.resolve(false);
       jest
@@ -292,6 +313,7 @@ describe('LocationController', () => {
           country: '',
           postalCode: '',
         },
+        imgUrl: '',
       };
 
       let output: UpdateWriteOpResult = {

@@ -38,7 +38,9 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
     this.route.paramMap.subscribe((params) => {
       this.locationId = params.get('id');
     });
+  }
 
+  ngOnInit(): void {
     //if locationId than it is abonnements of location else is all abonnements
     if (this.locationId) {
       //get locationId
@@ -64,9 +66,7 @@ export class AbonnementListComponent implements OnInit, OnDestroy {
           this.abonnoments = results;
         });
     }
-  }
 
-  ngOnInit(): void {
     //set if user can create new
     this.roleSubscription = this.storageService
       .getRole()

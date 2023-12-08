@@ -9,9 +9,13 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import exp = require('constants');
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from '@client-side/backend/dto';
-import { role } from '@client-side/shared/api';
+import { ROLE } from '@client-side/shared/api';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from '../auth/auth.module';
+import {
+  DbRegistration,
+  RegistrationSchema,
+} from '../registration/registration.schema';
 
 describe('UserController', () => {
   let controller: UserController;
@@ -26,7 +30,10 @@ describe('UserController', () => {
       controllers: [UserController],
       providers: [UserService],
       imports: [
-        MongooseModule.forFeature([{ name: DbUser.name, schema: UserSchema }]),
+        MongooseModule.forFeature([
+          { name: DbUser.name, schema: UserSchema },
+          { name: DbRegistration.name, schema: RegistrationSchema },
+        ]),
         MongooseModule.forRoot(uri),
         JwtModule,
         AuthModule,
@@ -48,7 +55,7 @@ describe('UserController', () => {
           eMail: '',
           password: '',
           iban: '',
-          role: role.USER,
+          role: ROLE.USER,
           address: {
             street: '',
             postalCode: '',
@@ -90,7 +97,7 @@ describe('UserController', () => {
         phoneNumber: '',
         eMail: '',
         password: '',
-        role: role.USER,
+        role: ROLE.USER,
         iban: '',
         address: {
           street: '',
@@ -132,7 +139,7 @@ describe('UserController', () => {
         eMail: '',
         password: '',
         iban: '',
-        role: role.USER,
+        role: ROLE.USER,
         address: {
           street: '',
           postalCode: '',
@@ -160,9 +167,8 @@ describe('UserController', () => {
         sex: '',
         phoneNumber: '',
         eMail: '',
-        password: '',
         iban: '',
-        role: role.USER,
+        role: ROLE.USER,
         address: {
           street: '',
           postalCode: '',

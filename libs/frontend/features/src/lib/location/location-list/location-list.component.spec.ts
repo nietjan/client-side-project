@@ -4,6 +4,7 @@ import { LocationService } from '../location.services';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { of } from 'rxjs';
+import { UiModule } from '@client-side/ui';
 
 describe('LocationListComponent', () => {
   let component: LocationListComponent;
@@ -23,7 +24,7 @@ describe('LocationListComponent', () => {
           },
         },
       ],
-      imports: [RouterModule],
+      imports: [RouterModule, UiModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LocationListComponent);

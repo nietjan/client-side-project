@@ -3,9 +3,10 @@ import { AbonnementListComponent } from './abonnement-list.component';
 import { AbonnementService } from '../abonnement.services';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { UiModule } from '@client-side/ui';
 import { StorageService } from 'libs/frontend/ui/src/lib/storage.services';
+import { RegistrationService } from '../../registration/registration.services';
 
 describe('AboutComponent', () => {
   let component: AbonnementListComponent;
@@ -21,10 +22,11 @@ describe('AboutComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            params: of({ id: 123 }),
+            paramMap: of({ get: () => '1' }),
           },
         },
         StorageService,
+        RegistrationService,
       ],
       imports: [RouterModule, UiModule],
     }).compileComponents();
