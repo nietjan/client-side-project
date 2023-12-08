@@ -19,5 +19,4 @@ export interface IToken {
   token: string;
 }
 
-// export const url = 'http://localhost:3000/api/';
 export const url = 'https://client-side2-2api.azurewebsites.net/api/';
