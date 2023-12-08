@@ -66,7 +66,11 @@ export class RegistrationController {
   ): Promise<DbRegistration[]> {
     try {
       //if result is array of 1 return it as a object else return as array
-      return await this.registrationService.get();
+      return await this.registrationService.get(
+        userId,
+        locationId,
+        abonnementId
+      );
     } catch (error) {
       if (error instanceof Error) {
         throw new HttpException(error.message, HttpStatus.NOT_FOUND);

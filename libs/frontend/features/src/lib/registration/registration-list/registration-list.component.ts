@@ -13,7 +13,7 @@ import { LocationService } from '../../location/location.services';
 import { AbonnementService } from '../../abonnement/abonnement.services';
 import { StorageService } from 'libs/frontend/ui/src/lib/storage.services';
 import { RegistrationService } from '../registration.services';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { UserService } from '../../user/user.services';
 
 @Component({
@@ -63,21 +63,18 @@ export class RegistrationListComponent implements OnInit, OnDestroy {
       this.showAbonnementRegistrationInfo = true;
     }
 
-    const ids = this.setupForRegistrationsList();
-    this.fillList(ids[0], ids[1], ids[2]);
+    this.route.paramMap?.subscribe((params) => {
+      this.fillList(params.get('id'));
+    });
   }
 
   //setup for filling list
-  private setupForRegistrationsList(): (string | null)[] {
+  private async setupForRegistrationsList(
+    paramId: string | null
+  ): Promise<(string | null)[]> {
     let userId: string | null = null;
     let locationId: string | null = null;
     let abonnementId: string | null = null;
-    let paramId: string | null = null;
-
-    //get id of param
-    this.route.paramMap?.subscribe((params) => {
-      paramId = params.get('id');
-    });
 
     //fill data for method
     if (this.showUserRegistrationInfo == false) {
@@ -100,11 +97,13 @@ export class RegistrationListComponent implements OnInit, OnDestroy {
   }
 
   //fill registration list
-  private async fillList(
-    userId: string | null,
-    locationId: string | null,
-    abonnementId: string | null
-  ) {
+  private async fillList(paramId: string | null) {
+    const ids = await this.setupForRegistrationsList(paramId);
+
+    let userId: string | null = ids[0];
+    let locationId: string | null = ids[1];
+    let abonnementId: string | null = ids[2];
+
     this.registrationSubscription = this.registrationService
       .getRegistrations(userId, locationId, abonnementId)
       .subscribe((results) => {
@@ -135,16 +134,16 @@ export class RegistrationListComponent implements OnInit, OnDestroy {
     let abonnement: { name: string; _id: string } | null = null;
 
     //fill user info if needed
-    if (this.showUserRegistrationInfo) {
-      let userMethod = await this.getUser(registration.userId);
-      if (userMethod == null) user = null;
-      else {
-        user = {
-          _id: userMethod._id,
-          name: userMethod.name,
-        };
-      }
+    // if (this.showUserRegistrationInfo) {
+    let userMethod = await this.getUser(registration.userId);
+    if (userMethod == null) user = null;
+    else {
+      user = {
+        _id: userMethod._id,
+        name: userMethod.name,
+      };
     }
+    // }
 
     //fill location info if needed
     if (this.showLocationRegistrationInfo) {
