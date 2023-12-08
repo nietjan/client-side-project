@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserController } from './User.controller';
+import { UserController } from './user.controller';
 import { UserService } from './user.services';
 import { DbUser, UserSchema } from './user.schema';
 import { MongooseModule, getModelToken } from '@nestjs/mongoose';

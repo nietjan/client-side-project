@@ -5,6 +5,7 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('AboutComponent', () => {
   let component: AbonnementCreateComponent;
@@ -15,6 +16,7 @@ describe('AboutComponent', () => {
       declarations: [AbonnementCreateComponent],
       providers: [
         AbonnementService,
+        HttpClientModule,
         HttpClient,
         HttpHandler,
         {

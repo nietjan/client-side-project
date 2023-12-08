@@ -20,6 +20,8 @@ import {
 } from '../registration/registration.schema';
 import { Neo4jModule } from 'nest-neo4j/dist';
 
+let neoScheme: any = process.env.NEO4J_SCHEME || 'neo4j';
+
 describe('AbonnementController', () => {
   let controller: AbonnementController;
   let service: AbonnementService;
@@ -41,10 +43,10 @@ describe('AbonnementController', () => {
         JwtModule,
         AuthModule,
         Neo4jModule.forRoot({
-          scheme: 'neo4j',
-          host: 'localhost',
-          port: 7687,
-          username: 'neo4j',
+          scheme: neoScheme,
+          host: process.env.NEO4J_URI || 'localhost',
+          port: process.env.NEO4J_PORT || 7687,
+          username: process.env.NEO4J_USERNAME || 'neo4j',
           password: process.env.NEO4J_PASSWORD || 'neo4',
         }),
       ],

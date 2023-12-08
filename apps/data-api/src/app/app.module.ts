@@ -9,7 +9,7 @@ import {
 import { MongooseModule } from '@nestjs/mongoose';
 import { Neo4jModule, Neo4jScheme } from 'nest-neo4j/dist';
 
-let neoScheme: any = process.env.NEO4J_SCHEME || 'neo4j';
+let neoScheme: any = process.env.NEO4J_SCHEME || 'bolt+s';
 
 @Module({
   imports: [
@@ -23,10 +23,11 @@ let neoScheme: any = process.env.NEO4J_SCHEME || 'neo4j';
     ),
     Neo4jModule.forRoot({
       scheme: neoScheme,
-      host: process.env.NEO4J_URI || 'localhost',
-      port: process.env.NEO4J_PORT || 7687,
+      host: process.env.NEO4J_URI || '09d0f933.databases.neo4j.io:7687',
       username: process.env.NEO4J_USERNAME || 'neo4j',
-      password: process.env.NEO4J_PASSWORD || 'neo4',
+      password:
+        process.env.NEO4J_PASSWORD ||
+        'KMDK37mQbCwK-9ja_RKJTDyWOciOaeAn5alaV0QFlTU',
     }),
   ],
   controllers: [],

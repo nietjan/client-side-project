@@ -5,6 +5,7 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { UserService } from '../user.services';
 import { UiService } from 'libs/frontend/ui/src/lib/ui.services';
 import { SpinnerComponent } from '@client-side/ui';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('UserListComponent', () => {
   let component: UserListComponent;

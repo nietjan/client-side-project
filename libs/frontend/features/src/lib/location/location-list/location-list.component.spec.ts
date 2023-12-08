@@ -5,6 +5,7 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { of } from 'rxjs';
 import { UiModule } from '@client-side/ui';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('LocationListComponent', () => {
   let component: LocationListComponent;
@@ -15,8 +16,7 @@ describe('LocationListComponent', () => {
       declarations: [LocationListComponent],
       providers: [
         LocationService,
-        HttpClient,
-        HttpHandler,
+        HttpClientTestingModule,
         {
           provide: ActivatedRoute,
           useValue: {

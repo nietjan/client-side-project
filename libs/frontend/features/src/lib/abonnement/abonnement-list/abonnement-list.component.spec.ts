@@ -7,6 +7,7 @@ import { Observable, of } from 'rxjs';
 import { UiModule } from '@client-side/ui';
 import { StorageService } from 'libs/frontend/ui/src/lib/storage.services';
 import { RegistrationService } from '../../registration/registration.services';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('AboutComponent', () => {
   let component: AbonnementListComponent;
@@ -17,8 +18,7 @@ describe('AboutComponent', () => {
       declarations: [AbonnementListComponent],
       providers: [
         AbonnementService,
-        HttpClient,
-        HttpHandler,
+        HttpClientTestingModule,
         {
           provide: ActivatedRoute,
           useValue: {
