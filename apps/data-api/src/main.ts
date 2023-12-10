@@ -24,8 +24,8 @@ async function bootstrap() {
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   const config = new DocumentBuilder()
-    .setTitle('Title')
-    .setDescription('Discription')
+    .setTitle('NonBasic-Fit')
+    .setDescription('Api for project Client-side')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
